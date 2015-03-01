@@ -14,7 +14,7 @@ At this moment, only taxonomic and functional diversity were included.
 To install this package, just run:
 
     library(devtools)
-    install_github("dli55", "hillR")
+    install_github("daijiang/hillR")
     
 ## Warning
 This package is just initiated WITHOUT test! Be careful.
