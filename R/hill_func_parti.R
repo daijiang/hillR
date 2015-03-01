@@ -14,9 +14,6 @@
 #' @param rel_then_pool default is TRUE. Abundance of species are first changed to relative abundance within sites,
 #'  then pooled into one assemblage. If FALSE, sites are pooled first, then change abundance of species
 #'  to relative abundance.
-#' @param rel_then_pool default is TRUE. Abundance of species are first changed to relative abundance within sites,
-#'  then pooled into one assemblage. If FALSE, sites are pooled first, then change abundance of species
-#'  to relative abundance.
 #' @export
 #' @return  a data frame with one row, including these columns: q, RaoQ of pooled assemblage,
 #' gamma diversity, alpha diveristy, beta diversity, local species overlap, and region species

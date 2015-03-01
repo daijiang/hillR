@@ -16,4 +16,5 @@ To install this package, just run:
     library(devtools)
     install_github("dli55", "hillR")
     
-
+## Warning
+This package is just initiated WITHOUT test! Be careful.
