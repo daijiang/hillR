@@ -2,6 +2,7 @@
 
 export(hill_func)
 export(hill_func_parti)
+export(hill_func_parti_pairwise)
 export(hill_taxa)
 export(hill_taxa_parti)
 export(hill_taxa_parti_pairwise)
