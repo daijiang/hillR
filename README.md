@@ -19,7 +19,7 @@ To install this package, just run:
 ## Warning
 This package is just initiated WITHOUT test! Be careful.
 
->update: I just compared results with `[vegetarian](http://cran.r-project.org/web/packages/vegetarian/index.html)` R package and got they are the same, for taxonomic diversity.
+update: I just compared results with [vegetarian](http://cran.r-project.org/web/packages/vegetarian/index.html) R package and got they are the same, for taxonomic diversity.
 
 ## Licenses
 
