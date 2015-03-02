@@ -43,6 +43,12 @@ hill_func_parti = function(comm, traits, traits_as_is = FALSE, q = 0,
     }
   }
 
+  if(any(colSums(comm) == 0)) warning("Some species in comm data were not observed in any site,\n delete them...")
+  comm = comm[, colSums(comm) != 0]
+  comm = as.matrix(comm)
+  N = nrow(comm)
+  S = ncol(comm)
+
   if(any(!colnames(comm) %in% rownames(traits))){
     warning("\n There are species from community data that are not on traits matrix\nDelete these species from comm data...\n")
     comm = comm[, colnames(comm) %in% rownames(traits)]
@@ -53,17 +59,14 @@ hill_func_parti = function(comm, traits, traits_as_is = FALSE, q = 0,
     traits = traits[rownames(traits) %in% colnames(comm), ]
   }
 
-  comm = as.matrix(comm)
-  N = nrow(comm)
-  S = ncol(comm)
   if(rel_then_pool){
     comm_gamma = colSums(sweep(comm, 1, rowSums(comm, na.rm = TRUE), "/"))/ N
     # relative abun
   } else {
     comm_gamma = colSums(comm)/sum(comm)
   }
-  if(any(comm_gamma == 0)) stop("Some species in comm data were not observed in any site")
-  if(sum(comm_gamma) != 1) stop("Accumlative relative abundance should be 1")
+
+  if(!all.equal(sum(comm_gamma), 1)) stop("Accumlative relative abundance should be 1")
 
   if(rel_then_pool){
     comm_alpha = sweep(comm, 1, rowSums(comm, na.rm = TRUE), "/") # relative abun
@@ -112,7 +115,7 @@ hill_func_parti = function(comm, traits, traits_as_is = FALSE, q = 0,
         for(m in 1:N){
           s1 = names(comm_alpha[k,][comm_alpha[k,]>0])
           s2 = names(comm_alpha[m,][comm_alpha[m,]>0])
-          FAD_pair[k,m] = sum(dij[c(s1, s2), c(s1, s2)])
+          FAD_pair[k,m] = sum(dij[unique(c(s1, s2)), unique(c(s1, s2))])
         }
       }
       FD_q_alpha = sum(FAD_pair)/(N^2)
