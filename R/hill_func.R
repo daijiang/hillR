@@ -7,6 +7,7 @@
 #' @param traits data frame of species functional traits data. Species as rows, traits as columns.
 #' It can include both continuous and categorical data. It will be transformed into a distance
 #' matrix using `FD::gowdis(traits)`.
+#' @param traits_as_is if FALSE (default) traits data frame will be transformed into a distance
 #' @param q hill number, q (default is 0) to control weights of species abundance.
 #' @param base default is exp(1), the base of log.
 #' @param checkdata default is TRUE.
@@ -26,7 +27,7 @@
 #' hill_func(comm = dummy$abun, traits = dummy$trait, q = 3)
 #'
 #'
-hill_func = function(comm, traits, q = 0, base = exp(1), checkdata=TRUE,...){
+hill_func = function(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1), checkdata=TRUE,...){
   if (checkdata) {
     if (any(comm < 0))
       stop("Negative value in comm data")
@@ -52,8 +53,13 @@ hill_func = function(comm, traits, q = 0, base = exp(1), checkdata=TRUE,...){
   N = nrow(comm)
   S = ncol(comm)
   comm = sweep(comm, 1, rowSums(comm, na.rm = TRUE), "/") # relative abun
-  traits.dist = as.matrix(gowdis(x=traits, ...))
-  dij = traits.dist^2 # trait distance matrix
+
+  if(traits_as_is){
+    dij = as.matrix(traits)
+  } else {
+    dij = as.matrix(gowdis(x=traits, ...))
+  }
+
   #   inter = comm %*% dij # \sum_i,j_S(p_i * dij)
   #   Q = rowSums(sweep(comm,1,inter,"*", check.margin = F))/2 # \sum_j_S\sum_i,j_S(p_i * dij)
   Q = vector("numeric", length = N)

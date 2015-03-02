@@ -75,12 +75,11 @@ hill_func_parti = function(comm, traits, traits_as_is = FALSE, q = 0,
   }
 
   if(traits_as_is){
-    traits.dist = traits
+    dij = as.matrix(traits)
   } else {
-    traits.dist = as.matrix(gowdis(x=traits, ...))
+    dij = as.matrix(gowdis(x=traits, ...))
   }
 
-  dij = traits.dist^2 # trait distance matrix
   Q_gamma = as.vector(comm_gamma %*% dij %*% matrix(comm_gamma, ncol = 1))
 
   ## FD_q_gamma

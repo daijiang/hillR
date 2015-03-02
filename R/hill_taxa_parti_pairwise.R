@@ -27,7 +27,7 @@
 hill_taxa_parti_pairwise = function(comm, q = 0, rel_then_pool = TRUE){
   nsite = nrow(comm)
   site.comp = as.matrix(expand.grid(1:nsite, 1:nsite))
-  adply(site.comp, 1, function(x){
+  adply(site.comp, 1, .progress = "text", function(x){
     data.frame(site1 = row.names(comm)[x[1]],
                site2 = row.names(comm)[x[2]],
                hill_taxa_parti(comm = comm[c(x[1], x[2]), ], q = q,

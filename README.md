@@ -18,3 +18,9 @@ To install this package, just run:
     
 ## Warning
 This package is just initiated WITHOUT test! Be careful.
+
+>update: I just compared results with `[vegetarian](http://cran.r-project.org/web/packages/vegetarian/index.html)` R package and got they are the same, for taxonomic diversity.
+
+## Licenses
+
+Licensed under the [MIT license](LICENSE). ([More information here](http://en.wikipedia.org/wiki/MIT_License).)
