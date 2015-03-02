@@ -3,7 +3,8 @@
 \alias{hill_func}
 \title{\code{hill_func} to calculate functional diversity for each site.}
 \usage{
-hill_func(comm, traits, q = 0, base = exp(1), checkdata = TRUE, ...)
+hill_func(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1),
+  checkdata = TRUE, ...)
 }
 \arguments{
 \item{comm}{data frame of vegtation data. Sites as rows, species as columns.}
@@ -11,6 +12,8 @@ hill_func(comm, traits, q = 0, base = exp(1), checkdata = TRUE, ...)
 \item{traits}{data frame of species functional traits data. Species as rows, traits as columns.
 It can include both continuous and categorical data. It will be transformed into a distance
 matrix using `FD::gowdis(traits)`.}
+
+\item{traits_as_is}{if FALSE (default) traits data frame will be transformed into a distance}
 
 \item{q}{hill number, q (default is 0) to control weights of species abundance.}
 
