@@ -18,6 +18,7 @@
 #' @return  a data frame with one row, including these columns: q, RaoQ of pooled assemblage,
 #' gamma diversity, alpha diveristy, beta diversity, local species overlap, and region species
 #' overlap. See Chiu and Chao 2014 Table 3 for more information.
+#' @seealso \code{\link{hill_taxa_parti}}, \code{\link{hill_func}}
 #'
 #' @examples
 #' library(FD); data(dummy)

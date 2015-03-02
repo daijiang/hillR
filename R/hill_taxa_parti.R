@@ -1,6 +1,8 @@
 # Decompostion of Taxonomic diversity through Hill Numbers
 #' \code{hill_taxa_parti} to calculate taxonomic gamma, alpha, and beta diversity for communities, as
-#'  well as site similarity.
+#'  well as site similarity. If comm has 2 sites, this function gives pair comparison.
+#'  If comm has >2 sites, gamma diversity is the diversity of the pooled assemblage while
+#'  alpha is the average diversity per site.
 #'
 #' @author Daijiang Li
 #'
@@ -14,6 +16,7 @@
 #' @return a data frame with one row, including these columns: q, gamma diversity, alpha diveristy,
 #' beta diversity, MacArthur's homogeneity measure, local species overlap, and region species overlap. See Chao, Chiu and Jost 2014 Table 2
 #' for more information.
+#' @seealso \code{\link{hill_taxa_parti}}
 #' @examples
 #' library(FD); data(dummy)
 #' hill_taxa_parti(comm = dummy$abun, q = 0)

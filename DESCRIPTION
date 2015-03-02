@@ -11,4 +11,5 @@ Description: This package contains R functions to calculate taxonomic,
 License: MIT + file LICENSE
 LazyData: TRUE
 Depends:
-    FD
+    FD,
+    plyr

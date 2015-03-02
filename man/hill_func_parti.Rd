@@ -23,10 +23,6 @@ matrix using `FD::gowdis(traits)`. Otherwise, will use as is (i.e. traits is a s
 \item{rel_then_pool}{default is TRUE. Abundance of species are first changed to relative abundance within sites,
 then pooled into one assemblage. If FALSE, sites are pooled first, then change abundance of species
 to relative abundance.}
-
-\item{rel_then_pool}{default is TRUE. Abundance of species are first changed to relative abundance within sites,
-then pooled into one assemblage. If FALSE, sites are pooled first, then change abundance of species
-to relative abundance.}
 }
 \value{
 a data frame with one row, including these columns: q, RaoQ of pooled assemblage,
@@ -47,5 +43,8 @@ hill_func_parti(comm = dummy$abun, traits = dummy$trait, q = 3)
 }
 \author{
 Daijiang Li
+}
+\seealso{
+\code{\link{hill_taxa_parti}}, \code{\link{hill_func}}
 }
 
