@@ -12,15 +12,15 @@
 #'  to relative abundance.
 #' @export
 #' @return a data frame with one row, including these columns: q, gamma diversity, alpha diveristy,
-#' beta diversity, local species overlap, and region species overlap. See Chao, Chiu and Jost 2014 Table 2
+#' beta diversity, MacArthur's homogeneity measure, local species overlap, and region species overlap. See Chao, Chiu and Jost 2014 Table 2
 #' for more information.
 #' @examples
 #' library(FD); data(dummy)
 #' hill_taxa_parti(comm = dummy$abun, q = 0)
 #' hill_taxa_parti(comm = dummy$abun, q = 1)
 #' hill_taxa_parti(comm = dummy$abun, q = 0.9999999)
+#' hill_taxa_parti(comm = dummy$abun, q = 0.9999999, rel_then_pool = F)
 #' hill_taxa_parti(comm = dummy$abun, q = 1, rel_then_pool = F)
-#'  # some mistakes here, similarity is negative and abs > 1...???
 #' hill_taxa_parti(comm = dummy$abun, q = 2)
 #' hill_taxa_parti(comm = dummy$abun, q = 3)
 #'
@@ -29,18 +29,18 @@ hill_taxa_parti = function(comm, q = 0, base = exp(1),
                            rel_then_pool = TRUE){
   if (any(comm < 0))
     stop("Negative value in comm data")
-
-  comm = as.matrix(comm)
+  if(any(colSums(comm) == 0)) warning("Some species in comm data were not observed in any site,\n delete them...")
+  comm = comm[, colSums(comm) != 0]
   N = nrow(comm)
   S = ncol(comm)
+  comm = as.matrix(comm)
   if(rel_then_pool){
     comm_gamma = colSums(sweep(comm, 1, rowSums(comm, na.rm = TRUE), "/"))/ N
     # relative abun
   } else {
     comm_gamma = colSums(comm)/sum(comm)
   }
-  if(any(comm_gamma == 0)) stop("Some species in comm data were not observed in any site")
-  if(sum(comm_gamma) != 1) stop("Accumlative relative abundance should be 1")
+  if(!all.equal(sum(comm_gamma), 1)) stop("Accumlative relative abundance should be 1")
 
   if(rel_then_pool){
     comm_alpha = sweep(comm, 1, rowSums(comm, na.rm = TRUE), "/") # relative abun
@@ -68,7 +68,7 @@ hill_taxa_parti = function(comm, q = 0, base = exp(1),
     if(rel_then_pool){
       local_taxa_overlap = (log(N, base) - log(TD_q_gamma) + log(TD_q_alpha))/log(N, base)
     } else{
-      local_taxa_overlap = (TD_q_alpha - TD_q_gamma -
+      local_taxa_overlap = (log(TD_q_alpha) - log(TD_q_gamma) -
                               sum((rowSums(comm_alpha)/sum(comm_alpha))*
                                     log(rowSums(comm_alpha)/sum(comm_alpha), base)))/log(N, base)}
   } else {
@@ -87,6 +87,7 @@ hill_taxa_parti = function(comm, q = 0, base = exp(1),
                     TD_gamma = TD_q_gamma,
                     TD_alpha = TD_q_alpha,
                     TD_beta = TD_q_beta,
+                    M_homog = 1 / TD_q_beta,
                     local_taxa_overlap = local_taxa_overlap,
                     region_taxa_overlap = region_taxa_overlap))
 }
