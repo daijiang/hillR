@@ -49,14 +49,15 @@ hill_taxa_parti_pairwise = function(comm, q = 0, rel_then_pool = TRUE,
 
   if(pairs == "full"){
     if(output == "matrix"){
-      out = list(TD_gamma = gamma_pair, TD_alpha = alpha_pair, TD_beta = beta_pair,
+      out = list(q = q, TD_gamma = gamma_pair, TD_alpha = alpha_pair, TD_beta = beta_pair,
                  local_taxa_overlap = local_simi, region_taxa_overlap = region_simi)
     }
 
     if(output == "data.frame"){
       site.comp = as.matrix(expand.grid(row.names(comm), row.names(comm)))
       out = adply(site.comp, 1, function(x){
-        data.frame(site1 = x[1],
+        data.frame(q = q,
+                   site1 = x[1],
                    site2 = x[2],
                    TD_gamma = gamma_pair[x[1], x[2]],
                    TD_alpha = alpha_pair[x[1], x[2]],
@@ -75,14 +76,15 @@ hill_taxa_parti_pairwise = function(comm, q = 0, rel_then_pool = TRUE,
     region_simi[lower.tri(region_simi, diag = TRUE)] = NA
 
     if(output == "matrix"){
-      out = list(TD_gamma = gamma_pair, TD_alpha = alpha_pair, TD_beta = beta_pair,
+      out = list(q = q, TD_gamma = gamma_pair, TD_alpha = alpha_pair, TD_beta = beta_pair,
                  local_taxa_overlap = local_simi, region_taxa_overlap = region_simi)
     }
 
     if(output == "data.frame"){
       site.comp = as.matrix(expand.grid(row.names(comm), row.names(comm)))
       out = adply(site.comp, 1, function(x){
-        data.frame(site1 = x[1],
+        data.frame(q = q,
+                   site1 = x[1],
                    site2 = x[2],
                    TD_gamma = gamma_pair[x[1], x[2]],
                    TD_alpha = alpha_pair[x[1], x[2]],

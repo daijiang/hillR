@@ -55,14 +55,14 @@ hill_func_parti_pairwise = function(comm, traits, traits_as_is = FALSE,
 
   if(pairs == "full"){
     if(output == "matrix"){
-      out = list(FD_gamma = gamma_pair, FD_alpha = alpha_pair, FD_beta = beta_pair,
+      out = list(q = q, FD_gamma = gamma_pair, FD_alpha = alpha_pair, FD_beta = beta_pair,
                  local_dist_overlap = local_simi, region_dist_overlap = region_simi)
     }
 
     if(output == "data.frame"){
       site.comp = as.matrix(expand.grid(row.names(comm), row.names(comm)))
       out = adply(site.comp, 1, function(x){
-        data.frame(site1 = x[1],
+        data.frame(q = q, site1 = x[1],
                    site2 = x[2],
                    FD_gamma = gamma_pair[x[1], x[2]],
                    FD_alpha = alpha_pair[x[1], x[2]],
@@ -82,14 +82,14 @@ hill_func_parti_pairwise = function(comm, traits, traits_as_is = FALSE,
     region_simi[lower.tri(region_simi, diag = TRUE)] = NA
 
     if(output == "matrix"){
-      out = list(FD_gamma = gamma_pair, FD_alpha = alpha_pair, FD_beta = beta_pair,
+      out = list(q = q, FD_gamma = gamma_pair, FD_alpha = alpha_pair, FD_beta = beta_pair,
                  local_dist_overlap = local_simi, region_dist_overlap = region_simi)
     }
 
     if(output == "data.frame"){
       site.comp = as.matrix(expand.grid(row.names(comm), row.names(comm)))
       out = adply(site.comp, 1, function(x){
-        data.frame(site1 = x[1],
+        data.frame(q = q, site1 = x[1],
                    site2 = x[2],
                    FD_gamma = gamma_pair[x[1], x[2]],
                    FD_alpha = alpha_pair[x[1], x[2]],
