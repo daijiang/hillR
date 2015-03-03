@@ -15,12 +15,16 @@
 #' @param rel_then_pool default is TRUE. Abundance of species are first changed to relative abundance within sites,
 #'  then pooled into one assemblage. If FALSE, sites are pooled first, then change abundance of species
 #'  to relative abundance.
+#' @param output output type: data.frame (default) or matrix. If matrix, then this function will return a list of matrices.
+#' @param pairs full or unique (default). Do you want to compare all possible pairs (i.e. n^2) or just unique pairs (i.e. choose(n, 2))?
 #' @export
 #' @return a data frame with results for all pairwise comparisons.
 #' @seealso \code{\link{hill_func_parti}}
 #' @examples
 #' library(FD); data(dummy)
 #' hill_func_parti_pairwise(comm = dummy$abun, traits = dummy$trait, q = 0)
+#' hill_func_parti_pairwise(comm = dummy$abun, traits = dummy$trait, q = 0, output = "matrix")
+#' hill_func_parti_pairwise(comm = dummy$abun, traits = dummy$trait, q = 0, output = "matrix", pairs = "full")
 #' hill_func_parti_pairwise(comm = dummy$abun, traits = dummy$trait, q = 1)
 #' hill_func_parti_pairwise(comm = dummy$abun, traits = dummy$trait, q = 0.9999)
 #' hill_func_parti_pairwise(comm = dummy$abun, traits = dummy$trait, q = 2)
@@ -28,14 +32,75 @@
 #'
 #'
 hill_func_parti_pairwise = function(comm, traits, traits_as_is = FALSE,
-                                    q = 0, rel_then_pool = TRUE){
+                                    q = 0, rel_then_pool = TRUE,
+                                    output = c("data.frame", "matrix"),
+                                    pairs = c( "unique", "full")){
+  output <- match.arg(output)
   nsite = nrow(comm)
-  site.comp = as.matrix(expand.grid(1:nsite, 1:nsite))
-  adply(site.comp, 1, .progress = "text", function(x){
-    data.frame(site1 = row.names(comm)[x[1]],
-               site2 = row.names(comm)[x[2]],
-               hill_func_parti(comm = comm[c(x[1], x[2]), ], traits = traits,
-                               traits_as_is = traits_as_is, q = q,
-                               rel_then_pool = rel_then_pool))
-  })
+  temp = matrix(1, nsite, nsite)
+  dimnames(temp) = list(row.names(comm), row.names(comm))
+  gamma_pair = alpha_pair = beta_pair = local_simi = region_simi = temp
+  for(i in 1:nsite){
+    for(j in i:nsite){
+      o = hill_func_parti(comm = comm[c(i,j), ], traits = traits,
+                          traits_as_is = traits_as_is, q = q,
+                          rel_then_pool = rel_then_pool)
+      gamma_pair[i,j] = o$FD_gamma; gamma_pair[j,i] = o$FD_gamma
+      alpha_pair[i,j] = o$FD_alpha; alpha_pair[j,i] = o$FD_alpha
+      beta_pair[i,j] = o$FD_beta; beta_pair[j,i] = o$FD_beta
+      local_simi[i,j] = o$local_dist_overlap; local_simi[j,i] = o$local_dist_overlap
+      region_simi[i,j] = o$region_dist_overlap; region_simi[j,i] = o$region_dist_overlap
+    }
+  }
+
+  if(pairs == "full"){
+    if(output == "matrix"){
+      out = list(FD_gamma = gamma_pair, FD_alpha = alpha_pair, FD_beta = beta_pair,
+                 local_dist_overlap = local_simi, region_dist_overlap = region_simi)
+    }
+
+    if(output == "data.frame"){
+      site.comp = as.matrix(expand.grid(row.names(comm), row.names(comm)))
+      out = adply(site.comp, 1, function(x){
+        data.frame(site1 = x[1],
+                   site2 = x[2],
+                   FD_gamma = gamma_pair[x[1], x[2]],
+                   FD_alpha = alpha_pair[x[1], x[2]],
+                   FD_beta = beta_pair[x[1], x[2]],
+                   local_dist_overlap = local_simi[x[1], x[2]],
+                   region_dist_overlap = region_simi[x[1], x[2]])
+      })
+    }
+    out
+  }
+
+  if(pairs == "unique"){
+    gamma_pair[lower.tri(gamma_pair, diag = TRUE)] = NA
+    alpha_pair[lower.tri(alpha_pair, diag = TRUE)] = NA
+    beta_pair[lower.tri(beta_pair, diag = TRUE)] = NA
+    local_simi[lower.tri(local_simi, diag = TRUE)] = NA
+    region_simi[lower.tri(region_simi, diag = TRUE)] = NA
+
+    if(output == "matrix"){
+      out = list(FD_gamma = gamma_pair, FD_alpha = alpha_pair, FD_beta = beta_pair,
+                 local_dist_overlap = local_simi, region_dist_overlap = region_simi)
+    }
+
+    if(output == "data.frame"){
+      site.comp = as.matrix(expand.grid(row.names(comm), row.names(comm)))
+      out = adply(site.comp, 1, function(x){
+        data.frame(site1 = x[1],
+                   site2 = x[2],
+                   FD_gamma = gamma_pair[x[1], x[2]],
+                   FD_alpha = alpha_pair[x[1], x[2]],
+                   FD_beta = beta_pair[x[1], x[2]],
+                   local_dist_overlap = local_simi[x[1], x[2]],
+                   region_dist_overlap = region_simi[x[1], x[2]])
+      })
+      out = na.omit(out)
+    }
+  }
+  out
 }
+
+

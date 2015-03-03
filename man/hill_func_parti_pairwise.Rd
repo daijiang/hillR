@@ -6,7 +6,8 @@
  pairwise comparisons.}
 \usage{
 hill_func_parti_pairwise(comm, traits, traits_as_is = FALSE, q = 0,
-  rel_then_pool = TRUE)
+  rel_then_pool = TRUE, output = c("data.frame", "matrix"),
+  pairs = c("unique", "full"))
 }
 \arguments{
 \item{comm}{data frame of vegtation data. Sites as rows, species as columns.}
@@ -22,6 +23,10 @@ matrix using `FD::gowdis(traits)`. Otherwise, will use as is (i.e. traits is a s
 \item{rel_then_pool}{default is TRUE. Abundance of species are first changed to relative abundance within sites,
 then pooled into one assemblage. If FALSE, sites are pooled first, then change abundance of species
 to relative abundance.}
+
+\item{output}{output type: data.frame (default) or matrix. If matrix, then this function will return a list of matrices.}
+
+\item{pairs}{full or unique (default). Do you want to compare all possible pairs (i.e. n^2) or just unique pairs (i.e. choose(n, 2))?}
 }
 \value{
 a data frame with results for all pairwise comparisons.
@@ -34,6 +39,8 @@ a data frame with results for all pairwise comparisons.
 \examples{
 library(FD); data(dummy)
 hill_func_parti_pairwise(comm = dummy$abun, traits = dummy$trait, q = 0)
+hill_func_parti_pairwise(comm = dummy$abun, traits = dummy$trait, q = 0, output = "matrix")
+hill_func_parti_pairwise(comm = dummy$abun, traits = dummy$trait, q = 0, output = "matrix", pairs = "full")
 hill_func_parti_pairwise(comm = dummy$abun, traits = dummy$trait, q = 1)
 hill_func_parti_pairwise(comm = dummy$abun, traits = dummy$trait, q = 0.9999)
 hill_func_parti_pairwise(comm = dummy$abun, traits = dummy$trait, q = 2)

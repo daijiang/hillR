@@ -5,7 +5,8 @@
  well as site similarity. It is based on \code{\link{hill_taxa_parti}}. If comm has >2 sites, this function will give results for all
  pairwise comparisons.}
 \usage{
-hill_taxa_parti_pairwise(comm, q = 0, rel_then_pool = TRUE)
+hill_taxa_parti_pairwise(comm, q = 0, rel_then_pool = TRUE,
+  output = c("data.frame", "matrix"), pairs = c("unique", "full"))
 }
 \arguments{
 \item{comm}{data frame of vegtation data. Sites as rows, species as columns.}
@@ -15,6 +16,10 @@ hill_taxa_parti_pairwise(comm, q = 0, rel_then_pool = TRUE)
 \item{rel_then_pool}{default is TRUE. Abundance of species are first changed to relative abundance within sites,
 then pooled into one assemblage. If FALSE, sites are pooled first, then change abundance of species
 to relative abundance.}
+
+\item{output}{output type: data.frame (default) or matrix. If matrix, then this function will return a list of matrices.}
+
+\item{pairs}{full or unique (default). Do you want to compare all possible pairs (i.e. n^2) or just unique pairs (i.e. choose(n, 2))?}
 }
 \value{
 a data frame with results for all pairwise comparisons.
@@ -27,6 +32,7 @@ a data frame with results for all pairwise comparisons.
 \examples{
 library(FD); data(dummy)
 hill_taxa_parti_pairwise(comm = dummy$abun, q = 0)
+hill_taxa_parti_pairwise(comm = dummy$abun, q = 0, output = "matrix")
 hill_taxa_parti_pairwise(comm = dummy$abun, q = 1)
 hill_taxa_parti_pairwise(comm = dummy$abun, q = 0.9999999)
 hill_taxa_parti_pairwise(comm = dummy$abun, q = 0.9999999, rel_then_pool = F)
