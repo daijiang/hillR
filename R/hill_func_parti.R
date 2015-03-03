@@ -46,8 +46,6 @@ hill_func_parti = function(comm, traits, traits_as_is = FALSE, q = 0,
   if(any(colSums(comm) == 0)) warning("Some species in comm data were not observed in any site,\n delete them...")
   comm = comm[, colSums(comm) != 0]
   comm = as.matrix(comm)
-  N = nrow(comm)
-  S = ncol(comm)
 
   if(any(!colnames(comm) %in% rownames(traits))){
     warning("\n There are species from community data that are not on traits matrix\nDelete these species from comm data...\n")
@@ -58,6 +56,9 @@ hill_func_parti = function(comm, traits, traits_as_is = FALSE, q = 0,
     warning("\n There are species from trait data that are not on comm matrix\nDelete these species from trait data...\n")
     traits = traits[rownames(traits) %in% colnames(comm), ]
   }
+
+  N = nrow(comm)
+  S = ncol(comm)
 
   if(rel_then_pool){
     comm_gamma = colSums(sweep(comm, 1, rowSums(comm, na.rm = TRUE), "/"))/ N
