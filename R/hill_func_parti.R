@@ -54,7 +54,7 @@ hill_func_parti = function(comm, traits, traits_as_is = FALSE, q = 0,
 
   if(any(!rownames(traits) %in% colnames(comm))){
     warning("\n There are species from trait data that are not on comm matrix\nDelete these species from trait data...\n")
-    traits = traits[rownames(traits) %in% colnames(comm), ]
+    traits = traits[rownames(traits) %in% colnames(comm), colnames(traits) %in% colnames(comm)]
   }
 
   N = nrow(comm)
