@@ -1,4 +1,3 @@
-
 # Pairwise comparisons for all sites.
 #' \code{hill_func_parti_pairwise} to calculate pairwise functional gamma, alpha, and beta diversity for communities, as
 #'  well as site similarity. It is based on \code{\link{hill_func_parti}}. If comm has >2 sites, this function will give results for all
@@ -39,7 +38,7 @@ hill_func_parti_pairwise = function(comm, traits, traits_as_is = FALSE,
   nsite = nrow(comm)
   temp = matrix(1, nsite, nsite)
   dimnames(temp) = list(row.names(comm), row.names(comm))
-  gamma_pair = alpha_pair = beta_pair = local_simi = region_simi = temp
+  gamma_pair = alpha_pair = beta_pair = local_dissimi = region_dissimi = temp
   for(i in 1:nsite){
     for(j in i:nsite){
       o = hill_func_parti(comm = comm[c(i,j), ], traits = traits,
@@ -48,17 +47,17 @@ hill_func_parti_pairwise = function(comm, traits, traits_as_is = FALSE,
       gamma_pair[i,j] = o$FD_gamma; gamma_pair[j,i] = o$FD_gamma
       alpha_pair[i,j] = o$FD_alpha; alpha_pair[j,i] = o$FD_alpha
       beta_pair[i,j] = o$FD_beta; beta_pair[j,i] = o$FD_beta
-      local_simi[i,j] = o$local_dist_overlap; local_simi[j,i] = o$local_dist_overlap
-      region_simi[i,j] = o$region_dist_overlap; region_simi[j,i] = o$region_dist_overlap
+      local_dissimi[i,j] = o$local_dissimilarity; local_dissimi[j,i] = o$local_dissimilarity
+      region_dissimi[i,j] = o$region_dissimilarity; region_dissimi[j,i] = o$region_dissimilarity
     }
   }
-
+  
   if(pairs == "full"){
     if(output == "matrix"){
       out = list(q = q, FD_gamma = gamma_pair, FD_alpha = alpha_pair, FD_beta = beta_pair,
-                 local_dist_overlap = local_simi, region_dist_overlap = region_simi)
+                 local_dissimilarity = local_dissimi, region_dissimilarity = region_dissimi)
     }
-
+    
     if(output == "data.frame"){
       site.comp = as.matrix(expand.grid(row.names(comm), row.names(comm)))
       out = adply(site.comp, 1, function(x){
@@ -67,25 +66,25 @@ hill_func_parti_pairwise = function(comm, traits, traits_as_is = FALSE,
                    FD_gamma = gamma_pair[x[1], x[2]],
                    FD_alpha = alpha_pair[x[1], x[2]],
                    FD_beta = beta_pair[x[1], x[2]],
-                   local_dist_overlap = local_simi[x[1], x[2]],
-                   region_dist_overlap = region_simi[x[1], x[2]])
+                   local_dissimilarity = local_dissimi[x[1], x[2]],
+                   region_dissimilarity = region_dissimi[x[1], x[2]])
       })
     }
     out
   }
-
+  
   if(pairs == "unique"){
     gamma_pair[lower.tri(gamma_pair, diag = TRUE)] = NA
     alpha_pair[lower.tri(alpha_pair, diag = TRUE)] = NA
     beta_pair[lower.tri(beta_pair, diag = TRUE)] = NA
-    local_simi[lower.tri(local_simi, diag = TRUE)] = NA
-    region_simi[lower.tri(region_simi, diag = TRUE)] = NA
-
+    local_dissimi[lower.tri(local_dissimi, diag = TRUE)] = NA
+    region_dissimi[lower.tri(region_dissimi, diag = TRUE)] = NA
+    
     if(output == "matrix"){
       out = list(q = q, FD_gamma = gamma_pair, FD_alpha = alpha_pair, FD_beta = beta_pair,
-                 local_dist_overlap = local_simi, region_dist_overlap = region_simi)
+                 local_dissimilarity = local_dissimi, region_dissimilarity = region_dissimi)
     }
-
+    
     if(output == "data.frame"){
       site.comp = as.matrix(expand.grid(row.names(comm), row.names(comm)))
       out = adply(site.comp, 1, function(x){
@@ -94,13 +93,11 @@ hill_func_parti_pairwise = function(comm, traits, traits_as_is = FALSE,
                    FD_gamma = gamma_pair[x[1], x[2]],
                    FD_alpha = alpha_pair[x[1], x[2]],
                    FD_beta = beta_pair[x[1], x[2]],
-                   local_dist_overlap = local_simi[x[1], x[2]],
-                   region_dist_overlap = region_simi[x[1], x[2]])
+                   local_dissimilarity = local_dissimi[x[1], x[2]],
+                   region_dissimilarity = region_dissimi[x[1], x[2]])
       })
       out = na.omit(out)
     }
   }
   out
 }
-
-
