@@ -1,6 +1,6 @@
 # Decompostion of functional diversity through Hill Numbers
 #' \code{hill_func_parti} to calculate functional gamma, alpha, and beta diversity for communities, as
-#'  well as site similarity.
+#'  well as site DISsimilarity.
 #'
 #' @author Daijiang Li
 #'
