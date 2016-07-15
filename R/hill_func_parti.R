@@ -42,60 +42,108 @@ hill_func_parti = function(comm, traits, traits_as_is = FALSE, q = 0,
       stop("\n Comm data have no col names\n")
     }
   }
-
-  if(any(colSums(comm) == 0)) warning("Some species in comm data were not observed in any site,\n delete them...")
+  
+  if(any(colSums(comm) == 0)) warning("Some species in comm data were not observed in any site,\n 
+                                      delete them...")
   comm = comm[, colSums(comm) != 0]
-  comm = as.matrix(comm)
 
   if(any(!colnames(comm) %in% rownames(traits))){
-    warning("\n There are species from community data that are not on traits matrix\nDelete these species from comm data...\n")
+    warning("\n There are species from community data that are not on traits matrix\n
+            Delete these species from comm data...\n")
     comm = comm[, colnames(comm) %in% rownames(traits)]
   }
-
-  if(any(!rownames(traits) %in% colnames(comm))){
-    warning("\n There are species from trait data that are not on comm matrix\nDelete these species from trait data...\n")
-    traits = traits[rownames(traits) %in% colnames(comm), colnames(traits) %in% colnames(comm)]
+  
+    traits$sp = rownames(traits)
+    # sort species alphbetically
+    traits = filter(traits, traits$sp %in% colnames(comm)) %>% arrange(sp)
+    rownames(traits) = traits$sp
+    traits$sp = NULL
+  
+  if(traits_as_is){
+    if(any(!rownames(traits) %in% colnames(comm))){
+      warning("\n There are species from trait data that are not in comm matrix\n
+              Delete these species from trait data...\n")
+      traits = traits[rownames(traits) %in% colnames(comm), colnames(traits) %in% colnames(comm)]
+    }
+    dij = as.matrix(traits)
+  } else {# traits is not a distance matrix
+    if(ncol(traits) == 1){ # only 1 trait
+      if (any(is.na(traits))){
+        warning("Warning: Species with missing trait values have been excluded.","\n")
+        traits = na.omit(traits)
+        comm = comm[, colnames(comm) %in% rownames(traits)]
+      }
+      if(is.numeric(traits[, 1])){ # 1 numeric trait
+        dij = dist(traits)
+      }
+      if (is.factor(traits[, 1]) | is.character(traits[, 1])){ # 1 categorical trait
+        if (is.ordered(traits[,1])) {
+          traits2 <- data.frame(rank(traits[, 1]))
+          rownames(traits2) = rownames(traits)
+          names(traits2) = names(traits)
+          dij = dist(traits2)
+        } else {
+          traits[, 1] <- as.factor(traits[, 1])
+          x.f <- as.factor(traits[, 1])
+          x.dummy <- diag(nlevels(x.f) )[x.f, ]
+          x.dummy.df <- data.frame(x.dummy, row.names = rownames(traits))
+          dij <- ade4::dist.binary(x.dummy.df, method = 2)
+        }
+      }
+    } else {
+      # more than 1 trait:
+      for(i in 1: ncol(traits)){
+        if(is.factor(traits[, i]) & nlevels(traits[, i]) == 2){
+          traits[,i] = as.numeric(traits[,i]) - 1 # so to be 0, 1
+        }
+      } 
+      dij = gowdis(x=traits, asym.bin = NULL, ord = "podani")
+      # dij = gowdis(x=traits, ...)
+    }
   }
-
+  
+    comm = as.matrix(comm)
   N = nrow(comm)
   S = ncol(comm)
-
+  
+  dij = as.matrix(dij)
+  dij = dij/max(dij)
+  
   if(rel_then_pool){
     comm_gamma = colSums(sweep(comm, 1, rowSums(comm, na.rm = TRUE), "/"))/ N
     # relative abun
   } else {
     comm_gamma = colSums(comm)/sum(comm)
   }
-
+  
   if(!all.equal(sum(comm_gamma), 1)) stop("Accumlative relative abundance should be 1")
-
+  
   if(rel_then_pool){
     comm_alpha = sweep(comm, 1, rowSums(comm, na.rm = TRUE), "/") # relative abun
   } else {
     comm_alpha = comm
   }
-
-  if(traits_as_is){
-    dij = as.matrix(traits)
-  } else {
-    dij = as.matrix(gowdis(x=traits, ...))
-  }
-
+  
   Q_gamma = as.vector(comm_gamma %*% dij %*% matrix(comm_gamma, ncol = 1))
-
+  
   ## FD_q_gamma
   if(q == 1){
+    if(Q_gamma == 0){FD_q_gamma = 0} else{
     FD_q_gamma = exp(-1 * sum(dij *
                                 (outer(comm_gamma, comm_gamma, FUN = "*")/Q_gamma) *
                                 log(outer(comm_gamma, comm_gamma, FUN = "*")/Q_gamma)))
+    }
     # Chiu & Chao 2014 p.7, equ 6b
   } else{ #q != 0 or 1
+    if(Q_gamma == 0){FD_q_gamma = 0} else{
     FD_q_gamma = sum(dij *
                        ((outer(comm_gamma, comm_gamma, FUN = "*")/Q_gamma)^q))^(1/(1-q))
+    }
     # Chiu & Chao 2014 p.7, equ 6a
   }
-
+  
   ## FD_q_alpha
+  if(Q_gamma == 0){FD_q_alpha = 0.00001} else{ # if q_gamma is 0, no need to calc alpha
   if(q == 1){
     x = (outer(comm_alpha, comm_alpha, FUN = "*"))/(Q_gamma * (sum(comm_alpha)^2))
     x[x==0] = NA
@@ -130,29 +178,29 @@ hill_func_parti = function(comm, traits, traits_as_is = FALSE, q = 0,
       }
       FD_q_alpha = (1/N^2) * (sum(x, na.rm = T)^(1/(1-q)))
       # Chiu & Chao 2014 p.8, equ 7a
-    }}
-
+    }}}
+  
   FD_q_beta = FD_q_gamma / FD_q_alpha
-
+  
   if(q == 1){
     local_dist_overlap = 1 - ((log(FD_q_gamma) - log(FD_q_alpha))/(2*log(N)))
   } else {
     local_dist_overlap = (N^(2*(1-q)) - FD_q_beta^(1-q))/
       (N^(2*(1-q)) - 1)
   }
-
+  
   if(q == 1){
     region_dist_overlap = 1 - ((log(FD_q_gamma) - log(FD_q_alpha))/(2*log(N)))
   } else {
     region_dist_overlap = ((1/FD_q_beta)^(1-q) - (1/N)^(2*(1-q)))/
       (1 - (1/N)^(2*(1-q)))
   }
-
+  
   return(data.frame(q = q,
                     raoQ_gamma = Q_gamma,
                     FD_gamma = FD_q_gamma,
                     FD_alpha = FD_q_alpha,
                     FD_beta = FD_q_beta,
-                    local_dist_overlap = local_dist_overlap,
-                    region_dist_overlap = region_dist_overlap))
+                    local_dissimilarity = 1 - local_dist_overlap,
+                    region_dissimilarity = 1 - region_dist_overlap))
 }
