@@ -1,8 +1,8 @@
 Package: hillR
 Type: Package
 Title: Diversity through Hill Numbers
-Version: 0.1
-Date: 2015-03-01
+Version: 0.2
+Date: 2016-07-14
 Author: Daijiang Li
 Maintainer: Daijiang Li <daijianglee@gmail.com>
 Description: This package contains R functions to calculate taxonomic,
