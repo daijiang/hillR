@@ -13,3 +13,4 @@ LazyData: TRUE
 Depends:
     FD,
     plyr
+RoxygenNote: 5.0.1
