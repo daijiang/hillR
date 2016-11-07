@@ -24,3 +24,7 @@ update: I just compared results with [vegetarian](http://cran.r-project.org/web/
 ## Licenses
 
 Licensed under the [MIT license](LICENSE). ([More information here](http://en.wikipedia.org/wiki/MIT_License).)
+
+
+## Note:
+You need `library(dplyr)` to make these functions work. I need to put it as a dependency package later.
