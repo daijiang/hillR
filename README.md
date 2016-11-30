@@ -25,6 +25,12 @@ update: I just compared results with [vegetarian](http://cran.r-project.org/web/
 
 Licensed under the [MIT license](LICENSE). ([More information here](http://en.wikipedia.org/wiki/MIT_License).)
 
+## Citation
+
+Please cite this package if you use it.
+
+Daijiang Li. hillR: taxonomic, functional, and phylogenetic diversity and similarity through Hill Numbers. R package.
+
 
 ## Note:
 You need `library(dplyr)` to make these functions work. I need to put it as a dependency package later.
