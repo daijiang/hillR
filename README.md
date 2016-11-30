@@ -29,7 +29,7 @@ Licensed under the [MIT license](LICENSE). ([More information here](http://en.wi
 
 Please cite this package if you use it.
 
-Daijiang Li. hillR: taxonomic, functional, and phylogenetic diversity and similarity through Hill Numbers. R package.
+Daijiang Li. hillR: taxonomic, functional, and phylogenetic diversity and similarity through Hill Numbers. R package version 0.1.
 
 
 ## Note:
