@@ -1,18 +1,20 @@
-# Functional diversity through Hill Numbers
-#' \code{hill_func} to calculate functional diversity for each site.
+#' Functional diversity through Hill Numbers
+#'
+#' Calculate functional diversity for each site.
 #'
 #' @author Daijiang Li
 #'
 #' @param comm data frame of vegtation data. Sites as rows, species as columns.
 #' @param traits data frame of species functional traits data. Species as rows, traits as columns.
 #' It can include both continuous and categorical data. It will be transformed into a distance
-#' matrix using `FD::gowdis(traits)`.
-#' @param traits_as_is if FALSE (default) traits data frame will be transformed into a distance
+#' matrix using `FD::gowdis(traits)`. If all traits are numeric, then it will use Euclidean distance.
+#' @param traits_as_is if FALSE (default) traits data frame will be transformed into a distance matrix
 #' @param q hill number, q (default is 0) to control weights of species abundance.
 #' @param base default is exp(1), the base of log.
 #' @param checkdata default is TRUE.
-#' @param div_by_sp as FD calculated in this way will be highly correlated with taxonomic diversity, one simple way to correct
-#' this is to divide the results by the number of species. Default is FALSE.
+#' @param div_by_sp as FD calculated in this way will be highly correlated with taxonomic diversity,
+#' one simple way to correct this is to divide the results by the number of species. Default is FALSE.
+#' @param ord ord in gowdis.
 #' @param fdis whether to calculated FDis, default is TRUE.
 #' @export
 #' @return a matrix, with these information for each site: Q (Rao's Q); D_q (functional hill number,
@@ -33,7 +35,7 @@
 hill_func = function(comm, traits, traits_as_is = FALSE, q = 0,
                      base = exp(1), checkdata=TRUE, div_by_sp = FALSE,
                      # corr = c("cailliez", "sqrt", "lingoes", "none"),
-                     fdis = TRUE, ...){
+                     ord = c("podani", "metric"), fdis = TRUE, ...){
   if (checkdata) {
     if (any(comm < 0))
       stop("Negative value in comm data")
@@ -44,28 +46,28 @@ hill_func = function(comm, traits, traits_as_is = FALSE, q = 0,
       stop("\n Comm data have no col names\n")
     }
   }
-  
+
   if(any(!colnames(comm) %in% rownames(traits))){
     warning("\n There are species from community data that are not on traits matrix\nDelete these species from comm data...\n")
     comm = comm[, colnames(comm) %in% rownames(traits)]
   }
-  
-   traits$sp = rownames(traits)
-    traits = filter(traits, traits$sp %in% colnames(comm)) %>% 
-      arrange(sp)
-    rownames(traits) = traits$sp
-    traits$sp = NULL
+
+  traits = as.data.frame(traits)
+  traits$sp = rownames(traits)
+  traits = plyr::arrange(traits[traits$sp %in% colnames(comm), ], sp)
+  rownames(traits) = traits$sp
+  traits$sp = NULL
 
   # all(rownames(traits) == names(comm))
-  
+
   if(traits_as_is){ # traits is already a distance matrix
     dij = as.matrix(traits)
   } else { # traits is not a distance matrix
     if(ncol(traits) == 1){ # only 1 trait
       if (any(is.na(traits))){
-          warning("Warning: Species with missing trait values have been excluded.","\n")
-          traits = na.omit(traits)
-          comm = comm[, colnames(comm) %in% rownames(traits)]
+        warning("Warning: Species with missing trait values have been excluded.","\n")
+        traits = na.omit(traits)
+        comm = comm[, colnames(comm) %in% rownames(traits)]
       }
       if(is.numeric(traits[, 1])){ # 1 numeric trait
         dij = dist(traits)
@@ -85,47 +87,52 @@ hill_func = function(comm, traits, traits_as_is = FALSE, q = 0,
         }
       }
     } else {
-  # more than 1 trait:
-    for(i in 1: ncol(traits)){
-      if(is.factor(traits[, i]) & nlevels(traits[, i]) == 2){
-        traits[,i] = as.numeric(traits[,i]) - 1 # so to be 0, 1
+      # more than 1 trait:
+      for(i in 1: ncol(traits)){
+        if(is.factor(traits[, i]) & nlevels(traits[, i]) == 2){
+          traits[,i] = as.numeric(traits[,i]) - 1 # so to be 0, 1
+        }
       }
-    } 
-      dij = gowdis(x=traits, asym.bin = NULL, ord = "podani")
-    # dij = gowdis(x=traits, ...)
+      if(all(sapply(traits, is.numeric)) & all(!is.na(traits))){
+        dij = dist(apply(traits, 2, scale, center = TRUE, scale = TRUE))
+      } else {
+        ord = match.arg(ord)
+        dij = FD::gowdis(x = traits, asym.bin = NULL, ord = ord)
+      }
+      # dij = gowdis(x=traits, ...)
     }
-    
+
     if(fdis){
       # calculate fdis
-      FDis = FD::fdisp(d = dij, a = as.matrix(comm))$FDis  
+      FDis = FD::fdisp(d = dij, a = as.matrix(comm))$FDis
     }
-    
-#     if (!is.euclid(dij))
-#     {
-#       if (corr == "lingoes")
-#       {
-#         dij2 <- lingoes(dij)
-#         warning("Species x species distance matrix was not Euclidean. Lingoes correction was applied.","\n")
-#       }
-#       if (corr == "cailliez")
-#       {
-#         dij2 <- cailliez(dij)
-#         warning("Species x species distance matrix was not Euclidean. Cailliez correction was applied.","\n")
-#       }
-#       if (corr == "sqrt")
-#       {
-#         dij2 <- sqrt(dij)
-#         # check if sqrt correction actually worked
-#         if(!is.euclid(dij2) ) stop("Species x species distance matrix was still is not Euclidean after 'sqrt' correction. Use another correction method.","\n")
-#         if (is.euclid(dij2) ) warning("Species x species distance matrix was not Euclidean. 'sqrt' correction was applied.","\n")
-#       }
-#       if (corr == "none")
-#       {
-#         dij2 <- quasieuclid(dij)
-#         warning("Species x species distance was not Euclidean, but no correction was applied. Only the PCoA axes with positive eigenvalues were kept.","\n")
-#       }
-#       dij = dij2
-#     }
+
+    #     if (!is.euclid(dij))
+    #     {
+    #       if (corr == "lingoes")
+    #       {
+    #         dij2 <- lingoes(dij)
+    #         warning("Species x species distance matrix was not Euclidean. Lingoes correction was applied.","\n")
+    #       }
+    #       if (corr == "cailliez")
+    #       {
+    #         dij2 <- cailliez(dij)
+    #         warning("Species x species distance matrix was not Euclidean. Cailliez correction was applied.","\n")
+    #       }
+    #       if (corr == "sqrt")
+    #       {
+    #         dij2 <- sqrt(dij)
+    #         # check if sqrt correction actually worked
+    #         if(!is.euclid(dij2) ) stop("Species x species distance matrix was still is not Euclidean after 'sqrt' correction. Use another correction method.","\n")
+    #         if (is.euclid(dij2) ) warning("Species x species distance matrix was not Euclidean. 'sqrt' correction was applied.","\n")
+    #       }
+    #       if (corr == "none")
+    #       {
+    #         dij2 <- quasieuclid(dij)
+    #         warning("Species x species distance was not Euclidean, but no correction was applied. Only the PCoA axes with positive eigenvalues were kept.","\n")
+    #       }
+    #       dij = dij2
+    #     }
   }
 
   comm = as.matrix(comm)
@@ -133,10 +140,10 @@ hill_func = function(comm, traits, traits_as_is = FALSE, q = 0,
   S = ncol(comm)
   SR = rowSums(comm > 0) # species richness of each site
   comm = sweep(comm, 1, rowSums(comm, na.rm = TRUE), "/") # relative abun
-  
+
   dij = as.matrix(dij)
   dij = dij/max(dij)
-  
+
   #   inter = comm %*% dij # \sum_i,j_S(p_i * dij)
   #   Q = rowSums(sweep(comm,1,inter,"*", check.margin = F))/2 # \sum_j_S\sum_i,j_S(p_i * dij)
   Q = vector("numeric", length = N)
@@ -145,13 +152,13 @@ hill_func = function(comm, traits, traits_as_is = FALSE, q = 0,
     Q[k] = (comm[k,]) %*% dij %*% matrix(comm[k,], ncol = 1) # /2
     # Q[k] = sum(dij * outer(comm[k,], comm[k,], "*"))/2
   }
-  
+
   ## D_q
   FD_q = MD_q = D_q = vector("numeric", length = N)
   names(D_q) = dimnames(comm)[[1]]
   names(MD_q) = dimnames(comm)[[1]]
   names(FD_q) = dimnames(comm)[[1]]
-  
+
   if(q == 0){
     for(k in 1:N){
       df2 = comm[k,][comm[k,] > 0]
@@ -159,7 +166,7 @@ hill_func = function(comm, traits, traits_as_is = FALSE, q = 0,
       if(Q[k] == 0){
         D_q[k] = 0
       } else{
-      D_q[k] = sum(dis2/Q[k])^0.5
+        D_q[k] = sum(dis2/Q[k])^0.5
       }
       MD_q[k] = D_q[k] * Q[k]
       FD_q[k] = (D_q[k])^2 * Q[k]
@@ -195,7 +202,7 @@ hill_func = function(comm, traits, traits_as_is = FALSE, q = 0,
       }
     }
   }
-  
+
   if(fdis){
     if(div_by_sp == TRUE) {
       return(rbind(Q, FDis, D_q/SR, MD_q/SR, FD_q/choose(SR, 2)))
@@ -203,9 +210,9 @@ hill_func = function(comm, traits, traits_as_is = FALSE, q = 0,
       return(rbind(Q, FDis, D_q, MD_q, FD_q))
     }
   } else{
-  if(div_by_sp == TRUE) {
-    return(rbind(Q, D_q/SR, MD_q/SR, FD_q/choose(SR, 2)))
-  } else{
-    return(rbind(Q, D_q, MD_q, FD_q))
-  }}
+    if(div_by_sp == TRUE) {
+      return(rbind(Q, D_q/SR, MD_q/SR, FD_q/choose(SR, 2)))
+    } else{
+      return(rbind(Q, D_q, MD_q, FD_q))
+    }}
 }

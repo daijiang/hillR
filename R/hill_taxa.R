@@ -4,7 +4,8 @@
 #' @author Daijiang Li
 #'
 #' @param comm data frame of vegtation data. Sites as rows, species as columns.
-#' @param q hill number, q = 0 (default) to get species richness, q = 1 to get shannon entropy, q = 2 will give inverse Simpson.
+#' @param q hill number, q = 0 (default) to get species richness,
+#' q = 1 to get shannon entropy, q = 2 will give inverse Simpson.
 #' @param MARGIN default is 1, if sites are columns, set MARGIN to 2.
 #' @param base default is exp(1), the base of log.
 #' @export

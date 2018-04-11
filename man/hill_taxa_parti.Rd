@@ -2,10 +2,7 @@
 % Please edit documentation in R/hill_taxa_parti.R
 \name{hill_taxa_parti}
 \alias{hill_taxa_parti}
-\title{\code{hill_taxa_parti} to calculate taxonomic gamma, alpha, and beta diversity for communities, as
- well as site similarity. If comm has 2 sites, this function gives pair comparison.
- If comm has >2 sites, gamma diversity is the diversity of the pooled assemblage while
- alpha is the average diversity per site.}
+\title{Decompostion of Taxonomic diversity through Hill Numbers}
 \usage{
 hill_taxa_parti(comm, q = 0, base = exp(1), rel_then_pool = TRUE)
 }
@@ -22,14 +19,14 @@ to relative abundance.}
 }
 \value{
 a data frame with one row, including these columns: q, gamma diversity, alpha diveristy,
-beta diversity, MacArthur's homogeneity measure, local species overlap, and region species overlap. See Chao, Chiu and Jost 2014 Table 2
-for more information.
+beta diversity, MacArthur's homogeneity measure, local species overlap, and region species overlap.
+See Chao, Chiu and Jost 2014 Table 2 for more information.
 }
 \description{
-\code{hill_taxa_parti} to calculate taxonomic gamma, alpha, and beta diversity for communities, as
- well as site similarity. If comm has 2 sites, this function gives pair comparison.
- If comm has >2 sites, gamma diversity is the diversity of the pooled assemblage while
- alpha is the average diversity per site.
+Calculate taxonomic gamma, alpha, and beta diversity for communities, as
+well as site similarity. If comm has 2 sites, this function gives pair comparison.
+If comm has >2 sites, gamma diversity is the diversity of the pooled assemblage while
+alpha is the average diversity across all site.
 }
 \examples{
 library(FD); data(dummy)
@@ -43,10 +40,9 @@ hill_taxa_parti(comm = dummy$abun, q = 3)
 
 
 }
-\author{
-Daijiang Li
-}
 \seealso{
 \code{\link{hill_taxa_parti}}
 }
-
+\author{
+Daijiang Li
+}

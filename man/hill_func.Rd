@@ -2,19 +2,20 @@
 % Please edit documentation in R/hill_func.R
 \name{hill_func}
 \alias{hill_func}
-\title{\code{hill_func} to calculate functional diversity for each site.}
+\title{Functional diversity through Hill Numbers}
 \usage{
 hill_func(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1),
-  checkdata = TRUE, div_by_sp = FALSE, fdis = TRUE, ...)
+  checkdata = TRUE, div_by_sp = FALSE, ord = c("podani", "metric"),
+  fdis = TRUE, ...)
 }
 \arguments{
 \item{comm}{data frame of vegtation data. Sites as rows, species as columns.}
 
 \item{traits}{data frame of species functional traits data. Species as rows, traits as columns.
 It can include both continuous and categorical data. It will be transformed into a distance
-matrix using `FD::gowdis(traits)`.}
+matrix using `FD::gowdis(traits)`. If all traits are numeric, then it will use Euclidean distance.}
 
-\item{traits_as_is}{if FALSE (default) traits data frame will be transformed into a distance}
+\item{traits_as_is}{if FALSE (default) traits data frame will be transformed into a distance matrix}
 
 \item{q}{hill number, q (default is 0) to control weights of species abundance.}
 
@@ -22,8 +23,10 @@ matrix using `FD::gowdis(traits)`.}
 
 \item{checkdata}{default is TRUE.}
 
-\item{div_by_sp}{as FD calculated in this way will be highly correlated with taxonomic diversity, one simple way to correct
-this is to divide the results by the number of species. Default is FALSE.}
+\item{div_by_sp}{as FD calculated in this way will be highly correlated with taxonomic diversity,
+one simple way to correct this is to divide the results by the number of species. Default is FALSE.}
+
+\item{ord}{ord in gowdis.}
 
 \item{fdis}{whether to calculated FDis, default is TRUE.}
 }
@@ -35,7 +38,7 @@ a matrix, with these information for each site: Q (Rao's Q); D_q (functional hil
  distance between species of the assemblage). See Chiu and Chao 2014 page 4 for more information.
 }
 \description{
-\code{hill_func} to calculate functional diversity for each site.
+Calculate functional diversity for each site.
 }
 \examples{
 library(FD); data(dummy)
@@ -50,4 +53,3 @@ hill_func(comm = dummy$abun, traits = dummy$trait, q = 3)
 \author{
 Daijiang Li
 }
-

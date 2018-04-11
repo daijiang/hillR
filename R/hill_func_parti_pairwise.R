@@ -1,7 +1,8 @@
-# Pairwise comparisons for all sites.
-#' \code{hill_func_parti_pairwise} to calculate pairwise functional gamma, alpha, and beta diversity for communities, as
-#'  well as site DISsimilarity. It is based on \code{\link{hill_func_parti}}. If comm has >2 sites, this function will give results for all
-#'  pairwise comparisons.
+#' Pairwise comparisons for all sites.
+#'
+#' Calculate pairwise functional gamma, alpha, and beta diversity for communities, as
+#'  well as site DISsimilarity. It is based on \code{\link{hill_func_parti}}.
+#'  If comm has >2 sites, this function will give results for all pairwise comparisons.
 #'
 #' @author Daijiang Li
 #'
@@ -33,8 +34,9 @@
 hill_func_parti_pairwise = function(comm, traits, traits_as_is = FALSE,
                                     q = 0, rel_then_pool = TRUE,
                                     output = c("data.frame", "matrix"),
-                                    pairs = c( "unique", "full")){
+                                    pairs = c( "unique", "full"), ...){
   output <- match.arg(output)
+  pairs <- match.arg(pairs)
   nsite = nrow(comm)
   temp = matrix(1, nsite, nsite)
   dimnames(temp) = list(row.names(comm), row.names(comm))
@@ -43,7 +45,7 @@ hill_func_parti_pairwise = function(comm, traits, traits_as_is = FALSE,
     for(j in i:nsite){
       o = hill_func_parti(comm = comm[c(i,j), ], traits = traits,
                           traits_as_is = traits_as_is, q = q,
-                          rel_then_pool = rel_then_pool)
+                          rel_then_pool = rel_then_pool, ...)
       gamma_pair[i,j] = o$FD_gamma; gamma_pair[j,i] = o$FD_gamma
       alpha_pair[i,j] = o$FD_alpha; alpha_pair[j,i] = o$FD_alpha
       beta_pair[i,j] = o$FD_beta; beta_pair[j,i] = o$FD_beta
@@ -51,16 +53,16 @@ hill_func_parti_pairwise = function(comm, traits, traits_as_is = FALSE,
       region_dissimi[i,j] = o$region_dissimilarity; region_dissimi[j,i] = o$region_dissimilarity
     }
   }
-  
+
   if(pairs == "full"){
     if(output == "matrix"){
       out = list(q = q, FD_gamma = gamma_pair, FD_alpha = alpha_pair, FD_beta = beta_pair,
                  local_dissimilarity = local_dissimi, region_dissimilarity = region_dissimi)
     }
-    
+
     if(output == "data.frame"){
       site.comp = as.matrix(expand.grid(row.names(comm), row.names(comm)))
-      out = adply(site.comp, 1, function(x){
+      out = plyr::adply(site.comp, 1, function(x){
         data.frame(q = q, site1 = x[1],
                    site2 = x[2],
                    FD_gamma = gamma_pair[x[1], x[2]],
@@ -68,26 +70,26 @@ hill_func_parti_pairwise = function(comm, traits, traits_as_is = FALSE,
                    FD_beta = beta_pair[x[1], x[2]],
                    local_dissimilarity = local_dissimi[x[1], x[2]],
                    region_dissimilarity = region_dissimi[x[1], x[2]])
-      })
+      })[, -1]
     }
     out
   }
-  
+
   if(pairs == "unique"){
     gamma_pair[lower.tri(gamma_pair, diag = TRUE)] = NA
     alpha_pair[lower.tri(alpha_pair, diag = TRUE)] = NA
     beta_pair[lower.tri(beta_pair, diag = TRUE)] = NA
     local_dissimi[lower.tri(local_dissimi, diag = TRUE)] = NA
     region_dissimi[lower.tri(region_dissimi, diag = TRUE)] = NA
-    
+
     if(output == "matrix"){
       out = list(q = q, FD_gamma = gamma_pair, FD_alpha = alpha_pair, FD_beta = beta_pair,
                  local_dissimilarity = local_dissimi, region_dissimilarity = region_dissimi)
     }
-    
+
     if(output == "data.frame"){
       site.comp = as.matrix(expand.grid(row.names(comm), row.names(comm)))
-      out = adply(site.comp, 1, function(x){
+      out = plyr::adply(site.comp, 1, function(x){
         data.frame(q = q, site1 = x[1],
                    site2 = x[2],
                    FD_gamma = gamma_pair[x[1], x[2]],
@@ -96,7 +98,8 @@ hill_func_parti_pairwise = function(comm, traits, traits_as_is = FALSE,
                    local_dissimilarity = local_dissimi[x[1], x[2]],
                    region_dissimilarity = region_dissimi[x[1], x[2]])
       })
-      out = na.omit(out)
+      out = na.omit(out)[, -1]
+      row.names(out) = NULL
     }
   }
   out

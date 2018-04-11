@@ -9,7 +9,8 @@ hill_taxa(comm, q = 0, MARGIN = 1, base = exp(1))
 \arguments{
 \item{comm}{data frame of vegtation data. Sites as rows, species as columns.}
 
-\item{q}{hill number, q = 0 (default) to get species richness, q = 1 to get shannon entropy, q = 2 will give inverse Simpson.}
+\item{q}{hill number, q = 0 (default) to get species richness,
+q = 1 to get shannon entropy, q = 2 will give inverse Simpson.}
 
 \item{MARGIN}{default is 1, if sites are columns, set MARGIN to 2.}
 
@@ -36,4 +37,3 @@ hill_taxa(comm = dummy$abun, q = 0.999)
 \author{
 Daijiang Li
 }
-

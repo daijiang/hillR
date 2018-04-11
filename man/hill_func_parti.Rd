@@ -2,11 +2,11 @@
 % Please edit documentation in R/hill_func_parti.R
 \name{hill_func_parti}
 \alias{hill_func_parti}
-\title{\code{hill_func_parti} to calculate functional gamma, alpha, and beta diversity for communities, as
- well as site DISsimilarity.}
+\title{Decompostion of functional diversity through Hill Numbers}
 \usage{
 hill_func_parti(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1),
-  checkdata = TRUE, rel_then_pool = TRUE, ...)
+  checkdata = TRUE, rel_then_pool = TRUE, ord = c("podani", "metric"),
+  ...)
 }
 \arguments{
 \item{comm}{data frame of vegtation data. Sites as rows, species as columns.}
@@ -24,6 +24,8 @@ matrix using `FD::gowdis(traits)`. Otherwise, will use as is (i.e. traits is a s
 \item{rel_then_pool}{default is TRUE. Abundance of species are first changed to relative abundance within sites,
 then pooled into one assemblage. If FALSE, sites are pooled first, then change abundance of species
 to relative abundance.}
+
+\item{ord}{ord in gowdis.}
 }
 \value{
 a data frame with one row, including these columns: q, RaoQ of pooled assemblage,
@@ -31,7 +33,7 @@ gamma diversity, alpha diveristy, beta diversity, local species overlap, and reg
 overlap. See Chiu and Chao 2014 Table 3 for more information.
 }
 \description{
-\code{hill_func_parti} to calculate functional gamma, alpha, and beta diversity for communities, as
+Calculate functional gamma, alpha, and beta diversity for communities, as
  well as site DISsimilarity.
 }
 \examples{
@@ -44,10 +46,9 @@ hill_func_parti(comm = dummy$abun, traits = dummy$trait, q = 3)
 
 
 }
-\author{
-Daijiang Li
-}
 \seealso{
 \code{\link{hill_taxa_parti}}, \code{\link{hill_func}}
 }
-
+\author{
+Daijiang Li
+}

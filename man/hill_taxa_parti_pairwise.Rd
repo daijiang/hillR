@@ -2,9 +2,7 @@
 % Please edit documentation in R/hill_taxa_parti_pairwise.R
 \name{hill_taxa_parti_pairwise}
 \alias{hill_taxa_parti_pairwise}
-\title{\code{hill_taxa_parti_pairwise} to calculate pairwise taxonomic gamma, alpha, and beta diversity for communities, as
- well as site similarity. It is based on \code{\link{hill_taxa_parti}}. If comm has >2 sites, this function will give results for all
- pairwise comparisons.}
+\title{Pairwise comparisons for all sites}
 \usage{
 hill_taxa_parti_pairwise(comm, q = 0, rel_then_pool = TRUE,
   output = c("data.frame", "matrix"), pairs = c("unique", "full"))
@@ -12,7 +10,8 @@ hill_taxa_parti_pairwise(comm, q = 0, rel_then_pool = TRUE,
 \arguments{
 \item{comm}{data frame of vegtation data. Sites as rows, species as columns.}
 
-\item{q}{hill number, q = 0 (default) to get species richness, q = 1 to get shannon entropy, q = 2 will give inverse Simpson.}
+\item{q}{hill number, q = 0 (default) to get species richness,
+q = 1 to get shannon entropy, q = 2 will give inverse Simpson.}
 
 \item{rel_then_pool}{default is TRUE. Abundance of species are first changed to relative abundance within sites,
 then pooled into one assemblage. If FALSE, sites are pooled first, then change abundance of species
@@ -26,9 +25,9 @@ to relative abundance.}
 a data frame with results for all pairwise comparisons.
 }
 \description{
-\code{hill_taxa_parti_pairwise} to calculate pairwise taxonomic gamma, alpha, and beta diversity for communities, as
- well as site similarity. It is based on \code{\link{hill_taxa_parti}}. If comm has >2 sites, this function will give results for all
- pairwise comparisons.
+Calculate pairwise taxonomic gamma, alpha, and beta diversity for communities, as
+well as site similarity. It is based on \code{\link{hill_taxa_parti}}.
+If comm has >2 sites, this function will give results for all pairwise comparisons.
 }
 \examples{
 library(FD); data(dummy)
@@ -43,10 +42,9 @@ hill_taxa_parti_pairwise(comm = dummy$abun, q = 3)
 
 
 }
-\author{
-Daijiang Li
-}
 \seealso{
 \code{\link{hill_taxa_parti}}
 }
-
+\author{
+Daijiang Li
+}

@@ -1,5 +1,6 @@
-# Decompostion of functional diversity through Hill Numbers
-#' \code{hill_func_parti} to calculate functional gamma, alpha, and beta diversity for communities, as
+#' Decompostion of functional diversity through Hill Numbers
+#'
+#' Calculate functional gamma, alpha, and beta diversity for communities, as
 #'  well as site DISsimilarity.
 #'
 #' @author Daijiang Li
@@ -14,6 +15,7 @@
 #' @param rel_then_pool default is TRUE. Abundance of species are first changed to relative abundance within sites,
 #'  then pooled into one assemblage. If FALSE, sites are pooled first, then change abundance of species
 #'  to relative abundance.
+#' @param ord ord in gowdis.
 #' @export
 #' @return  a data frame with one row, including these columns: q, RaoQ of pooled assemblage,
 #' gamma diversity, alpha diveristy, beta diversity, local species overlap, and region species
@@ -31,7 +33,8 @@
 #'
 hill_func_parti = function(comm, traits, traits_as_is = FALSE, q = 0,
                            base = exp(1), checkdata=TRUE,
-                           rel_then_pool = TRUE, ...){
+                           rel_then_pool = TRUE, ord = c("podani", "metric"),
+                           ...){
   if (checkdata) {
     if (any(comm < 0))
       stop("Negative value in comm data")
@@ -42,8 +45,8 @@ hill_func_parti = function(comm, traits, traits_as_is = FALSE, q = 0,
       stop("\n Comm data have no col names\n")
     }
   }
-  
-  if(any(colSums(comm) == 0)) warning("Some species in comm data were not observed in any site,\n 
+
+  if(any(colSums(comm) == 0)) warning("Some species in comm data were not observed in any site,\n
                                       delete them...")
   comm = comm[, colSums(comm) != 0]
 
@@ -52,13 +55,13 @@ hill_func_parti = function(comm, traits, traits_as_is = FALSE, q = 0,
             Delete these species from comm data...\n")
     comm = comm[, colnames(comm) %in% rownames(traits)]
   }
-  
+
     traits$sp = rownames(traits)
     # sort species alphbetically
-    traits = filter(traits, traits$sp %in% colnames(comm)) %>% arrange(sp)
+    traits = plyr::arrange(traits[traits$sp %in% colnames(comm),], sp)
     rownames(traits) = traits$sp
     traits$sp = NULL
-  
+
   if(traits_as_is){
     if(any(!rownames(traits) %in% colnames(comm))){
       warning("\n There are species from trait data that are not in comm matrix\n
@@ -96,36 +99,41 @@ hill_func_parti = function(comm, traits, traits_as_is = FALSE, q = 0,
         if(is.factor(traits[, i]) & nlevels(traits[, i]) == 2){
           traits[,i] = as.numeric(traits[,i]) - 1 # so to be 0, 1
         }
-      } 
-      dij = gowdis(x=traits, asym.bin = NULL, ord = "podani")
+      }
+      if(all(sapply(traits, is.numeric)) & all(!is.na(traits))){
+        dij = dist(apply(traits, 2, scale, center = TRUE, scale = TRUE))
+      } else {
+        ord = match.arg(ord)
+        dij = FD::gowdis(x = traits, asym.bin = NULL, ord = ord)
+      }
       # dij = gowdis(x=traits, ...)
     }
   }
-  
+
     comm = as.matrix(comm)
   N = nrow(comm)
   S = ncol(comm)
-  
+
   dij = as.matrix(dij)
   dij = dij/max(dij)
-  
+
   if(rel_then_pool){
     comm_gamma = colSums(sweep(comm, 1, rowSums(comm, na.rm = TRUE), "/"))/ N
     # relative abun
   } else {
     comm_gamma = colSums(comm)/sum(comm)
   }
-  
+
   if(!all.equal(sum(comm_gamma), 1)) stop("Accumlative relative abundance should be 1")
-  
+
   if(rel_then_pool){
     comm_alpha = sweep(comm, 1, rowSums(comm, na.rm = TRUE), "/") # relative abun
   } else {
     comm_alpha = comm
   }
-  
+
   Q_gamma = as.vector(comm_gamma %*% dij %*% matrix(comm_gamma, ncol = 1))
-  
+
   ## FD_q_gamma
   if(q == 1){
     if(Q_gamma == 0){FD_q_gamma = 0} else{
@@ -141,7 +149,7 @@ hill_func_parti = function(comm, traits, traits_as_is = FALSE, q = 0,
     }
     # Chiu & Chao 2014 p.7, equ 6a
   }
-  
+
   ## FD_q_alpha
   if(Q_gamma == 0){FD_q_alpha = 0.00001} else{ # if q_gamma is 0, no need to calc alpha
   if(q == 1){
@@ -179,23 +187,23 @@ hill_func_parti = function(comm, traits, traits_as_is = FALSE, q = 0,
       FD_q_alpha = (1/N^2) * (sum(x, na.rm = T)^(1/(1-q)))
       # Chiu & Chao 2014 p.8, equ 7a
     }}}
-  
+
   FD_q_beta = FD_q_gamma / FD_q_alpha
-  
+
   if(q == 1){
     local_dist_overlap = 1 - ((log(FD_q_gamma) - log(FD_q_alpha))/(2*log(N)))
   } else {
     local_dist_overlap = (N^(2*(1-q)) - FD_q_beta^(1-q))/
       (N^(2*(1-q)) - 1)
   }
-  
+
   if(q == 1){
     region_dist_overlap = 1 - ((log(FD_q_gamma) - log(FD_q_alpha))/(2*log(N)))
   } else {
     region_dist_overlap = ((1/FD_q_beta)^(1-q) - (1/N)^(2*(1-q)))/
       (1 - (1/N)^(2*(1-q)))
   }
-  
+
   return(data.frame(q = q,
                     raoQ_gamma = Q_gamma,
                     FD_gamma = FD_q_gamma,

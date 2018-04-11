@@ -1,12 +1,14 @@
-# Pairwise comparisons for all sites.
-#' \code{hill_taxa_parti_pairwise} to calculate pairwise taxonomic gamma, alpha, and beta diversity for communities, as
-#'  well as site similarity. It is based on \code{\link{hill_taxa_parti}}. If comm has >2 sites, this function will give results for all
-#'  pairwise comparisons.
+#' Pairwise comparisons for all sites
+#'
+#' Calculate pairwise taxonomic gamma, alpha, and beta diversity for communities, as
+#' well as site similarity. It is based on \code{\link{hill_taxa_parti}}.
+#' If comm has >2 sites, this function will give results for all pairwise comparisons.
 #'
 #' @author Daijiang Li
 #'
 #' @param comm data frame of vegtation data. Sites as rows, species as columns.
-#' @param q hill number, q = 0 (default) to get species richness, q = 1 to get shannon entropy, q = 2 will give inverse Simpson.
+#' @param q hill number, q = 0 (default) to get species richness,
+#' q = 1 to get shannon entropy, q = 2 will give inverse Simpson.
 #' @param rel_then_pool default is TRUE. Abundance of species are first changed to relative abundance within sites,
 #'  then pooled into one assemblage. If FALSE, sites are pooled first, then change abundance of species
 #'  to relative abundance.
@@ -55,7 +57,7 @@ hill_taxa_parti_pairwise = function(comm, q = 0, rel_then_pool = TRUE,
 
     if(output == "data.frame"){
       site.comp = as.matrix(expand.grid(row.names(comm), row.names(comm)))
-      out = adply(site.comp, 1, function(x){
+      out = plyr::adply(site.comp, 1, function(x){
         data.frame(q = q,
                    site1 = x[1],
                    site2 = x[2],
@@ -64,7 +66,7 @@ hill_taxa_parti_pairwise = function(comm, q = 0, rel_then_pool = TRUE,
                    TD_beta = beta_pair[x[1], x[2]],
                    local_taxa_overlap = local_simi[x[1], x[2]],
                    region_taxa_overlap = region_simi[x[1], x[2]])
-      })
+      })[, -1] # get rid of X1 column
     }
   }
 
@@ -82,7 +84,7 @@ hill_taxa_parti_pairwise = function(comm, q = 0, rel_then_pool = TRUE,
 
     if(output == "data.frame"){
       site.comp = as.matrix(expand.grid(row.names(comm), row.names(comm)))
-      out = adply(site.comp, 1, function(x){
+      out = plyr::adply(site.comp, 1, function(x){
         data.frame(q = q,
                    site1 = x[1],
                    site2 = x[2],
@@ -92,7 +94,8 @@ hill_taxa_parti_pairwise = function(comm, q = 0, rel_then_pool = TRUE,
                    local_taxa_overlap = local_simi[x[1], x[2]],
                    region_taxa_overlap = region_simi[x[1], x[2]])
       })
-      out = na.omit(out)
+      out = na.omit(out)[, -1]
+      row.names(out) = NULL
     }
   }
 out

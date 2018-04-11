@@ -1,8 +1,9 @@
-# Decompostion of Taxonomic diversity through Hill Numbers
-#' \code{hill_taxa_parti} to calculate taxonomic gamma, alpha, and beta diversity for communities, as
-#'  well as site similarity. If comm has 2 sites, this function gives pair comparison.
-#'  If comm has >2 sites, gamma diversity is the diversity of the pooled assemblage while
-#'  alpha is the average diversity per site.
+#' Decompostion of Taxonomic diversity through Hill Numbers
+#'
+#' Calculate taxonomic gamma, alpha, and beta diversity for communities, as
+#' well as site similarity. If comm has 2 sites, this function gives pair comparison.
+#' If comm has >2 sites, gamma diversity is the diversity of the pooled assemblage while
+#' alpha is the average diversity across all site.
 #'
 #' @author Daijiang Li
 #'
@@ -14,8 +15,8 @@
 #'  to relative abundance.
 #' @export
 #' @return a data frame with one row, including these columns: q, gamma diversity, alpha diveristy,
-#' beta diversity, MacArthur's homogeneity measure, local species overlap, and region species overlap. See Chao, Chiu and Jost 2014 Table 2
-#' for more information.
+#' beta diversity, MacArthur's homogeneity measure, local species overlap, and region species overlap.
+#' See Chao, Chiu and Jost 2014 Table 2 for more information.
 #' @seealso \code{\link{hill_taxa_parti}}
 #' @examples
 #' library(FD); data(dummy)
@@ -75,15 +76,13 @@ hill_taxa_parti = function(comm, q = 0, base = exp(1),
                               sum((rowSums(comm_alpha)/sum(comm_alpha))*
                                     log(rowSums(comm_alpha)/sum(comm_alpha), base)))/log(N, base)}
   } else {
-    local_taxa_overlap = (N^(1*(1-q)) - TD_q_beta^(1-q))/
-      (N^(1*(1-q)) - 1)
+    local_taxa_overlap = (N^(1*(1-q)) - TD_q_beta^(1-q)) / (N^(1*(1-q)) - 1)
   }
 
   if(q == 1){
     region_taxa_overlap = local_taxa_overlap
   } else {
-    region_taxa_overlap = ((1/TD_q_beta)^(1-q) - (1/N)^(1*(1-q)))/
-      (1 - (1/N)^(1*(1-q)))
+    region_taxa_overlap = ((1/TD_q_beta)^(1-q) - (1/N)^(1*(1-q))) / (1 - (1/N)^(1*(1-q)))
   }
 
   return(data.frame(q = q,
