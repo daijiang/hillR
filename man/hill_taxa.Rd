@@ -2,8 +2,7 @@
 % Please edit documentation in R/hill_taxa.R
 \name{hill_taxa}
 \alias{hill_taxa}
-\title{Taxonomic diversity through Hill Numbers
-\code{hill_taxa} to calculate taxonomic diversity for each site.}
+\title{Taxonomic diversity through Hill Numbers}
 \usage{
 hill_taxa(comm, q = 0, MARGIN = 1, base = exp(1))
 }
@@ -21,8 +20,7 @@ q = 1 to get shannon entropy, q = 2 will give inverse Simpson.}
 a named vector, diversity values for each site in the comm.
 }
 \description{
-Taxonomic diversity through Hill Numbers
-\code{hill_taxa} to calculate taxonomic diversity for each site.
+Calculate taxonomic diversity for each site (alpha diversity).
 }
 \examples{
 dummy = FD::dummy

@@ -1,7 +1,7 @@
 #' Decompostion of functional diversity through Hill Numbers
 #'
 #' Calculate functional gamma, alpha, and beta diversity for communities, as
-#'  well as site DISsimilarity. These values are based on ALL communities.
+#'  well as site similarity. These values are based on ALL communities.
 #'
 #' @author Daijiang Li
 #'
@@ -17,6 +17,7 @@
 #'  then pooled into one assemblage. If FALSE, sites are pooled first, then change abundance of species
 #'  to relative abundance.
 #' @param ord ord in gowdis.
+#' @param stand_dij whether to standardize distance matrix to have max value of 1? Default is FALSE.
 #' @export
 #' @return  a data frame with one row, including these columns: q, RaoQ of pooled assemblage,
 #' gamma diversity, alpha diveristy, beta diversity, local species overlap, and region species
@@ -34,7 +35,9 @@
 #'
 hill_func_parti = function(comm, traits, traits_as_is = FALSE, q = 0,
                            base = exp(1), checkdata=TRUE,
-                           rel_then_pool = TRUE, ord = c("podani", "metric")){
+                           rel_then_pool = TRUE,
+                           ord = c("podani", "metric"),
+                           stand_dji = FALSE){
   if (checkdata) {
     if (any(comm < 0))
       stop("Negative value in comm data")
@@ -56,12 +59,6 @@ hill_func_parti = function(comm, traits, traits_as_is = FALSE, q = 0,
     comm = comm[, colnames(comm) %in% rownames(traits)]
   }
 
-    traits$sp = sp = rownames(traits)
-    # sort species alphbetically
-    traits = plyr::arrange(traits[traits$sp %in% colnames(comm),], sp)
-    rownames(traits) = traits$sp
-    traits$sp = NULL
-
   if(traits_as_is){
     if(any(!rownames(traits) %in% colnames(comm))){
       warning("\n There are species from trait data that are not in comm matrix\n
@@ -70,6 +67,12 @@ hill_func_parti = function(comm, traits, traits_as_is = FALSE, q = 0,
     }
     dij = as.matrix(traits)
   } else {# traits is not a distance matrix
+    traits$sp = sp = rownames(traits)
+    # sort species alphbetically
+    traits = plyr::arrange(traits[traits$sp %in% colnames(comm),], sp)
+    rownames(traits) = traits$sp
+    traits$sp = NULL
+
     if(ncol(traits) == 1){ # only 1 trait
       if (any(is.na(traits))){
         warning("Warning: Species with missing trait values have been excluded.","\n")
@@ -115,7 +118,7 @@ hill_func_parti = function(comm, traits, traits_as_is = FALSE, q = 0,
   S = ncol(comm)
 
   dij = as.matrix(dij)
-  dij = dij/max(dij)
+  if(stand_dji) dij = dij/max(dij)
 
   if(rel_then_pool){
     comm_gamma = colSums(sweep(comm, 1, rowSums(comm, na.rm = TRUE), "/"))/ N
@@ -209,6 +212,9 @@ hill_func_parti = function(comm, traits, traits_as_is = FALSE, q = 0,
                     FD_gamma = FD_q_gamma,
                     FD_alpha = FD_q_alpha,
                     FD_beta = FD_q_beta,
-                    local_dissimilarity = 1 - local_dist_overlap,
-                    region_dissimilarity = 1 - region_dist_overlap))
+                    local_similarity = local_dist_overlap,
+                    region_similarity = region_dist_overlap
+                    # local_dissimilarity = 1 - local_dist_overlap,
+                    # region_dissimilarity = 1 - region_dist_overlap
+                    ))
 }

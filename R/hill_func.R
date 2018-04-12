@@ -16,6 +16,7 @@
 #' one simple way to correct this is to divide the results by the number of species. Default is FALSE.
 #' @param ord ord in gowdis.
 #' @param fdis whether to calculated FDis, default is TRUE.
+#' @param stand_dij whether to standardize distance matrix to have max value of 1? Default is FALSE.
 #' @export
 #' @return a matrix, with these information for each site: Q (Rao's Q); D_q (functional hill number,
 #'  the effective number of equally abundant and functionally equally distince species);
@@ -35,7 +36,8 @@
 hill_func = function(comm, traits, traits_as_is = FALSE, q = 0,
                      base = exp(1), checkdata=TRUE, div_by_sp = FALSE,
                      # corr = c("cailliez", "sqrt", "lingoes", "none"),
-                     ord = c("podani", "metric"), fdis = TRUE){
+                     ord = c("podani", "metric"), fdis = TRUE,
+                     stand_dji = FALSE){
   if (checkdata) {
     if (any(comm < 0))
       stop("Negative value in comm data")
@@ -52,17 +54,17 @@ hill_func = function(comm, traits, traits_as_is = FALSE, q = 0,
     comm = comm[, colnames(comm) %in% rownames(traits)]
   }
 
-  traits = as.data.frame(traits)
-  traits$sp = sp = rownames(traits) # R CMD CHECK complain about no global var. sp
-  traits = plyr::arrange(traits[traits$sp %in% colnames(comm), ], sp)
-  rownames(traits) = traits$sp
-  traits$sp = NULL
-
   # all(rownames(traits) == names(comm))
 
   if(traits_as_is){ # traits is already a distance matrix
     dij = as.matrix(traits)
   } else { # traits is not a distance matrix
+    traits = as.data.frame(traits)
+    traits$sp = sp = rownames(traits) # R CMD CHECK complain about no global var. sp
+    traits = plyr::arrange(traits[traits$sp %in% colnames(comm), ], sp)
+    rownames(traits) = traits$sp
+    traits$sp = NULL
+
     if(ncol(traits) == 1){ # only 1 trait
       if (any(is.na(traits))){
         warning("Warning: Species with missing trait values have been excluded.","\n")
@@ -142,7 +144,7 @@ hill_func = function(comm, traits, traits_as_is = FALSE, q = 0,
   comm = sweep(comm, 1, rowSums(comm, na.rm = TRUE), "/") # relative abun
 
   dij = as.matrix(dij)
-  dij = dij/max(dij)
+  if(stand_dji) dij = dij/max(dij)
 
   #   inter = comm %*% dij # \sum_i,j_S(p_i * dij)
   #   Q = rowSums(sweep(comm,1,inter,"*", check.margin = F))/2 # \sum_j_S\sum_i,j_S(p_i * dij)

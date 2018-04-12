@@ -38,7 +38,7 @@ a matrix, with these information for each site: Q (Rao's Q); D_q (functional hil
  distance between species of the assemblage). See Chiu and Chao 2014 page 4 for more information.
 }
 \description{
-Calculate functional diversity for each site.
+Calculate functional diversity for each site (alpha diversity).
 }
 \examples{
 dummy = FD::dummy

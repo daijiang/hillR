@@ -35,7 +35,7 @@ overlap. See Chiu and Chao 2014 Table 3 for more information.
 }
 \description{
 Calculate functional gamma, alpha, and beta diversity for communities, as
- well as site DISsimilarity.
+ well as site DISsimilarity. These values are based on ALL communities.
 }
 \examples{
 dummy = FD::dummy

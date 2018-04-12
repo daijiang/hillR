@@ -1,7 +1,7 @@
 #' Pairwise comparisons for all sites.
 #'
 #' Calculate pairwise functional gamma, alpha, and beta diversity for communities, as
-#'  well as site DISsimilarity. It is based on \code{\link{hill_func_parti}}.
+#'  well as site similarity. It is based on \code{\link{hill_func_parti}}.
 #'  If comm has >2 sites, this function will give results for all pairwise comparisons.
 #'
 #' @author Daijiang Li
@@ -43,7 +43,7 @@ hill_func_parti_pairwise = function(comm, traits, traits_as_is = FALSE,
   nsite = nrow(comm)
   temp = matrix(1, nsite, nsite)
   dimnames(temp) = list(row.names(comm), row.names(comm))
-  gamma_pair = alpha_pair = beta_pair = local_dissimi = region_dissimi = temp
+  gamma_pair = alpha_pair = beta_pair = local_simi = region_simi = temp
   for(i in 1:nsite){
     for(j in i:nsite){
       o = hill_func_parti(comm = comm[c(i,j), ], traits = traits,
@@ -52,15 +52,15 @@ hill_func_parti_pairwise = function(comm, traits, traits_as_is = FALSE,
       gamma_pair[i,j] = o$FD_gamma; gamma_pair[j,i] = o$FD_gamma
       alpha_pair[i,j] = o$FD_alpha; alpha_pair[j,i] = o$FD_alpha
       beta_pair[i,j] = o$FD_beta; beta_pair[j,i] = o$FD_beta
-      local_dissimi[i,j] = o$local_dissimilarity; local_dissimi[j,i] = o$local_dissimilarity
-      region_dissimi[i,j] = o$region_dissimilarity; region_dissimi[j,i] = o$region_dissimilarity
+      local_simi[i,j] = o$local_similarity; local_simi[j,i] = o$local_similarity
+      region_simi[i,j] = o$region_similarity; region_simi[j,i] = o$region_similarity
     }
   }
 
   if(pairs == "full"){
     if(output == "matrix"){
       out = list(q = q, FD_gamma = gamma_pair, FD_alpha = alpha_pair, FD_beta = beta_pair,
-                 local_dissimilarity = local_dissimi, region_dissimilarity = region_dissimi)
+                 local_similarity = local_simi, region_similarity = region_simi)
     }
 
     if(output == "data.frame"){
@@ -71,8 +71,8 @@ hill_func_parti_pairwise = function(comm, traits, traits_as_is = FALSE,
                    FD_gamma = gamma_pair[x[1], x[2]],
                    FD_alpha = alpha_pair[x[1], x[2]],
                    FD_beta = beta_pair[x[1], x[2]],
-                   local_dissimilarity = local_dissimi[x[1], x[2]],
-                   region_dissimilarity = region_dissimi[x[1], x[2]])
+                   local_similarity = local_simi[x[1], x[2]],
+                   region_similarity = region_simi[x[1], x[2]])
       })[, -1]
     }
     out
@@ -82,12 +82,12 @@ hill_func_parti_pairwise = function(comm, traits, traits_as_is = FALSE,
     gamma_pair[lower.tri(gamma_pair, diag = TRUE)] = NA
     alpha_pair[lower.tri(alpha_pair, diag = TRUE)] = NA
     beta_pair[lower.tri(beta_pair, diag = TRUE)] = NA
-    local_dissimi[lower.tri(local_dissimi, diag = TRUE)] = NA
-    region_dissimi[lower.tri(region_dissimi, diag = TRUE)] = NA
+    local_simi[lower.tri(local_simi, diag = TRUE)] = NA
+    region_simi[lower.tri(region_simi, diag = TRUE)] = NA
 
     if(output == "matrix"){
       out = list(q = q, FD_gamma = gamma_pair, FD_alpha = alpha_pair, FD_beta = beta_pair,
-                 local_dissimilarity = local_dissimi, region_dissimilarity = region_dissimi)
+                 local_similarity = local_simi, region_similarity = region_simi)
     }
 
     if(output == "data.frame"){
@@ -98,8 +98,8 @@ hill_func_parti_pairwise = function(comm, traits, traits_as_is = FALSE,
                    FD_gamma = gamma_pair[x[1], x[2]],
                    FD_alpha = alpha_pair[x[1], x[2]],
                    FD_beta = beta_pair[x[1], x[2]],
-                   local_dissimilarity = local_dissimi[x[1], x[2]],
-                   region_dissimilarity = region_dissimi[x[1], x[2]])
+                   local_similarity = local_simi[x[1], x[2]],
+                   region_similarity = region_simi[x[1], x[2]])
       })
       out = na.omit(out)[, -1]
       row.names(out) = NULL

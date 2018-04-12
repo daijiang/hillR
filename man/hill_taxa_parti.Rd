@@ -25,8 +25,8 @@ See Chao, Chiu and Jost 2014 Table 2 for more information.
 \description{
 Calculate taxonomic gamma, alpha, and beta diversity for communities, as
 well as site similarity. If comm has 2 sites, this function gives pair comparison.
-If comm has >2 sites, gamma diversity is the diversity of the pooled assemblage while
-alpha is the average diversity across all site.
+If comm has >2 sites, gamma diversity is the diversity of the pooled assemblage,
+alpha is the average diversity across all site, beta is across all communities.
 }
 \examples{
 dummy = FD::dummy
