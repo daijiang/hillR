@@ -6,7 +6,7 @@
 \usage{
 hill_func(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1),
   checkdata = TRUE, div_by_sp = FALSE, ord = c("podani", "metric"),
-  fdis = TRUE)
+  fdis = TRUE, stand_dji = FALSE)
 }
 \arguments{
 \item{comm}{data frame of vegtation data. Sites as rows, species as columns.}
@@ -29,6 +29,8 @@ one simple way to correct this is to divide the results by the number of species
 \item{ord}{ord in gowdis.}
 
 \item{fdis}{whether to calculated FDis, default is TRUE.}
+
+\item{stand_dij}{whether to standardize distance matrix to have max value of 1? Default is FALSE.}
 }
 \value{
 a matrix, with these information for each site: Q (Rao's Q); D_q (functional hill number,

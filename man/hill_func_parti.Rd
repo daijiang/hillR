@@ -5,7 +5,8 @@
 \title{Decompostion of functional diversity through Hill Numbers}
 \usage{
 hill_func_parti(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1),
-  checkdata = TRUE, rel_then_pool = TRUE, ord = c("podani", "metric"))
+  checkdata = TRUE, rel_then_pool = TRUE, ord = c("podani", "metric"),
+  stand_dji = FALSE, show.warning = TRUE)
 }
 \arguments{
 \item{comm}{data frame of vegtation data. Sites as rows, species as columns.}
@@ -27,6 +28,10 @@ then pooled into one assemblage. If FALSE, sites are pooled first, then change a
 to relative abundance.}
 
 \item{ord}{ord in gowdis.}
+
+\item{show.warning}{whether to print warning, default is TRUE}
+
+\item{stand_dij}{whether to standardize distance matrix to have max value of 1? Default is FALSE.}
 }
 \value{
 a data frame with one row, including these columns: q, RaoQ of pooled assemblage,
@@ -35,7 +40,7 @@ overlap. See Chiu and Chao 2014 Table 3 for more information.
 }
 \description{
 Calculate functional gamma, alpha, and beta diversity for communities, as
- well as site DISsimilarity. These values are based on ALL communities.
+ well as site similarity. These values are based on ALL communities.
 }
 \examples{
 dummy = FD::dummy

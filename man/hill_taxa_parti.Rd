@@ -4,7 +4,8 @@
 \alias{hill_taxa_parti}
 \title{Decompostion of Taxonomic diversity through Hill Numbers}
 \usage{
-hill_taxa_parti(comm, q = 0, base = exp(1), rel_then_pool = TRUE)
+hill_taxa_parti(comm, q = 0, base = exp(1), rel_then_pool = TRUE,
+  show.warning = TRUE)
 }
 \arguments{
 \item{comm}{data frame of vegtation data. Sites as rows, species as columns.}
@@ -15,11 +16,13 @@ hill_taxa_parti(comm, q = 0, base = exp(1), rel_then_pool = TRUE)
 
 \item{rel_then_pool}{default is TRUE. Abundance of species are first changed to relative abundance within sites,
 then pooled into one assemblage. If FALSE, sites are pooled first, then change abundance of species
-to relative abundance.}
+to relative abundance.
+@param show.warning whether to print warning, default is TRUE}
 }
 \value{
 a data frame with one row, including these columns: q, gamma diversity, alpha diveristy,
-beta diversity, MacArthur's homogeneity measure, local species overlap, and region species overlap.
+beta diversity, MacArthur's homogeneity measure, local similarity (species overlap),
+and region similarity (species overlap).
 See Chao, Chiu and Jost 2014 Table 2 for more information.
 }
 \description{

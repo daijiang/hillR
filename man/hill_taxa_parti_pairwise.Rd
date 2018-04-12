@@ -5,7 +5,7 @@
 \title{Pairwise comparisons for all sites}
 \usage{
 hill_taxa_parti_pairwise(comm, q = 0, rel_then_pool = TRUE,
-  output = c("data.frame", "matrix"), pairs = c("unique", "full"))
+  output = c("data.frame", "matrix"), pairs = c("unique", "full"), ...)
 }
 \arguments{
 \item{comm}{data frame of vegtation data. Sites as rows, species as columns.}
@@ -20,6 +20,8 @@ to relative abundance.}
 \item{output}{output type: data.frame (default) or matrix. If matrix, then this function will return a list of matrices.}
 
 \item{pairs}{full or unique (default). Do you want to compare all possible pairs (i.e. n^2) or just unique pairs (i.e. choose(n, 2))?}
+
+\item{...}{other arguments in \code{hill_taxa_parti()}.}
 }
 \value{
 a data frame with results for all pairwise comparisons.

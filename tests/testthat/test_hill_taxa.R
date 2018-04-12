@@ -34,7 +34,7 @@ test_that("vegetariam package vs hillR, taxa beta diversity, q = 0", {
   expect_equal(a2, b$M_homog)
 
   a3 = vegetarian::similarity(dummy$abun, q = 0)
-  expect_equal(a3, b$local_taxa_overlap)
+  expect_equal(a3, b$local_similarity)
 })
 
 test_that("vegetariam package vs hillR, taxa beta diversity, q = 0.9999", {
@@ -46,7 +46,7 @@ test_that("vegetariam package vs hillR, taxa beta diversity, q = 0.9999", {
   expect_equal(a2, b$M_homog)
 
   a3 = vegetarian::similarity(dummy$abun, q = 0.9999)
-  expect_equal(a3, b$local_taxa_overlap)
+  expect_equal(a3, b$local_similarity)
 })
 
 test_that("vegetariam package vs hillR, taxa beta diversity, q = 1", {
@@ -58,7 +58,7 @@ test_that("vegetariam package vs hillR, taxa beta diversity, q = 1", {
   expect_equal(a2, b$M_homog)
 
   a3 = vegetarian::similarity(dummy$abun, q = 1)
-  expect_equal(a3, b$local_taxa_overlap)
+  expect_equal(a3, b$local_similarity)
 })
 
 test_that("vegetariam package vs hillR, taxa beta diversity, q = 2", {
@@ -70,7 +70,7 @@ test_that("vegetariam package vs hillR, taxa beta diversity, q = 2", {
   expect_equal(a2, b$M_homog)
 
   a3 = vegetarian::similarity(dummy$abun, q = 2)
-  expect_equal(a3, b$local_taxa_overlap)
+  expect_equal(a3, b$local_similarity)
 })
 
 test_that("vegetariam package vs hillR, taxa beta diversity, q = 2, two sites", {
@@ -82,5 +82,5 @@ test_that("vegetariam package vs hillR, taxa beta diversity, q = 2, two sites", 
   expect_equal(a2, b$M_homog)
 
   a3 = vegetarian::similarity(dummy$abun[1:2,], q = 2)
-  expect_equal(a3, b$local_taxa_overlap)
+  expect_equal(a3, b$local_similarity)
 })

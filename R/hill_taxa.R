@@ -14,6 +14,7 @@ NULL
 #' @param base default is exp(1), the base of log.
 #' @export
 #' @return a named vector, diversity values for each site in the comm.
+#' @rdname hill_taxa
 #' @examples
 #' dummy = FD::dummy
 #' hill_taxa(comm = dummy$abun, q = 0)

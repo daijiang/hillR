@@ -18,6 +18,7 @@
 #'  to relative abundance.
 #' @param ord ord in gowdis.
 #' @param stand_dij whether to standardize distance matrix to have max value of 1? Default is FALSE.
+#' @param show.warning whether to print warning, default is TRUE
 #' @export
 #' @return  a data frame with one row, including these columns: q, RaoQ of pooled assemblage,
 #' gamma diversity, alpha diveristy, beta diversity, local species overlap, and region species
@@ -37,7 +38,7 @@ hill_func_parti = function(comm, traits, traits_as_is = FALSE, q = 0,
                            base = exp(1), checkdata=TRUE,
                            rel_then_pool = TRUE,
                            ord = c("podani", "metric"),
-                           stand_dji = FALSE){
+                           stand_dji = FALSE, show.warning = TRUE){
   if (checkdata) {
     if (any(comm < 0))
       stop("Negative value in comm data")
@@ -49,7 +50,7 @@ hill_func_parti = function(comm, traits, traits_as_is = FALSE, q = 0,
     }
   }
 
-  if(any(colSums(comm) == 0)) warning("Some species in comm data were not observed in any site,\n
+  if(any(colSums(comm) == 0) & show.warning) warning("Some species in comm data were not observed in any site,\n
                                       delete them...")
   comm = comm[, colSums(comm) != 0]
 
@@ -61,7 +62,7 @@ hill_func_parti = function(comm, traits, traits_as_is = FALSE, q = 0,
 
   if(traits_as_is){
     if(any(!rownames(traits) %in% colnames(comm))){
-      warning("\n There are species from trait data that are not in comm matrix\n
+      if (show.warning) warning("\n There are species from trait data that are not in comm matrix\n
               Delete these species from trait data...\n")
       traits = traits[rownames(traits) %in% colnames(comm), colnames(traits) %in% colnames(comm)]
     }
@@ -75,7 +76,7 @@ hill_func_parti = function(comm, traits, traits_as_is = FALSE, q = 0,
 
     if(ncol(traits) == 1){ # only 1 trait
       if (any(is.na(traits))){
-        warning("Warning: Species with missing trait values have been excluded.","\n")
+        if(show.warning) warning("Warning: Species with missing trait values have been excluded.","\n")
         traits = na.omit(traits)
         comm = comm[, colnames(comm) %in% rownames(traits)]
       }

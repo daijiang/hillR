@@ -13,9 +13,11 @@
 #' @param rel_then_pool default is TRUE. Abundance of species are first changed to relative abundance within sites,
 #'  then pooled into one assemblage. If FALSE, sites are pooled first, then change abundance of species
 #'  to relative abundance.
+#'  @param show.warning whether to print warning, default is TRUE
 #' @export
 #' @return a data frame with one row, including these columns: q, gamma diversity, alpha diveristy,
-#' beta diversity, MacArthur's homogeneity measure, local species overlap, and region species overlap.
+#' beta diversity, MacArthur's homogeneity measure, local similarity (species overlap),
+#' and region similarity (species overlap).
 #' See Chao, Chiu and Jost 2014 Table 2 for more information.
 #' @seealso \code{\link{hill_taxa_parti}}
 #' @examples
@@ -30,10 +32,9 @@
 #'
 #'
 hill_taxa_parti = function(comm, q = 0, base = exp(1),
-                           rel_then_pool = TRUE){
-  if (any(comm < 0))
-    stop("Negative value in comm data")
-  if(any(colSums(comm) == 0)) warning("Some species in comm data were not observed in any site,\n delete them...")
+                           rel_then_pool = TRUE, show.warning = TRUE){
+  if (any(comm < 0)) stop("Negative value in comm data")
+  if(any(colSums(comm) == 0) & show.warning) warning("Some species in comm data were not observed in any site,\n delete them...")
   comm = comm[, colSums(comm) != 0]
   N = nrow(comm)
   S = ncol(comm)
@@ -72,7 +73,7 @@ hill_taxa_parti = function(comm, q = 0, base = exp(1),
     if(rel_then_pool){
       local_taxa_overlap = (log(N, base) - log(TD_q_gamma) + log(TD_q_alpha))/log(N, base)
     } else{
-      local_taxa_overlap = (log(TD_q_alpha) - log(TD_q_gamma) -
+      local_taxa_overlap = (log(TD_q_alpha, base) - log(TD_q_gamma, base) -
                               sum((rowSums(comm_alpha)/sum(comm_alpha))*
                                     log(rowSums(comm_alpha)/sum(comm_alpha), base)))/log(N, base)}
   } else {
@@ -90,6 +91,6 @@ hill_taxa_parti = function(comm, q = 0, base = exp(1),
                     TD_alpha = TD_q_alpha,
                     TD_beta = TD_q_beta,
                     M_homog = 1 / TD_q_beta,
-                    local_taxa_overlap = local_taxa_overlap,
-                    region_taxa_overlap = region_taxa_overlap))
+                    local_similarity = local_taxa_overlap,
+                    region_similarity = region_taxa_overlap))
 }

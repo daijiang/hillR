@@ -14,6 +14,7 @@
 #'  to relative abundance.
 #' @param output output type: data.frame (default) or matrix. If matrix, then this function will return a list of matrices.
 #' @param pairs full or unique (default). Do you want to compare all possible pairs (i.e. n^2) or just unique pairs (i.e. choose(n, 2))?
+#' @param ... other arguments in \code{hill_taxa_parti()}.
 #' @export
 #' @return a data frame with results for all pairwise comparisons.
 #' @seealso \code{\link{hill_taxa_parti}}
@@ -31,7 +32,7 @@
 #'
 hill_taxa_parti_pairwise = function(comm, q = 0, rel_then_pool = TRUE,
                                     output = c("data.frame", "matrix"),
-                                    pairs = c( "unique", "full")){
+                                    pairs = c( "unique", "full"), ...){
   output <- match.arg(output)
   pairs <- match.arg(pairs)
   nsite = nrow(comm)
@@ -40,19 +41,19 @@ hill_taxa_parti_pairwise = function(comm, q = 0, rel_then_pool = TRUE,
   gamma_pair = alpha_pair = beta_pair = local_simi = region_simi = temp
   for(i in 1:nsite){
     for(j in i:nsite){
-      o = hill_taxa_parti(comm[c(i,j), ], q = q)
+      o = hill_taxa_parti(comm[c(i,j), ], q = q, ...)
       gamma_pair[i,j] = o$TD_gamma; gamma_pair[j,i] = o$TD_gamma
       alpha_pair[i,j] = o$TD_alpha; alpha_pair[j,i] = o$TD_alpha
       beta_pair[i,j] = o$TD_beta; beta_pair[j,i] = o$TD_beta
-      local_simi[i,j] = o$local_taxa_overlap; local_simi[j,i] = o$local_taxa_overlap
-      region_simi[i,j] = o$region_taxa_overlap; region_simi[j,i] = o$region_taxa_overlap
+      local_simi[i,j] = o$local_similarity; local_simi[j,i] = o$local_similarity
+      region_simi[i,j] = o$region_similarity; region_simi[j,i] = o$region_similarity
     }
   }
 
   if(pairs == "full"){
     if(output == "matrix"){
       out = list(q = q, TD_gamma = gamma_pair, TD_alpha = alpha_pair, TD_beta = beta_pair,
-                 local_taxa_overlap = local_simi, region_taxa_overlap = region_simi)
+                 local_similarity = local_simi, region_similarity = region_simi)
     }
 
     if(output == "data.frame"){
@@ -64,8 +65,8 @@ hill_taxa_parti_pairwise = function(comm, q = 0, rel_then_pool = TRUE,
                    TD_gamma = gamma_pair[x[1], x[2]],
                    TD_alpha = alpha_pair[x[1], x[2]],
                    TD_beta = beta_pair[x[1], x[2]],
-                   local_taxa_overlap = local_simi[x[1], x[2]],
-                   region_taxa_overlap = region_simi[x[1], x[2]])
+                   local_similarity = local_simi[x[1], x[2]],
+                   region_similarity = region_simi[x[1], x[2]])
       })[, -1] # get rid of X1 column
     }
   }
@@ -79,7 +80,7 @@ hill_taxa_parti_pairwise = function(comm, q = 0, rel_then_pool = TRUE,
 
     if(output == "matrix"){
       out = list(q = q, TD_gamma = gamma_pair, TD_alpha = alpha_pair, TD_beta = beta_pair,
-                 local_taxa_overlap = local_simi, region_taxa_overlap = region_simi)
+                 local_similarity = local_simi, region_similarity = region_simi)
     }
 
     if(output == "data.frame"){
@@ -91,8 +92,8 @@ hill_taxa_parti_pairwise = function(comm, q = 0, rel_then_pool = TRUE,
                    TD_gamma = gamma_pair[x[1], x[2]],
                    TD_alpha = alpha_pair[x[1], x[2]],
                    TD_beta = beta_pair[x[1], x[2]],
-                   local_taxa_overlap = local_simi[x[1], x[2]],
-                   region_taxa_overlap = region_simi[x[1], x[2]])
+                   local_similarity = local_simi[x[1], x[2]],
+                   region_similarity = region_simi[x[1], x[2]])
       })
       out = na.omit(out)[, -1]
       row.names(out) = NULL

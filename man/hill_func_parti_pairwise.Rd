@@ -34,7 +34,7 @@ a data frame with results for all pairwise comparisons.
 }
 \description{
 Calculate pairwise functional gamma, alpha, and beta diversity for communities, as
- well as site DISsimilarity. It is based on \code{\link{hill_func_parti}}.
+ well as site similarity. It is based on \code{\link{hill_func_parti}}.
  If comm has >2 sites, this function will give results for all pairwise comparisons.
 }
 \examples{
