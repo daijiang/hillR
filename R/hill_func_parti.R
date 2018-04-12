@@ -1,7 +1,7 @@
 #' Decompostion of functional diversity through Hill Numbers
 #'
 #' Calculate functional gamma, alpha, and beta diversity for communities, as
-#'  well as site DISsimilarity.
+#'  well as site DISsimilarity. These values are based on ALL communities.
 #'
 #' @author Daijiang Li
 #'
@@ -10,7 +10,8 @@
 #' It can include both continuous and categorical data.
 #' @param traits_as_is if FALSE (default) traits data frame will be transformed into a distance
 #' matrix using `FD::gowdis(traits)`. Otherwise, will use as is (i.e. traits is a symmetric distance matrix).
-#' @param q hill number, q = 0 (default) to get species richness, q = 1 to get shannon entropy, q = 2 will give inverse Simpson.
+#' @param q hill number, q = 0 (default) to get species richness, q = 1 to get shannon entropy, q = 2 will give inverse Simpson.#'
+#' @param checkdata whether to check data first? Default is TRUE.
 #' @param base default is exp(1), the base of log.
 #' @param rel_then_pool default is TRUE. Abundance of species are first changed to relative abundance within sites,
 #'  then pooled into one assemblage. If FALSE, sites are pooled first, then change abundance of species
@@ -23,7 +24,7 @@
 #' @seealso \code{\link{hill_taxa_parti}}, \code{\link{hill_func}}
 #'
 #' @examples
-#' library(FD); data(dummy)
+#' dummy = FD::dummy
 #' hill_func_parti(comm = dummy$abun, traits = dummy$trait, q = 0)
 #' hill_func_parti(comm = dummy$abun, traits = dummy$trait, q = 1)
 #' hill_func_parti(comm = dummy$abun, traits = dummy$trait, q = 0.9999)
@@ -33,8 +34,7 @@
 #'
 hill_func_parti = function(comm, traits, traits_as_is = FALSE, q = 0,
                            base = exp(1), checkdata=TRUE,
-                           rel_then_pool = TRUE, ord = c("podani", "metric"),
-                           ...){
+                           rel_then_pool = TRUE, ord = c("podani", "metric")){
   if (checkdata) {
     if (any(comm < 0))
       stop("Negative value in comm data")
@@ -56,7 +56,7 @@ hill_func_parti = function(comm, traits, traits_as_is = FALSE, q = 0,
     comm = comm[, colnames(comm) %in% rownames(traits)]
   }
 
-    traits$sp = rownames(traits)
+    traits$sp = sp = rownames(traits)
     # sort species alphbetically
     traits = plyr::arrange(traits[traits$sp %in% colnames(comm),], sp)
     rownames(traits) = traits$sp

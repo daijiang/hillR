@@ -1,6 +1,6 @@
 #' Functional diversity through Hill Numbers
 #'
-#' Calculate functional diversity for each site.
+#' Calculate functional diversity for each site (alpha diversity).
 #'
 #' @author Daijiang Li
 #'
@@ -11,7 +11,7 @@
 #' @param traits_as_is if FALSE (default) traits data frame will be transformed into a distance matrix
 #' @param q hill number, q (default is 0) to control weights of species abundance.
 #' @param base default is exp(1), the base of log.
-#' @param checkdata default is TRUE.
+#' @param checkdata whether to check data first? Default is TRUE.
 #' @param div_by_sp as FD calculated in this way will be highly correlated with taxonomic diversity,
 #' one simple way to correct this is to divide the results by the number of species. Default is FALSE.
 #' @param ord ord in gowdis.
@@ -24,7 +24,7 @@
 #'  distance between species of the assemblage). See Chiu and Chao 2014 page 4 for more information.
 #'
 #' @examples
-#' library(FD); data(dummy)
+#' dummy = FD::dummy
 #' hill_func(comm = dummy$abun, traits = dummy$trait, q = 0)
 #' hill_func(comm = dummy$abun, traits = dummy$trait, q = 1)
 #' hill_func(comm = dummy$abun, traits = dummy$trait, q = 0.9999)
@@ -35,7 +35,7 @@
 hill_func = function(comm, traits, traits_as_is = FALSE, q = 0,
                      base = exp(1), checkdata=TRUE, div_by_sp = FALSE,
                      # corr = c("cailliez", "sqrt", "lingoes", "none"),
-                     ord = c("podani", "metric"), fdis = TRUE, ...){
+                     ord = c("podani", "metric"), fdis = TRUE){
   if (checkdata) {
     if (any(comm < 0))
       stop("Negative value in comm data")
@@ -53,7 +53,7 @@ hill_func = function(comm, traits, traits_as_is = FALSE, q = 0,
   }
 
   traits = as.data.frame(traits)
-  traits$sp = rownames(traits)
+  traits$sp = sp = rownames(traits) # R CMD CHECK complain about no global var. sp
   traits = plyr::arrange(traits[traits$sp %in% colnames(comm), ], sp)
   rownames(traits) = traits$sp
   traits$sp = NULL

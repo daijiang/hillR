@@ -6,7 +6,7 @@
 \usage{
 hill_func(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1),
   checkdata = TRUE, div_by_sp = FALSE, ord = c("podani", "metric"),
-  fdis = TRUE, ...)
+  fdis = TRUE)
 }
 \arguments{
 \item{comm}{data frame of vegtation data. Sites as rows, species as columns.}
@@ -21,7 +21,7 @@ matrix using `FD::gowdis(traits)`. If all traits are numeric, then it will use E
 
 \item{base}{default is exp(1), the base of log.}
 
-\item{checkdata}{default is TRUE.}
+\item{checkdata}{whether to check data first? Default is TRUE.}
 
 \item{div_by_sp}{as FD calculated in this way will be highly correlated with taxonomic diversity,
 one simple way to correct this is to divide the results by the number of species. Default is FALSE.}
@@ -41,7 +41,7 @@ a matrix, with these information for each site: Q (Rao's Q); D_q (functional hil
 Calculate functional diversity for each site.
 }
 \examples{
-library(FD); data(dummy)
+dummy = FD::dummy
 hill_func(comm = dummy$abun, traits = dummy$trait, q = 0)
 hill_func(comm = dummy$abun, traits = dummy$trait, q = 1)
 hill_func(comm = dummy$abun, traits = dummy$trait, q = 0.9999)

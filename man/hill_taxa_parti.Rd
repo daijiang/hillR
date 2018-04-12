@@ -29,12 +29,12 @@ If comm has >2 sites, gamma diversity is the diversity of the pooled assemblage 
 alpha is the average diversity across all site.
 }
 \examples{
-library(FD); data(dummy)
+dummy = FD::dummy
 hill_taxa_parti(comm = dummy$abun, q = 0)
 hill_taxa_parti(comm = dummy$abun, q = 1)
 hill_taxa_parti(comm = dummy$abun, q = 0.9999999)
-hill_taxa_parti(comm = dummy$abun, q = 0.9999999, rel_then_pool = F)
-hill_taxa_parti(comm = dummy$abun, q = 1, rel_then_pool = F)
+hill_taxa_parti(comm = dummy$abun, q = 0.9999999, rel_then_pool = FALSE)
+hill_taxa_parti(comm = dummy$abun, q = 1, rel_then_pool = FALSE)
 hill_taxa_parti(comm = dummy$abun, q = 2)
 hill_taxa_parti(comm = dummy$abun, q = 3)
 

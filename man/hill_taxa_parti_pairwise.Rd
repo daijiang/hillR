@@ -30,7 +30,7 @@ well as site similarity. It is based on \code{\link{hill_taxa_parti}}.
 If comm has >2 sites, this function will give results for all pairwise comparisons.
 }
 \examples{
-library(FD); data(dummy)
+dummy = FD::dummy
 hill_taxa_parti_pairwise(comm = dummy$abun, q = 0)
 hill_taxa_parti_pairwise(comm = dummy$abun, q = 0, output = "matrix")
 hill_taxa_parti_pairwise(comm = dummy$abun, q = 1)

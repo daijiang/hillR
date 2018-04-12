@@ -5,8 +5,7 @@
 \title{Decompostion of functional diversity through Hill Numbers}
 \usage{
 hill_func_parti(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1),
-  checkdata = TRUE, rel_then_pool = TRUE, ord = c("podani", "metric"),
-  ...)
+  checkdata = TRUE, rel_then_pool = TRUE, ord = c("podani", "metric"))
 }
 \arguments{
 \item{comm}{data frame of vegtation data. Sites as rows, species as columns.}
@@ -17,9 +16,11 @@ It can include both continuous and categorical data.}
 \item{traits_as_is}{if FALSE (default) traits data frame will be transformed into a distance
 matrix using `FD::gowdis(traits)`. Otherwise, will use as is (i.e. traits is a symmetric distance matrix).}
 
-\item{q}{hill number, q = 0 (default) to get species richness, q = 1 to get shannon entropy, q = 2 will give inverse Simpson.}
+\item{q}{hill number, q = 0 (default) to get species richness, q = 1 to get shannon entropy, q = 2 will give inverse Simpson.#'}
 
 \item{base}{default is exp(1), the base of log.}
+
+\item{checkdata}{whether to check data first? Default is TRUE.}
 
 \item{rel_then_pool}{default is TRUE. Abundance of species are first changed to relative abundance within sites,
 then pooled into one assemblage. If FALSE, sites are pooled first, then change abundance of species
@@ -37,7 +38,7 @@ Calculate functional gamma, alpha, and beta diversity for communities, as
  well as site DISsimilarity.
 }
 \examples{
-library(FD); data(dummy)
+dummy = FD::dummy
 hill_func_parti(comm = dummy$abun, traits = dummy$trait, q = 0)
 hill_func_parti(comm = dummy$abun, traits = dummy$trait, q = 1)
 hill_func_parti(comm = dummy$abun, traits = dummy$trait, q = 0.9999)

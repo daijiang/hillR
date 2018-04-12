@@ -17,14 +17,17 @@
 #'  to relative abundance.
 #' @param output output type: data.frame (default) or matrix. If matrix, then this function will return a list of matrices.
 #' @param pairs full or unique (default). Do you want to compare all possible pairs (i.e. n^2) or just unique pairs (i.e. choose(n, 2))?
+#' @param ... additional arguments for \code{hill_func_parti}.
 #' @export
 #' @return a data frame with results for all pairwise comparisons.
 #' @seealso \code{\link{hill_func_parti}}
 #' @examples
-#' library(FD); data(dummy)
+#' dummy = FD::dummy
 #' hill_func_parti_pairwise(comm = dummy$abun, traits = dummy$trait, q = 0)
-#' hill_func_parti_pairwise(comm = dummy$abun, traits = dummy$trait, q = 0, output = "matrix")
-#' hill_func_parti_pairwise(comm = dummy$abun, traits = dummy$trait, q = 0, output = "matrix", pairs = "full")
+#' hill_func_parti_pairwise(comm = dummy$abun, traits = dummy$trait, q = 0,
+#'                          output = "matrix")
+#' hill_func_parti_pairwise(comm = dummy$abun, traits = dummy$trait, q = 0,
+#'                          output = "matrix", pairs = "full")
 #' hill_func_parti_pairwise(comm = dummy$abun, traits = dummy$trait, q = 1)
 #' hill_func_parti_pairwise(comm = dummy$abun, traits = dummy$trait, q = 0.9999)
 #' hill_func_parti_pairwise(comm = dummy$abun, traits = dummy$trait, q = 2)

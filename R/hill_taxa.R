@@ -1,5 +1,9 @@
-# Taxonomic diversity through Hill Numbers
-#' \code{hill_taxa} to calculate taxonomic diversity for each site.
+#' @importFrom stats na.omit dist
+NULL
+
+#' Taxonomic diversity through Hill Numbers
+#'
+#' Calculate taxonomic diversity for each site (alpha diversity).
 #'
 #' @author Daijiang Li
 #'
@@ -11,7 +15,7 @@
 #' @export
 #' @return a named vector, diversity values for each site in the comm.
 #' @examples
-#' library(FD); data(dummy)
+#' dummy = FD::dummy
 #' hill_taxa(comm = dummy$abun, q = 0)
 #' # same as: vegan::specnumber(dummy$abun)
 #' hill_taxa(comm = dummy$abun, q = 1)

@@ -17,3 +17,6 @@ Imports:
     plyr,
     ade4
 RoxygenNote: 6.0.1
+Suggests: 
+    testthat,
+    vegetarian
