@@ -1,3 +1,5 @@
+#' code for hill_phylo and hill_phylo_parti are mostly from Chiu & Chao.
+#'
 dat_prep_phylo = function(comm, tree){
   if(class(tree) == "phylo") tree = ape::write.tree(tree)
   phyloData = ade4::newick2phylog(tree)
