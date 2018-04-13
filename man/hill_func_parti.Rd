@@ -6,7 +6,7 @@
 \usage{
 hill_func_parti(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1),
   checkdata = TRUE, rel_then_pool = TRUE, ord = c("podani", "metric"),
-  stand_dji = FALSE, show.warning = TRUE)
+  stand_dij = FALSE, show.warning = TRUE)
 }
 \arguments{
 \item{comm}{data frame of vegtation data. Sites as rows, species as columns.}
@@ -29,17 +29,17 @@ to relative abundance.}
 
 \item{ord}{ord in gowdis.}
 
-\item{show.warning}{whether to print warning, default is TRUE}
-
 \item{stand_dij}{whether to standardize distance matrix to have max value of 1? Default is FALSE.}
+
+\item{show.warning}{whether to print warning, default is TRUE}
 }
 \value{
-a data frame with one row, including these columns: q, RaoQ of pooled assemblage,
+a data frame with one row (across all sites), including these columns: q, RaoQ of pooled assemblage,
 gamma diversity, alpha diveristy, beta diversity, local species overlap, and region species
 overlap. See Chiu and Chao 2014 Table 3 for more information.
 }
 \description{
-Calculate functional gamma, alpha, and beta diversity for communities, as
+Calculate functional gamma, alpha, and beta diversity for all communities, as
  well as site similarity. These values are based on ALL communities.
 }
 \examples{
@@ -50,11 +50,7 @@ hill_func_parti(comm = dummy$abun, traits = dummy$trait, q = 0.9999)
 hill_func_parti(comm = dummy$abun, traits = dummy$trait, q = 2)
 hill_func_parti(comm = dummy$abun, traits = dummy$trait, q = 3)
 
-
 }
 \seealso{
 \code{\link{hill_taxa_parti}}, \code{\link{hill_func}}
-}
-\author{
-Daijiang Li
 }

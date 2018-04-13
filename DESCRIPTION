@@ -12,10 +12,11 @@ License: MIT + file LICENSE
 LazyData: TRUE
 Depends:
     R (>= 3.1) 
-Imports:
+Imports: 
     FD,
     plyr,
-    ade4
+    ade4,
+    ape
 RoxygenNote: 6.0.1
 Suggests: 
     testthat,

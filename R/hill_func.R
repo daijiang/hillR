@@ -2,8 +2,6 @@
 #'
 #' Calculate functional diversity for each site (alpha diversity).
 #'
-#' @author Daijiang Li
-#'
 #' @param comm data frame of vegtation data. Sites as rows, species as columns.
 #' @param traits data frame of species functional traits data. Species as rows, traits as columns.
 #' It can include both continuous and categorical data. It will be transformed into a distance
@@ -14,7 +12,7 @@
 #' @param checkdata whether to check data first? Default is TRUE.
 #' @param div_by_sp as FD calculated in this way will be highly correlated with taxonomic diversity,
 #' one simple way to correct this is to divide the results by the number of species. Default is FALSE.
-#' @param ord ord in gowdis.
+#' @param ord ord in FD::gowdis.
 #' @param fdis whether to calculated FDis, default is TRUE.
 #' @param stand_dij whether to standardize distance matrix to have max value of 1? Default is FALSE.
 #' @export
@@ -32,12 +30,11 @@
 #' hill_func(comm = dummy$abun, traits = dummy$trait, q = 2)
 #' hill_func(comm = dummy$abun, traits = dummy$trait, q = 3)
 #'
-#'
 hill_func = function(comm, traits, traits_as_is = FALSE, q = 0,
                      base = exp(1), checkdata=TRUE, div_by_sp = FALSE,
                      # corr = c("cailliez", "sqrt", "lingoes", "none"),
                      ord = c("podani", "metric"), fdis = TRUE,
-                     stand_dji = FALSE){
+                     stand_dij = FALSE){
   if (checkdata) {
     if (any(comm < 0))
       stop("Negative value in comm data")
@@ -144,7 +141,7 @@ hill_func = function(comm, traits, traits_as_is = FALSE, q = 0,
   comm = sweep(comm, 1, rowSums(comm, na.rm = TRUE), "/") # relative abun
 
   dij = as.matrix(dij)
-  if(stand_dji) dij = dij/max(dij)
+  if(stand_dij) dij = dij/max(dij)
 
   #   inter = comm %*% dij # \sum_i,j_S(p_i * dij)
   #   Q = rowSums(sweep(comm,1,inter,"*", check.margin = F))/2 # \sum_j_S\sum_i,j_S(p_i * dij)

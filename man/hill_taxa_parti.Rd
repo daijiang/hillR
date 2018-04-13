@@ -16,17 +16,18 @@ hill_taxa_parti(comm, q = 0, base = exp(1), rel_then_pool = TRUE,
 
 \item{rel_then_pool}{default is TRUE. Abundance of species are first changed to relative abundance within sites,
 then pooled into one assemblage. If FALSE, sites are pooled first, then change abundance of species
-to relative abundance.
-@param show.warning whether to print warning, default is TRUE}
+to relative abundance.}
+
+\item{show.warning}{whether to print warning, default is TRUE}
 }
 \value{
-a data frame with one row, including these columns: q, gamma diversity, alpha diveristy,
+a data frame with one row (across all sites), including these columns: q, gamma diversity, alpha diveristy,
 beta diversity, MacArthur's homogeneity measure, local similarity (species overlap),
 and region similarity (species overlap).
 See Chao, Chiu and Jost 2014 Table 2 for more information.
 }
 \description{
-Calculate taxonomic gamma, alpha, and beta diversity for communities, as
+Calculate taxonomic gamma, alpha, and beta diversity across all communities, as
 well as site similarity. If comm has 2 sites, this function gives pair comparison.
 If comm has >2 sites, gamma diversity is the diversity of the pooled assemblage,
 alpha is the average diversity across all site, beta is across all communities.
@@ -41,11 +42,7 @@ hill_taxa_parti(comm = dummy$abun, q = 1, rel_then_pool = FALSE)
 hill_taxa_parti(comm = dummy$abun, q = 2)
 hill_taxa_parti(comm = dummy$abun, q = 3)
 
-
 }
 \seealso{
 \code{\link{hill_taxa_parti}}
-}
-\author{
-Daijiang Li
 }

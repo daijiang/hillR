@@ -5,8 +5,6 @@ NULL
 #'
 #' Calculate taxonomic diversity for each site (alpha diversity).
 #'
-#' @author Daijiang Li
-#'
 #' @param comm data frame of vegtation data. Sites as rows, species as columns.
 #' @param q hill number, q = 0 (default) to get species richness,
 #' q = 1 to get shannon entropy, q = 2 will give inverse Simpson.
@@ -25,9 +23,7 @@ NULL
 #' # same as: vegan::diversity(x = dummy$abun, index = "invsimpson")
 #' hill_taxa(comm = dummy$abun, q = 0.999)
 #'
-#'
-hill_taxa = function (comm, q = 0, MARGIN = 1, base = exp(1))
-{
+hill_taxa = function (comm, q = 0, MARGIN = 1, base = exp(1)){
   comm <- drop(as.matrix(comm))
   if (length(dim(comm)) > 1) { # get relative abundance
     total <- apply(comm, MARGIN, sum)

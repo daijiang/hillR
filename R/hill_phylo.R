@@ -27,6 +27,8 @@ dat_prep_phylo = function(comm, tree){
 
 #' Phylogenetic diversity through Hill Numbers
 #'
+#' Calculate alpha phylogenetic diversity based on Hill numbers
+#'
 #' @param comm data frame of vegtation data. Sites as rows, species as columns.
 #' @param tree a phylogeny with class "phylo".
 #' @param q hill number, any non-negative value.
@@ -36,8 +38,6 @@ dat_prep_phylo = function(comm, tree){
 #'
 #' @return a vector of hill number based phylogenetic diversity for all sites.
 #' @export
-#' @rdname hill_phylo
-#'
 #' @examples
 #' comm = dummy = FD::dummy$abun
 #' tree = ape::rtree(n = ncol(comm), tip.label = paste0("sp", 1:8))
@@ -45,6 +45,7 @@ dat_prep_phylo = function(comm, tree){
 #' hill_phylo(comm, tree, q = 0.999)
 #' hill_phylo(comm, tree, q = 1)
 #' hill_phylo(comm, tree, q = 2)
+#'
 hill_phylo = function(comm, tree, q = 0, base = exp(1),
                       rel_then_pool = TRUE, show.warning = TRUE){
   if (any(comm < 0)) stop("Negative value in comm data")

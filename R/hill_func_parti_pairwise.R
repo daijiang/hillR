@@ -4,8 +4,6 @@
 #'  well as site similarity. It is based on \code{\link{hill_func_parti}}.
 #'  If comm has >2 sites, this function will give results for all pairwise comparisons.
 #'
-#' @author Daijiang Li
-#'
 #' @param comm data frame of vegtation data. Sites as rows, species as columns.
 #' @param traits data frame of species functional traits data. Species as rows, traits as columns.
 #' It can include both continuous and categorical data.
@@ -32,7 +30,6 @@
 #' hill_func_parti_pairwise(comm = dummy$abun, traits = dummy$trait, q = 0.9999)
 #' hill_func_parti_pairwise(comm = dummy$abun, traits = dummy$trait, q = 2)
 #' hill_func_parti_pairwise(comm = dummy$abun, traits = dummy$trait, q = 3)
-#'
 #'
 hill_func_parti_pairwise = function(comm, traits, traits_as_is = FALSE,
                                     q = 0, rel_then_pool = TRUE,

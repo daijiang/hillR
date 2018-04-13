@@ -6,7 +6,7 @@
 \usage{
 hill_func(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1),
   checkdata = TRUE, div_by_sp = FALSE, ord = c("podani", "metric"),
-  fdis = TRUE, stand_dji = FALSE)
+  fdis = TRUE, stand_dij = FALSE)
 }
 \arguments{
 \item{comm}{data frame of vegtation data. Sites as rows, species as columns.}
@@ -26,7 +26,7 @@ matrix using `FD::gowdis(traits)`. If all traits are numeric, then it will use E
 \item{div_by_sp}{as FD calculated in this way will be highly correlated with taxonomic diversity,
 one simple way to correct this is to divide the results by the number of species. Default is FALSE.}
 
-\item{ord}{ord in gowdis.}
+\item{ord}{ord in FD::gowdis.}
 
 \item{fdis}{whether to calculated FDis, default is TRUE.}
 
@@ -50,8 +50,4 @@ hill_func(comm = dummy$abun, traits = dummy$trait, q = 0.9999)
 hill_func(comm = dummy$abun, traits = dummy$trait, q = 2)
 hill_func(comm = dummy$abun, traits = dummy$trait, q = 3)
 
-
-}
-\author{
-Daijiang Li
 }

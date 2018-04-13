@@ -32,8 +32,4 @@ hill_taxa(comm = dummy$abun, q = 2)
 # same as: vegan::diversity(x = dummy$abun, index = "invsimpson")
 hill_taxa(comm = dummy$abun, q = 0.999)
 
-
-}
-\author{
-Daijiang Li
 }

@@ -1,8 +1,19 @@
-#' @rdname hill_phylo
+#' Phylogenetic diversity of multiple sites
+#'
+#' Calculate overall phylogenetic diversity and site similarity across multiple sites.
+#'
+#' @param comm data frame of vegtation data. Sites as rows, species as columns.
+#' @param tree a phylogeny with class "phylo".
+#' @param q hill number, any non-negative value.
+#' @param base default is exp(1), the base of log.
+#' @param rel_then_pool default is TRUE. Abundance of species are changed to relative abundance within sites.
+#' @param show.warning whether to print warning, default is TRUE.
 #' @export
-#' @return a data frame with one row and six columns: q, gamma diversity, alpha diveristy,
+#' @return a data frame with one row (across all sites) and six columns: q, gamma diversity, alpha diveristy,
 #' beta diversity, local similarity, and region similarity.
 #' @examples
+#' comm = dummy = FD::dummy$abun
+#' tree = ape::rtree(n = ncol(comm), tip.label = paste0("sp", 1:8))
 #' hill_phylo_parti(comm, tree, q = 0)
 #' hill_phylo_parti(comm, tree, q = 0.999)
 #' hill_phylo_parti(comm, tree, q = 1)

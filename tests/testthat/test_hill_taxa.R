@@ -84,3 +84,35 @@ test_that("vegetariam package vs hillR, taxa beta diversity, q = 2, two sites", 
   a3 = vegetarian::similarity(dummy$abun[1:2,], q = 2)
   expect_equal(a3, b$local_similarity)
 })
+
+test_that("taxanomic similarity should be between 0 and 1; q = 0", {
+  a = hillR::hill_taxa_parti(comm = dummy$abun, q = 0)
+  expect_lte(a$local_similarity, 1)
+  expect_gte(a$local_similarity, 0)
+  expect_lte(a$region_similarity, 1)
+  expect_gte(a$region_similarity, 0)
+})
+
+test_that("taxanomic similarity should be between 0 and 1; q = 1", {
+  a = hillR::hill_taxa_parti(comm = dummy$abun, q = 1)
+  expect_lte(a$local_similarity, 1)
+  expect_gte(a$local_similarity, 0)
+  expect_lte(a$region_similarity, 1)
+  expect_gte(a$region_similarity, 0)
+})
+
+test_that("taxanomic similarity should be between 0 and 1; q = 2", {
+  a = hillR::hill_taxa_parti(comm = dummy$abun, q = 2)
+  expect_lte(a$local_similarity, 1)
+  expect_gte(a$local_similarity, 0)
+  expect_lte(a$region_similarity, 1)
+  expect_gte(a$region_similarity, 0)
+})
+
+test_that("pairwise similarity", {
+  a = hillR::hill_taxa_parti_pairwise(comm = dummy$abun, q = 0)
+  expect_equal(nrow(a), choose(nrow(dummy$abun), 2))
+
+  a2 = hillR::hill_taxa_parti_pairwise(comm = dummy$abun, q = 1)
+  expect_equal(nrow(a2), choose(nrow(dummy$abun), 2))
+})

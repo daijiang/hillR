@@ -49,11 +49,7 @@ hill_func_parti_pairwise(comm = dummy$abun, traits = dummy$trait, q = 0.9999)
 hill_func_parti_pairwise(comm = dummy$abun, traits = dummy$trait, q = 2)
 hill_func_parti_pairwise(comm = dummy$abun, traits = dummy$trait, q = 3)
 
-
 }
 \seealso{
 \code{\link{hill_func_parti}}
-}
-\author{
-Daijiang Li
 }

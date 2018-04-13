@@ -1,9 +1,7 @@
 #' Decompostion of functional diversity through Hill Numbers
 #'
-#' Calculate functional gamma, alpha, and beta diversity for communities, as
+#' Calculate functional gamma, alpha, and beta diversity for all communities, as
 #'  well as site similarity. These values are based on ALL communities.
-#'
-#' @author Daijiang Li
 #'
 #' @param comm data frame of vegtation data. Sites as rows, species as columns.
 #' @param traits data frame of species functional traits data. Species as rows, traits as columns.
@@ -20,7 +18,7 @@
 #' @param stand_dij whether to standardize distance matrix to have max value of 1? Default is FALSE.
 #' @param show.warning whether to print warning, default is TRUE
 #' @export
-#' @return  a data frame with one row, including these columns: q, RaoQ of pooled assemblage,
+#' @return  a data frame with one row (across all sites), including these columns: q, RaoQ of pooled assemblage,
 #' gamma diversity, alpha diveristy, beta diversity, local species overlap, and region species
 #' overlap. See Chiu and Chao 2014 Table 3 for more information.
 #' @seealso \code{\link{hill_taxa_parti}}, \code{\link{hill_func}}
@@ -33,12 +31,11 @@
 #' hill_func_parti(comm = dummy$abun, traits = dummy$trait, q = 2)
 #' hill_func_parti(comm = dummy$abun, traits = dummy$trait, q = 3)
 #'
-#'
 hill_func_parti = function(comm, traits, traits_as_is = FALSE, q = 0,
                            base = exp(1), checkdata=TRUE,
                            rel_then_pool = TRUE,
                            ord = c("podani", "metric"),
-                           stand_dji = FALSE, show.warning = TRUE){
+                           stand_dij = FALSE, show.warning = TRUE){
   if (checkdata) {
     if (any(comm < 0))
       stop("Negative value in comm data")
@@ -119,7 +116,7 @@ hill_func_parti = function(comm, traits, traits_as_is = FALSE, q = 0,
   S = ncol(comm)
 
   dij = as.matrix(dij)
-  if(stand_dji) dij = dij/max(dij)
+  if(stand_dij) dij = dij/max(dij)
 
   if(rel_then_pool){
     comm_gamma = colSums(sweep(comm, 1, rowSums(comm, na.rm = TRUE), "/"))/ N
