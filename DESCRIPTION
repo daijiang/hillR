@@ -16,7 +16,8 @@ Imports:
     FD,
     plyr,
     ade4,
-    ape
+    ape,
+    tibble
 RoxygenNote: 6.0.1
 Suggests: 
     testthat,
