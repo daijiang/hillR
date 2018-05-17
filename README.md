@@ -1,5 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+[![Coverage status](https://codecov.io/gh/daijiang/hillR/branch/master/graph/badge.svg)](https://codecov.io/github/daijiang/hillR?branch=master)
+
 hillR
 =====
 
@@ -47,9 +49,9 @@ hill_func(comm, traits, q = 0) # functional alpha diversity
 
 hill_phylo(comm, tree, q = 0) # phylogenetic alpha diversity
 ##     com1     com2     com3     com4     com5     com6     com7     com8 
-## 4.002405 3.736177 2.774771 2.380610 3.345678 4.390564 3.647317 2.679041 
+## 4.607479 2.635823 3.372086 1.947757 3.490657 6.019674 3.539474 4.717898 
 ##     com9    com10 
-## 4.468793 3.989854
+## 5.189872 4.381499
 ```
 
 Calculate taxonomic, functional, and phylogenetic diversity across multiple sites
@@ -68,7 +70,7 @@ hill_func_parti(comm, traits, q = 0) # functional diversity across all sites
 
 hill_phylo_parti(comm, tree, q = 0) # phylogenetic diversity across all sites
 ##   q PD_gamma PD_alpha  PD_beta local_similarity region_similarity
-## 1 0 5.984094 3.541521 1.689696        0.9233671         0.5464694
+## 1 0 6.602742 3.990222 1.654731        0.9272522         0.5603644
 ```
 
 Calculate pairwise taxonomic, functional, and phylogenetic diversity
@@ -111,16 +113,16 @@ hill_phylo_parti_pairwise(comm, tree, q = 0, show.warning = F) # pairwise phylog
 ## # A tibble: 45 x 8
 ##        q site1 site2 PD_gamma PD_alpha PD_beta local_similarity
 ##    <dbl> <fct> <fct>    <dbl>    <dbl>   <dbl>            <dbl>
-##  1     0 com1  com2      5.16     3.87    1.33            0.666
-##  2     0 com1  com3      4.47     3.39    1.32            0.680
-##  3     0 com2  com3      4.18     3.26    1.28            0.718
-##  4     0 com1  com4      4.41     3.19    1.38            0.618
-##  5     0 com2  com4      4.58     3.06    1.50            0.502
-##  6     0 com3  com4      3.18     2.58    1.24            0.765
-##  7     0 com1  com5      5.10     3.67    1.39            0.612
-##  8     0 com2  com5      4.15     3.54    1.17            0.829
-##  9     0 com3  com5      4.58     3.06    1.50            0.502
-## 10     0 com4  com5      3.78     2.86    1.32            0.679
+##  1     0 com1  com2      4.95     3.62    1.37           0.633 
+##  2     0 com1  com3      4.87     3.99    1.22           0.781 
+##  3     0 com2  com3      3.97     3.00    1.32           0.677 
+##  4     0 com1  com4      5.72     3.28    1.75           0.255 
+##  5     0 com2  com4      4.44     2.29    1.94           0.0610
+##  6     0 com3  com4      4.48     2.66    1.69           0.314 
+##  7     0 com1  com5      5.81     4.05    1.43           0.566 
+##  8     0 com2  com5      3.75     3.06    1.22           0.776 
+##  9     0 com3  com5      5.09     3.43    1.48           0.518 
+## 10     0 com4  com5      4.19     2.72    1.54           0.461 
 ## # ... with 35 more rows, and 1 more variable: region_similarity <dbl>
 ```
 

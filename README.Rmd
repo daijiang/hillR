@@ -13,6 +13,8 @@ knitr::opts_chunk$set(
 )
 ```
 
+[![Coverage status](https://codecov.io/gh/daijiang/hillR/branch/master/graph/badge.svg)](https://codecov.io/github/daijiang/hillR?branch=master)
+
 # hillR
 
 This package contains R functions to calculate taxonomic, functional, and phylogenetic diversity and site similarity through Hill Numbers. The underlying methods are based on Chao, Chiu and Jost 2014 and Chiu & Chao 2014.
