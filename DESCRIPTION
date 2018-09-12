@@ -25,3 +25,4 @@ Suggests:
     covr
 URL: https://github.com/daijiang/hillR
 BugReports: https://github.com/daijiang/hillR/issues
+Encoding: UTF-8
