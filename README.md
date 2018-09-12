@@ -136,7 +136,9 @@ Citation
 
 Please cite this package if you use it.
 
-Daijiang Li. hillR: taxonomic, functional, and phylogenetic diversity and similarity through Hill Numbers. R package version 0.3. [![DOI](https://zenodo.org/badge/31509531.svg)](https://zenodo.org/badge/latestdoi/31509531)
+Li Daijiang. hillR: taxonomic, functional, and phylogenetic diversity and similarity through Hill Numbers. R package version 0.3. [![DOI](https://zenodo.org/badge/31509531.svg)](https://zenodo.org/badge/latestdoi/31509531)
+
+(Li is my last name.)
 
 Reference
 =========
