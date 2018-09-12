@@ -23,3 +23,5 @@ Suggests:
     testthat,
     vegetarian,
     covr
+URL: https://github.com/daijiang/hillR
+BugReports: https://github.com/daijiang/hillR/issues
