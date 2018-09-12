@@ -18,6 +18,9 @@
 #' @param stand_dij whether to standardize distance matrix to have max value of 1? Default is FALSE.
 #' @param show.warning whether to print warning, default is TRUE
 #' @export
+#' @references Chao, Anne, Chun-Huo Chiu, and Lou Jost. “Unifying Species Diversity, Phylogenetic Diversity, Functional Diversity, and Related Similarity and Differentiation Measures Through Hill Numbers.” Annual Review of Ecology, Evolution, and Systematics 45, no. 1 (2014): 297–324. doi:10.1146/annurev-ecolsys-120213-091540.
+#'
+#' Chiu, Chun-Huo, and Anne Chao. “Distance-Based Functional Diversity Measures and Their Decomposition: A Framework Based on Hill Numbers.” PLoS ONE 9, no. 7 (July 7, 2014): e100014. doi:10.1371/journal.pone.0100014.
 #' @return  a data frame with one row (across all sites), including these columns: q, RaoQ of pooled assemblage,
 #' gamma diversity, alpha diveristy, beta diversity, local species overlap, and region species
 #' overlap. See Chiu and Chao 2014 Table 3 for more information.
@@ -31,11 +34,11 @@
 #' hill_func_parti(comm = dummy$abun, traits = dummy$trait, q = 2)
 #' hill_func_parti(comm = dummy$abun, traits = dummy$trait, q = 3)
 #'
-hill_func_parti <- function(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1), 
-    checkdata = TRUE, rel_then_pool = TRUE, ord = c("podani", "metric"), stand_dij = FALSE, 
+hill_func_parti <- function(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1),
+    checkdata = TRUE, rel_then_pool = TRUE, ord = c("podani", "metric"), stand_dij = FALSE,
     show.warning = TRUE) {
     if (checkdata) {
-        if (any(comm < 0)) 
+        if (any(comm < 0))
             stop("Negative value in comm data")
         if (is.null(rownames(traits))) {
             stop("\n Traits have no row names\n")
@@ -44,24 +47,24 @@ hill_func_parti <- function(comm, traits, traits_as_is = FALSE, q = 0, base = ex
             stop("\n Comm data have no col names\n")
         }
     }
-    
-    if (any(colSums(comm) == 0) & show.warning) 
+
+    if (any(colSums(comm) == 0) & show.warning)
         warning("Some species in comm data were not observed in any site,\n
                                       delete them...")
     comm <- comm[, colSums(comm) != 0]
-    
+
     if (any(!colnames(comm) %in% rownames(traits))) {
         warning("\n There are species from community data that are not on traits matrix\n
             Delete these species from comm data...\n")
         comm <- comm[, colnames(comm) %in% rownames(traits)]
     }
-    
+
     if (traits_as_is) {
         if (any(!rownames(traits) %in% colnames(comm))) {
-            if (show.warning) 
+            if (show.warning)
                 warning("\n There are species from trait data that are not in comm matrix\n
               Delete these species from trait data...\n")
-            traits <- traits[rownames(traits) %in% colnames(comm), colnames(traits) %in% 
+            traits <- traits[rownames(traits) %in% colnames(comm), colnames(traits) %in%
                 colnames(comm)]
         }
         dij <- as.matrix(traits)
@@ -72,12 +75,12 @@ hill_func_parti <- function(comm, traits, traits_as_is = FALSE, q = 0, base = ex
         traits <- plyr::arrange(traits[traits$sp %in% colnames(comm), ], sp)
         rownames(traits) <- traits$sp
         traits$sp <- NULL
-        
+
         if (ncol(traits) == 1) {
             # only 1 trait
             if (any(is.na(traits))) {
-                if (show.warning) 
-                  warning("Warning: Species with missing trait values have been excluded.", 
+                if (show.warning)
+                  warning("Warning: Species with missing trait values have been excluded.",
                     "\n")
                 traits <- na.omit(traits)
                 comm <- comm[, colnames(comm) %in% rownames(traits)]
@@ -117,39 +120,39 @@ hill_func_parti <- function(comm, traits, traits_as_is = FALSE, q = 0, base = ex
             # dij = gowdis(x=traits, ...)
         }
     }
-    
+
     comm <- as.matrix(comm)
     N <- nrow(comm)
     S <- ncol(comm)
-    
+
     dij <- as.matrix(dij)
-    if (stand_dij) 
+    if (stand_dij)
         dij <- dij/max(dij)
-    
+
     if (rel_then_pool) {
         comm_gamma <- colSums(sweep(comm, 1, rowSums(comm, na.rm = TRUE), "/"))/N
         # relative abun
     } else {
         comm_gamma <- colSums(comm)/sum(comm)
     }
-    
-    if (!all.equal(sum(comm_gamma), 1)) 
+
+    if (!all.equal(sum(comm_gamma), 1))
         stop("Accumlative relative abundance should be 1")
-    
+
     if (rel_then_pool) {
         comm_alpha <- sweep(comm, 1, rowSums(comm, na.rm = TRUE), "/")  # relative abun
     } else {
         comm_alpha <- comm
     }
-    
+
     Q_gamma <- as.vector(comm_gamma %*% dij %*% matrix(comm_gamma, ncol = 1))
-    
+
     ## FD_q_gamma
     if (q == 1) {
         if (Q_gamma == 0) {
             FD_q_gamma <- 0
         } else {
-            FD_q_gamma <- exp(-1 * sum(dij * (outer(comm_gamma, comm_gamma, FUN = "*")/Q_gamma) * 
+            FD_q_gamma <- exp(-1 * sum(dij * (outer(comm_gamma, comm_gamma, FUN = "*")/Q_gamma) *
                 log(outer(comm_gamma, comm_gamma, FUN = "*")/Q_gamma)))
         }
         # Chiu & Chao 2014 p.7, equ 6b q != 0 or 1
@@ -157,12 +160,12 @@ hill_func_parti <- function(comm, traits, traits_as_is = FALSE, q = 0, base = ex
         if (Q_gamma == 0) {
             FD_q_gamma <- 0
         } else {
-            FD_q_gamma <- sum(dij * ((outer(comm_gamma, comm_gamma, FUN = "*")/Q_gamma)^q))^(1/(1 - 
+            FD_q_gamma <- sum(dij * ((outer(comm_gamma, comm_gamma, FUN = "*")/Q_gamma)^q))^(1/(1 -
                 q))
         }
         # Chiu & Chao 2014 p.7, equ 6a
     }
-    
+
     ## FD_q_alpha if q_gamma is 0, no need to calc alpha
     if (Q_gamma == 0) {
         FD_q_alpha <- 1e-05
@@ -204,23 +207,23 @@ hill_func_parti <- function(comm, traits, traits_as_is = FALSE, q = 0, base = ex
             }
         }
     }
-    
+
     FD_q_beta <- FD_q_gamma/FD_q_alpha
-    
+
     if (q == 1) {
         local_dist_overlap <- 1 - ((log(FD_q_gamma) - log(FD_q_alpha))/(2 * log(N)))
     } else {
-        local_dist_overlap <- (N^(2 * (1 - q)) - FD_q_beta^(1 - q))/(N^(2 * (1 - q)) - 
+        local_dist_overlap <- (N^(2 * (1 - q)) - FD_q_beta^(1 - q))/(N^(2 * (1 - q)) -
             1)
     }
-    
+
     if (q == 1) {
         region_dist_overlap <- 1 - ((log(FD_q_gamma) - log(FD_q_alpha))/(2 * log(N)))
     } else {
-        region_dist_overlap <- ((1/FD_q_beta)^(1 - q) - (1/N)^(2 * (1 - q)))/(1 - (1/N)^(2 * 
+        region_dist_overlap <- ((1/FD_q_beta)^(1 - q) - (1/N)^(2 * (1 - q)))/(1 - (1/N)^(2 *
             (1 - q)))
     }
-    
-    return(data.frame(q = q, raoQ_gamma = Q_gamma, FD_gamma = FD_q_gamma, FD_alpha = FD_q_alpha, 
+
+    return(data.frame(q = q, raoQ_gamma = Q_gamma, FD_gamma = FD_q_gamma, FD_alpha = FD_q_alpha,
         FD_beta = FD_q_beta, local_similarity = local_dist_overlap, region_similarity = region_dist_overlap))
 }

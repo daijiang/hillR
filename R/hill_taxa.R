@@ -13,6 +13,9 @@ NULL
 #' @export
 #' @return a named vector, diversity values for each site in the comm.
 #' @rdname hill_taxa
+#' @references Chao, Anne, Chun-Huo Chiu, and Lou Jost. “Unifying Species Diversity, Phylogenetic Diversity, Functional Diversity, and Related Similarity and Differentiation Measures Through Hill Numbers.” Annual Review of Ecology, Evolution, and Systematics 45, no. 1 (2014): 297–324. doi:10.1146/annurev-ecolsys-120213-091540.
+#'
+#' Jost, Lou. "Entropy and diversity." Oikos 113, no. 2 (2006): 363-375.
 #' @examples
 #' dummy = FD::dummy
 #' hill_taxa(comm = dummy$abun, q = 0)
@@ -32,7 +35,7 @@ hill_taxa <- function(comm, q = 0, MARGIN = 1, base = exp(1)) {
     } else {
         comm <- comm/sum(comm)
     }
-    
+
     if (q == 0) {
         # richness
         if (length(dim(comm)) > 1) {
