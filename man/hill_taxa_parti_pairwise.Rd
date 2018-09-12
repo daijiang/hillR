@@ -34,7 +34,7 @@ If comm has >2 sites, this function will give results for all pairwise compariso
 \examples{
 dummy = FD::dummy
 hill_taxa_parti_pairwise(comm = dummy$abun, q = 0)
-hill_taxa_parti_pairwise(comm = dummy$abun, q = 0, output = "matrix")
+hill_taxa_parti_pairwise(comm = dummy$abun, q = 0, output = 'matrix')
 hill_taxa_parti_pairwise(comm = dummy$abun, q = 1)
 hill_taxa_parti_pairwise(comm = dummy$abun, q = 0.9999999)
 hill_taxa_parti_pairwise(comm = dummy$abun, q = 0.9999999, rel_then_pool = FALSE)

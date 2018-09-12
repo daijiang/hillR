@@ -30,188 +30,183 @@
 #' hill_func(comm = dummy$abun, traits = dummy$trait, q = 2)
 #' hill_func(comm = dummy$abun, traits = dummy$trait, q = 3)
 #'
-hill_func = function(comm, traits, traits_as_is = FALSE, q = 0,
-                     base = exp(1), checkdata=TRUE, div_by_sp = FALSE,
-                     # corr = c("cailliez", "sqrt", "lingoes", "none"),
-                     ord = c("podani", "metric"), fdis = TRUE,
-                     stand_dij = FALSE){
-  if (checkdata) {
-    if (any(comm < 0))
-      stop("Negative value in comm data")
-    if (is.null(rownames(traits))) {
-      stop("\n Traits have no row names\n")
-    }
-    if (is.null(colnames(comm))) {
-      stop("\n Comm data have no col names\n")
-    }
-  }
-
-  if(any(!colnames(comm) %in% rownames(traits))){
-    warning("\n There are species from community data that are not on traits matrix\nDelete these species from comm data...\n")
-    comm = comm[, colnames(comm) %in% rownames(traits)]
-  }
-
-  # all(rownames(traits) == names(comm))
-
-  if(traits_as_is){ # traits is already a distance matrix
-    dij = as.matrix(traits)
-  } else { # traits is not a distance matrix
-    traits = as.data.frame(traits)
-    traits$sp = sp = rownames(traits) # R CMD CHECK complain about no global var. sp
-    traits = plyr::arrange(traits[traits$sp %in% colnames(comm), ], sp)
-    rownames(traits) = traits$sp
-    traits$sp = NULL
-
-    if(ncol(traits) == 1){ # only 1 trait
-      if (any(is.na(traits))){
-        warning("Warning: Species with missing trait values have been excluded.","\n")
-        traits = na.omit(traits)
-        comm = comm[, colnames(comm) %in% rownames(traits)]
-      }
-      if(is.numeric(traits[, 1])){ # 1 numeric trait
-        dij = dist(traits)
-      }
-      if (is.factor(traits[, 1]) | is.character(traits[, 1])){ # 1 categorical trait
-        if (is.ordered(traits[,1])) {
-          traits2 <- data.frame(rank(traits[, 1]))
-          rownames(traits2) = rownames(traits)
-          names(traits2) = names(traits)
-          dij = dist(traits2)
-        } else {
-          traits[, 1] <- as.factor(traits[, 1])
-          x.f <- as.factor(traits[, 1])
-          x.dummy <- diag(nlevels(x.f) )[x.f, ]
-          x.dummy.df <- data.frame(x.dummy, row.names = rownames(traits))
-          dij <- ade4::dist.binary(x.dummy.df, method = 2)
+hill_func <- function(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1), checkdata = TRUE, 
+    div_by_sp = FALSE, ord = c("podani", "metric"), fdis = TRUE, stand_dij = FALSE) {
+    if (checkdata) {
+        if (any(comm < 0)) 
+            stop("Negative value in comm data")
+        if (is.null(rownames(traits))) {
+            stop("\n Traits have no row names\n")
         }
-      }
+        if (is.null(colnames(comm))) {
+            stop("\n Comm data have no col names\n")
+        }
+    }
+    
+    if (any(!colnames(comm) %in% rownames(traits))) {
+        warning("\n There are species from community data that are not on traits matrix\nDelete these species from comm data...\n")
+        comm <- comm[, colnames(comm) %in% rownames(traits)]
+    }
+    
+    # all(rownames(traits) == names(comm))
+    
+    if (traits_as_is) {
+        # traits is already a distance matrix
+        dij <- as.matrix(traits)
     } else {
-      # more than 1 trait:
-      for(i in 1: ncol(traits)){
-        if(is.factor(traits[, i]) & nlevels(traits[, i]) == 2){
-          traits[,i] = as.numeric(traits[,i]) - 1 # so to be 0, 1
+        # traits is not a distance matrix
+        traits <- as.data.frame(traits)
+        traits$sp <- sp <- rownames(traits)  # R CMD CHECK complain about no global var. sp
+        traits <- plyr::arrange(traits[traits$sp %in% colnames(comm), ], sp)
+        rownames(traits) <- traits$sp
+        traits$sp <- NULL
+        
+        if (ncol(traits) == 1) {
+            # only 1 trait
+            if (any(is.na(traits))) {
+                warning("Warning: Species with missing trait values have been excluded.", 
+                  "\n")
+                traits <- na.omit(traits)
+                comm <- comm[, colnames(comm) %in% rownames(traits)]
+            }
+            if (is.numeric(traits[, 1])) {
+                # 1 numeric trait
+                dij <- dist(traits)
+            }
+            if (is.factor(traits[, 1]) | is.character(traits[, 1])) {
+                # 1 categorical trait
+                if (is.ordered(traits[, 1])) {
+                  traits2 <- data.frame(rank(traits[, 1]))
+                  rownames(traits2) <- rownames(traits)
+                  names(traits2) <- names(traits)
+                  dij <- dist(traits2)
+                } else {
+                  traits[, 1] <- as.factor(traits[, 1])
+                  x.f <- as.factor(traits[, 1])
+                  x.dummy <- diag(nlevels(x.f))[x.f, ]
+                  x.dummy.df <- data.frame(x.dummy, row.names = rownames(traits))
+                  dij <- ade4::dist.binary(x.dummy.df, method = 2)
+                }
+            }
+        } else {
+            # more than 1 trait:
+            for (i in 1:ncol(traits)) {
+                if (is.factor(traits[, i]) & nlevels(traits[, i]) == 2) {
+                  traits[, i] <- as.numeric(traits[, i]) - 1  # so to be 0, 1
+                }
+            }
+            if (all(sapply(traits, is.numeric)) & all(!is.na(traits))) {
+                dij <- dist(apply(traits, 2, scale, center = TRUE, scale = TRUE))
+            } else {
+                ord <- match.arg(ord)
+                dij <- FD::gowdis(x = traits, asym.bin = NULL, ord = ord)
+            }
+            # dij = gowdis(x=traits, ...)
         }
-      }
-      if(all(sapply(traits, is.numeric)) & all(!is.na(traits))){
-        dij = dist(apply(traits, 2, scale, center = TRUE, scale = TRUE))
-      } else {
-        ord = match.arg(ord)
-        dij = FD::gowdis(x = traits, asym.bin = NULL, ord = ord)
-      }
-      # dij = gowdis(x=traits, ...)
-    }
-
-    if(fdis){
-      # calculate fdis
-      FDis = FD::fdisp(d = dij, a = as.matrix(comm))$FDis
-    }
-
-    #     if (!is.euclid(dij))
-    #     {
-    #       if (corr == "lingoes")
-    #       {
-    #         dij2 <- lingoes(dij)
-    #         warning("Species x species distance matrix was not Euclidean. Lingoes correction was applied.","\n")
-    #       }
-    #       if (corr == "cailliez")
-    #       {
-    #         dij2 <- cailliez(dij)
-    #         warning("Species x species distance matrix was not Euclidean. Cailliez correction was applied.","\n")
-    #       }
-    #       if (corr == "sqrt")
-    #       {
-    #         dij2 <- sqrt(dij)
-    #         # check if sqrt correction actually worked
-    #         if(!is.euclid(dij2) ) stop("Species x species distance matrix was still is not Euclidean after 'sqrt' correction. Use another correction method.","\n")
-    #         if (is.euclid(dij2) ) warning("Species x species distance matrix was not Euclidean. 'sqrt' correction was applied.","\n")
-    #       }
-    #       if (corr == "none")
-    #       {
-    #         dij2 <- quasieuclid(dij)
-    #         warning("Species x species distance was not Euclidean, but no correction was applied. Only the PCoA axes with positive eigenvalues were kept.","\n")
-    #       }
-    #       dij = dij2
-    #     }
-  }
-
-  comm = as.matrix(comm)
-  N = nrow(comm)
-  S = ncol(comm)
-  SR = rowSums(comm > 0) # species richness of each site
-  comm = sweep(comm, 1, rowSums(comm, na.rm = TRUE), "/") # relative abun
-
-  dij = as.matrix(dij)
-  if(stand_dij) dij = dij/max(dij)
-
-  #   inter = comm %*% dij # \sum_i,j_S(p_i * dij)
-  #   Q = rowSums(sweep(comm,1,inter,"*", check.margin = F))/2 # \sum_j_S\sum_i,j_S(p_i * dij)
-  Q = vector("numeric", length = N)
-  names(Q) = dimnames(comm)[[1]]
-  for(k in 1:N){
-    Q[k] = (comm[k,]) %*% dij %*% matrix(comm[k,], ncol = 1) # /2
-    # Q[k] = sum(dij * outer(comm[k,], comm[k,], "*"))/2
-  }
-
-  ## D_q
-  FD_q = MD_q = D_q = vector("numeric", length = N)
-  names(D_q) = dimnames(comm)[[1]]
-  names(MD_q) = dimnames(comm)[[1]]
-  names(FD_q) = dimnames(comm)[[1]]
-
-  if(q == 0){
-    for(k in 1:N){
-      df2 = comm[k,][comm[k,] > 0]
-      dis2 = dij[names(df2), names(df2)]
-      if(Q[k] == 0){
-        D_q[k] = 0
-      } else{
-        D_q[k] = sum(dis2/Q[k])^0.5
-      }
-      MD_q[k] = D_q[k] * Q[k]
-      FD_q[k] = (D_q[k])^2 * Q[k]
-    }
-  } else{
-    if(q == 1){
-      for(k in 1:N){
-        df2 = comm[k,][comm[k,] > 0]
-        dis2 = dij[names(df2), names(df2)]
-        if(Q[k] == 0){
-          D_q[k] = 0
-        } else{
-          D_q[k] = exp(-0.5 * sum(dis2/Q[k] *
-                                    outer(df2, df2, FUN = "*") *
-                                    log(outer(df2, df2, FUN = "*"),base)))
-          # exp(-0.5 * (dij/Q) * pi*pj * log(pi*pj)
+        
+        if (fdis) {
+            # calculate fdis
+            FDis <- FD::fdisp(d = dij, a = as.matrix(comm))$FDis
         }
-        MD_q[k] = D_q[k] * Q[k]
-        FD_q[k] = (D_q[k])^2 * Q[k]
-      }
-    } else{ #q != 0 or 1
-      for(k in 1:N){
-        df2 = comm[k,][comm[k,] > 0]
-        dis2 = dij[names(df2), names(df2)]
-        if(Q[k] == 0){
-          D_q[k] = 0
-        } else{
-          din = sum(dis2/Q[k] * (outer(df2, df2, FUN = "*")^q))
-          if(din == 0) {D_q[k] = 0} else {D_q[k] = din^(1/(2*(1-q)))}
+        
+        # if (!is.euclid(dij)) { if (corr == 'lingoes') { dij2 <- lingoes(dij)
+        # warning('Species x species distance matrix was not Euclidean. Lingoes correction was
+        # applied.','\n') } if (corr == 'cailliez') { dij2 <- cailliez(dij) warning('Species
+        # x species distance matrix was not Euclidean. Cailliez correction was
+        # applied.','\n') } if (corr == 'sqrt') { dij2 <- sqrt(dij) # check if sqrt
+        # correction actually worked if(!is.euclid(dij2) ) stop('Species x species distance
+        # matrix was still is not Euclidean after 'sqrt' correction. Use another correction
+        # method.','\n') if (is.euclid(dij2) ) warning('Species x species distance matrix was
+        # not Euclidean. 'sqrt' correction was applied.','\n') } if (corr == 'none') { dij2
+        # <- quasieuclid(dij) warning('Species x species distance was not Euclidean, but no
+        # correction was applied. Only the PCoA axes with positive eigenvalues were
+        # kept.','\n') } dij = dij2 }
+    }
+    
+    comm <- as.matrix(comm)
+    N <- nrow(comm)
+    S <- ncol(comm)
+    SR <- rowSums(comm > 0)  # species richness of each site
+    comm <- sweep(comm, 1, rowSums(comm, na.rm = TRUE), "/")  # relative abun
+    
+    dij <- as.matrix(dij)
+    if (stand_dij) 
+        dij <- dij/max(dij)
+    
+    # inter = comm %*% dij # \sum_i,j_S(p_i * dij) Q = rowSums(sweep(comm,1,inter,'*',
+    # check.margin = F))/2 # \sum_j_S\sum_i,j_S(p_i * dij)
+    Q <- vector("numeric", length = N)
+    names(Q) <- dimnames(comm)[[1]]
+    for (k in 1:N) {
+        Q[k] <- (comm[k, ]) %*% dij %*% matrix(comm[k, ], ncol = 1)  # /2
+        # Q[k] = sum(dij * outer(comm[k,], comm[k,], '*'))/2
+    }
+    
+    ## D_q
+    FD_q <- MD_q <- D_q <- vector("numeric", length = N)
+    names(D_q) <- dimnames(comm)[[1]]
+    names(MD_q) <- dimnames(comm)[[1]]
+    names(FD_q) <- dimnames(comm)[[1]]
+    
+    if (q == 0) {
+        for (k in 1:N) {
+            df2 <- comm[k, ][comm[k, ] > 0]
+            dis2 <- dij[names(df2), names(df2)]
+            if (Q[k] == 0) {
+                D_q[k] <- 0
+            } else {
+                D_q[k] <- sum(dis2/Q[k])^0.5
+            }
+            MD_q[k] <- D_q[k] * Q[k]
+            FD_q[k] <- (D_q[k])^2 * Q[k]
         }
-        MD_q[k] = D_q[k] * Q[k]
-        FD_q[k] = (D_q[k])^2 * Q[k]
-      }
+    } else {
+        if (q == 1) {
+            for (k in 1:N) {
+                df2 <- comm[k, ][comm[k, ] > 0]
+                dis2 <- dij[names(df2), names(df2)]
+                if (Q[k] == 0) {
+                  D_q[k] <- 0
+                } else {
+                  D_q[k] <- exp(-0.5 * sum(dis2/Q[k] * outer(df2, df2, FUN = "*") * log(outer(df2, 
+                    df2, FUN = "*"), base)))
+                  # exp(-0.5 * (dij/Q) * pi*pj * log(pi*pj)
+                }
+                MD_q[k] <- D_q[k] * Q[k]
+                FD_q[k] <- (D_q[k])^2 * Q[k]
+            }
+        } else {
+            # q != 0 or 1
+            for (k in 1:N) {
+                df2 <- comm[k, ][comm[k, ] > 0]
+                dis2 <- dij[names(df2), names(df2)]
+                if (Q[k] == 0) {
+                  D_q[k] <- 0
+                } else {
+                  din <- sum(dis2/Q[k] * (outer(df2, df2, FUN = "*")^q))
+                  if (din == 0) {
+                    D_q[k] <- 0
+                  } else {
+                    D_q[k] <- din^(1/(2 * (1 - q)))
+                  }
+                }
+                MD_q[k] <- D_q[k] * Q[k]
+                FD_q[k] <- (D_q[k])^2 * Q[k]
+            }
+        }
     }
-  }
-
-  if(fdis){
-    if(div_by_sp == TRUE) {
-      return(rbind(Q, FDis, D_q/SR, MD_q/SR, FD_q/choose(SR, 2)))
-    } else{
-      return(rbind(Q, FDis, D_q, MD_q, FD_q))
+    
+    if (fdis) {
+        if (div_by_sp == TRUE) {
+            return(rbind(Q, FDis, D_q/SR, MD_q/SR, FD_q/choose(SR, 2)))
+        } else {
+            return(rbind(Q, FDis, D_q, MD_q, FD_q))
+        }
+    } else {
+        if (div_by_sp == TRUE) {
+            return(rbind(Q, D_q/SR, MD_q/SR, FD_q/choose(SR, 2)))
+        } else {
+            return(rbind(Q, D_q, MD_q, FD_q))
+        }
     }
-  } else{
-    if(div_by_sp == TRUE) {
-      return(rbind(Q, D_q/SR, MD_q/SR, FD_q/choose(SR, 2)))
-    } else{
-      return(rbind(Q, D_q, MD_q, FD_q))
-    }}
 }

@@ -4,9 +4,10 @@
 \alias{hill_func_parti}
 \title{Decompostion of functional diversity through Hill Numbers}
 \usage{
-hill_func_parti(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1),
-  checkdata = TRUE, rel_then_pool = TRUE, ord = c("podani", "metric"),
-  stand_dij = FALSE, show.warning = TRUE)
+hill_func_parti(comm, traits, traits_as_is = FALSE, q = 0,
+  base = exp(1), checkdata = TRUE, rel_then_pool = TRUE,
+  ord = c("podani", "metric"), stand_dij = FALSE,
+  show.warning = TRUE)
 }
 \arguments{
 \item{comm}{data frame of vegtation data. Sites as rows, species as columns.}

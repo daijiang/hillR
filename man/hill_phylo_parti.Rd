@@ -4,13 +4,13 @@
 \alias{hill_phylo_parti}
 \title{Phylogenetic diversity of multiple sites}
 \usage{
-hill_phylo_parti(comm, tree, q = 0, base = exp(1), rel_then_pool = TRUE,
-  show.warning = TRUE)
+hill_phylo_parti(comm, tree, q = 0, base = exp(1),
+  rel_then_pool = TRUE, show.warning = TRUE)
 }
 \arguments{
 \item{comm}{data frame of vegtation data. Sites as rows, species as columns.}
 
-\item{tree}{a phylogeny with class "phylo".}
+\item{tree}{a phylogeny with class 'phylo'.}
 
 \item{q}{hill number, any non-negative value.}
 
@@ -29,7 +29,7 @@ Calculate overall phylogenetic diversity and site similarity across multiple sit
 }
 \examples{
 comm = dummy = FD::dummy$abun
-tree = ape::rtree(n = ncol(comm), tip.label = paste0("sp", 1:8))
+tree = ape::rtree(n = ncol(comm), tip.label = paste0('sp', 1:8))
 hill_phylo_parti(comm, tree, q = 0)
 hill_phylo_parti(comm, tree, q = 0.999)
 hill_phylo_parti(comm, tree, q = 1)

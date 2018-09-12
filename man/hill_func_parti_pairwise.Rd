@@ -41,9 +41,9 @@ Calculate pairwise functional gamma, alpha, and beta diversity for communities, 
 dummy = FD::dummy
 hill_func_parti_pairwise(comm = dummy$abun, traits = dummy$trait, q = 0)
 hill_func_parti_pairwise(comm = dummy$abun, traits = dummy$trait, q = 0,
-                         output = "matrix")
+                         output = 'matrix')
 hill_func_parti_pairwise(comm = dummy$abun, traits = dummy$trait, q = 0,
-                         output = "matrix", pairs = "full")
+                         output = 'matrix', pairs = 'full')
 hill_func_parti_pairwise(comm = dummy$abun, traits = dummy$trait, q = 1)
 hill_func_parti_pairwise(comm = dummy$abun, traits = dummy$trait, q = 0.9999)
 hill_func_parti_pairwise(comm = dummy$abun, traits = dummy$trait, q = 2)

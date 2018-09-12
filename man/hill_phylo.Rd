@@ -10,7 +10,7 @@ hill_phylo(comm, tree, q = 0, base = exp(1), rel_then_pool = TRUE,
 \arguments{
 \item{comm}{data frame of vegtation data. Sites as rows, species as columns.}
 
-\item{tree}{a phylogeny with class "phylo".}
+\item{tree}{a phylogeny with class 'phylo'.}
 
 \item{q}{hill number, any non-negative value.}
 
@@ -28,7 +28,7 @@ Calculate alpha phylogenetic diversity based on Hill numbers
 }
 \examples{
 comm = dummy = FD::dummy$abun
-tree = ape::rtree(n = ncol(comm), tip.label = paste0("sp", 1:8))
+tree = ape::rtree(n = ncol(comm), tip.label = paste0('sp', 1:8))
 hill_phylo(comm, tree, q = 0)
 hill_phylo(comm, tree, q = 0.999)
 hill_phylo(comm, tree, q = 1)
