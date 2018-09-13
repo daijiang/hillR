@@ -23,6 +23,7 @@
 #' @return a data frame with results for all pairwise comparisons.
 #' @seealso \code{\link{hill_func_parti}}
 #' @examples
+#' \dontrun{
 #' dummy = FD::dummy
 #' hill_func_parti_pairwise(comm = dummy$abun, traits = dummy$trait, q = 0)
 #' hill_func_parti_pairwise(comm = dummy$abun, traits = dummy$trait, q = 0,
@@ -33,8 +34,8 @@
 #' hill_func_parti_pairwise(comm = dummy$abun, traits = dummy$trait, q = 0.9999)
 #' hill_func_parti_pairwise(comm = dummy$abun, traits = dummy$trait, q = 2)
 #' hill_func_parti_pairwise(comm = dummy$abun, traits = dummy$trait, q = 3)
-#'
-hill_func_parti_pairwise <- function(comm, traits, traits_as_is = FALSE, q = 0, rel_then_pool = TRUE, 
+#' }
+hill_func_parti_pairwise <- function(comm, traits, traits_as_is = FALSE, q = 0, rel_then_pool = TRUE,
     output = c("data.frame", "matrix"), pairs = c("unique", "full"), ...) {
     output <- match.arg(output)
     pairs <- match.arg(pairs)
@@ -44,7 +45,7 @@ hill_func_parti_pairwise <- function(comm, traits, traits_as_is = FALSE, q = 0, 
     gamma_pair <- alpha_pair <- beta_pair <- local_simi <- region_simi <- temp
     for (i in 1:nsite) {
         for (j in i:nsite) {
-            o <- hill_func_parti(comm = comm[c(i, j), ], traits = traits, traits_as_is = traits_as_is, 
+            o <- hill_func_parti(comm = comm[c(i, j), ], traits = traits, traits_as_is = traits_as_is,
                 q = q, rel_then_pool = rel_then_pool, ...)
             gamma_pair[i, j] <- o$FD_gamma
             gamma_pair[j, i] <- o$FD_gamma
@@ -58,44 +59,44 @@ hill_func_parti_pairwise <- function(comm, traits, traits_as_is = FALSE, q = 0, 
             region_simi[j, i] <- o$region_similarity
         }
     }
-    
+
     if (pairs == "full") {
         if (output == "matrix") {
-            out <- list(q = q, FD_gamma = gamma_pair, FD_alpha = alpha_pair, FD_beta = beta_pair, 
+            out <- list(q = q, FD_gamma = gamma_pair, FD_alpha = alpha_pair, FD_beta = beta_pair,
                 local_similarity = local_simi, region_similarity = region_simi)
         }
-        
+
         if (output == "data.frame") {
             site.comp <- as.matrix(expand.grid(row.names(comm), row.names(comm)))
             out <- plyr::adply(site.comp, 1, function(x) {
-                data.frame(q = q, site1 = x[1], site2 = x[2], FD_gamma = gamma_pair[x[1], 
-                  x[2]], FD_alpha = alpha_pair[x[1], x[2]], FD_beta = beta_pair[x[1], 
-                  x[2]], local_similarity = local_simi[x[1], x[2]], region_similarity = region_simi[x[1], 
+                data.frame(q = q, site1 = x[1], site2 = x[2], FD_gamma = gamma_pair[x[1],
+                  x[2]], FD_alpha = alpha_pair[x[1], x[2]], FD_beta = beta_pair[x[1],
+                  x[2]], local_similarity = local_simi[x[1], x[2]], region_similarity = region_simi[x[1],
                   x[2]])
             })[, -1]
             out <- tibble::as.tibble(out)
         }
         out
     }
-    
+
     if (pairs == "unique") {
         gamma_pair[lower.tri(gamma_pair, diag = TRUE)] <- NA
         alpha_pair[lower.tri(alpha_pair, diag = TRUE)] <- NA
         beta_pair[lower.tri(beta_pair, diag = TRUE)] <- NA
         local_simi[lower.tri(local_simi, diag = TRUE)] <- NA
         region_simi[lower.tri(region_simi, diag = TRUE)] <- NA
-        
+
         if (output == "matrix") {
-            out <- list(q = q, FD_gamma = gamma_pair, FD_alpha = alpha_pair, FD_beta = beta_pair, 
+            out <- list(q = q, FD_gamma = gamma_pair, FD_alpha = alpha_pair, FD_beta = beta_pair,
                 local_similarity = local_simi, region_similarity = region_simi)
         }
-        
+
         if (output == "data.frame") {
             site.comp <- as.matrix(expand.grid(row.names(comm), row.names(comm)))
             out <- plyr::adply(site.comp, 1, function(x) {
-                data.frame(q = q, site1 = x[1], site2 = x[2], FD_gamma = gamma_pair[x[1], 
-                  x[2]], FD_alpha = alpha_pair[x[1], x[2]], FD_beta = beta_pair[x[1], 
-                  x[2]], local_similarity = local_simi[x[1], x[2]], region_similarity = region_simi[x[1], 
+                data.frame(q = q, site1 = x[1], site2 = x[2], FD_gamma = gamma_pair[x[1],
+                  x[2]], FD_alpha = alpha_pair[x[1], x[2]], FD_beta = beta_pair[x[1],
+                  x[2]], local_similarity = local_simi[x[1], x[2]], region_similarity = region_simi[x[1],
                   x[2]])
             })
             out <- na.omit(out)[, -1]

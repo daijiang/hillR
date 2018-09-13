@@ -27,13 +27,14 @@ a data frame or a matrix with results for all pairwise comparisons.
 Calculate pairwise phylogenetic diversity.
 }
 \examples{
+\dontrun{
 comm = dummy = FD::dummy$abun
 tree = ape::rtree(n = ncol(comm), tip.label = paste0('sp', 1:8))
 hill_phylo_parti_pairwise(comm, tree, q = 0, show.warning = FALSE)
 hill_phylo_parti_pairwise(comm, tree, q = 0.999, show.warning = FALSE)
 hill_phylo_parti_pairwise(comm, tree, q = 1, show.warning = FALSE)
 hill_phylo_parti_pairwise(comm, tree, q = 2, show.warning = FALSE)
-
+}
 }
 \references{
 Chao, Anne, Chun-Huo Chiu, and Lou Jost. Unifying Species Diversity, Phylogenetic Diversity, Functional Diversity, and Related Similarity and Differentiation Measures Through Hill Numbers. Annual Review of Ecology, Evolution, and Systematics 45, no. 1 (2014): 297–324. doi:10.1146/annurev-ecolsys-120213-091540.

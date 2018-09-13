@@ -13,14 +13,15 @@
 #' @references Chao, Anne, Chun-Huo Chiu, and Lou Jost. Unifying Species Diversity, Phylogenetic Diversity, Functional Diversity, and Related Similarity and Differentiation Measures Through Hill Numbers. Annual Review of Ecology, Evolution, and Systematics 45, no. 1 (2014): 297–324. doi:10.1146/annurev-ecolsys-120213-091540.
 #' @export
 #' @examples
+#' \dontrun{
 #' comm = dummy = FD::dummy$abun
 #' tree = ape::rtree(n = ncol(comm), tip.label = paste0('sp', 1:8))
 #' hill_phylo_parti_pairwise(comm, tree, q = 0, show.warning = FALSE)
 #' hill_phylo_parti_pairwise(comm, tree, q = 0.999, show.warning = FALSE)
 #' hill_phylo_parti_pairwise(comm, tree, q = 1, show.warning = FALSE)
 #' hill_phylo_parti_pairwise(comm, tree, q = 2, show.warning = FALSE)
-#'
-hill_phylo_parti_pairwise <- function(comm, tree, q = 0, output = c("data.frame", "matrix"), 
+#' }
+hill_phylo_parti_pairwise <- function(comm, tree, q = 0, output = c("data.frame", "matrix"),
     pairs = c("unique", "full"), ...) {
     output <- match.arg(output)
     pairs <- match.arg(pairs)
@@ -43,43 +44,43 @@ hill_phylo_parti_pairwise <- function(comm, tree, q = 0, output = c("data.frame"
             region_simi[j, i] <- o$region_similarity
         }
     }
-    
+
     if (pairs == "full") {
         if (output == "matrix") {
-            out <- list(q = q, PD_gamma = gamma_pair, PD_alpha = alpha_pair, PD_beta = beta_pair, 
+            out <- list(q = q, PD_gamma = gamma_pair, PD_alpha = alpha_pair, PD_beta = beta_pair,
                 local_similarity = local_simi, region_similarity = region_simi)
         }
-        
+
         if (output == "data.frame") {
             site.comp <- as.matrix(expand.grid(row.names(comm), row.names(comm)))
             out <- plyr::adply(site.comp, 1, function(x) {
-                data.frame(q = q, site1 = x[1], site2 = x[2], PD_gamma = gamma_pair[x[1], 
-                  x[2]], PD_alpha = alpha_pair[x[1], x[2]], PD_beta = beta_pair[x[1], 
-                  x[2]], local_similarity = local_simi[x[1], x[2]], region_similarity = region_simi[x[1], 
+                data.frame(q = q, site1 = x[1], site2 = x[2], PD_gamma = gamma_pair[x[1],
+                  x[2]], PD_alpha = alpha_pair[x[1], x[2]], PD_beta = beta_pair[x[1],
+                  x[2]], local_similarity = local_simi[x[1], x[2]], region_similarity = region_simi[x[1],
                   x[2]])
             })[, -1]  # get rid of X1 column
             out <- tibble::as.tibble(out)
         }
     }
-    
+
     if (pairs == "unique") {
         gamma_pair[lower.tri(gamma_pair, diag = TRUE)] <- NA
         alpha_pair[lower.tri(alpha_pair, diag = TRUE)] <- NA
         beta_pair[lower.tri(beta_pair, diag = TRUE)] <- NA
         local_simi[lower.tri(local_simi, diag = TRUE)] <- NA
         region_simi[lower.tri(region_simi, diag = TRUE)] <- NA
-        
+
         if (output == "matrix") {
-            out <- list(q = q, PD_gamma = gamma_pair, PD_alpha = alpha_pair, PD_beta = beta_pair, 
+            out <- list(q = q, PD_gamma = gamma_pair, PD_alpha = alpha_pair, PD_beta = beta_pair,
                 local_similarity = local_simi, region_similarity = region_simi)
         }
-        
+
         if (output == "data.frame") {
             site.comp <- as.matrix(expand.grid(row.names(comm), row.names(comm)))
             out <- plyr::adply(site.comp, 1, function(x) {
-                data.frame(q = q, site1 = x[1], site2 = x[2], PD_gamma = gamma_pair[x[1], 
-                  x[2]], PD_alpha = alpha_pair[x[1], x[2]], PD_beta = beta_pair[x[1], 
-                  x[2]], local_similarity = local_simi[x[1], x[2]], region_similarity = region_simi[x[1], 
+                data.frame(q = q, site1 = x[1], site2 = x[2], PD_gamma = gamma_pair[x[1],
+                  x[2]], PD_alpha = alpha_pair[x[1], x[2]], PD_beta = beta_pair[x[1],
+                  x[2]], local_similarity = local_simi[x[1], x[2]], region_similarity = region_simi[x[1],
                   x[2]])
             })
             out <- na.omit(out)[, -1]

@@ -38,6 +38,7 @@ Calculate pairwise functional gamma, alpha, and beta diversity for communities, 
  If comm has >2 sites, this function will give results for all pairwise comparisons.
 }
 \examples{
+\dontrun{
 dummy = FD::dummy
 hill_func_parti_pairwise(comm = dummy$abun, traits = dummy$trait, q = 0)
 hill_func_parti_pairwise(comm = dummy$abun, traits = dummy$trait, q = 0,
@@ -48,7 +49,7 @@ hill_func_parti_pairwise(comm = dummy$abun, traits = dummy$trait, q = 1)
 hill_func_parti_pairwise(comm = dummy$abun, traits = dummy$trait, q = 0.9999)
 hill_func_parti_pairwise(comm = dummy$abun, traits = dummy$trait, q = 2)
 hill_func_parti_pairwise(comm = dummy$abun, traits = dummy$trait, q = 3)
-
+}
 }
 \references{
 Chao, Anne, Chun-Huo Chiu, and Lou Jost. Unifying Species Diversity, Phylogenetic Diversity, Functional Diversity, and Related Similarity and Differentiation Measures Through Hill Numbers. Annual Review of Ecology, Evolution, and Systematics 45, no. 1 (2014): 297–324. doi:10.1146/annurev-ecolsys-120213-091540.
