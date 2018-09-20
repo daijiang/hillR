@@ -5,9 +5,9 @@ Version: 0.4.0
 Date: 2018-09-12
 Author: Daijiang Li
 Maintainer: Daijiang Li <daijianglee@gmail.com>
-Description: R functions to calculate taxonomic,
-    functional and phylogenetic diversity measures through Hill Numbers,
-    proposing by Chao, Chiu and Jost 2014.
+Description: Calculate taxonomic, functional and phylogenetic diversity measures 
+    through Hill Numbers, proposing by Chao, Chiu and Jost (2014) 
+    <doi: 10.1146/annurev-ecolsys-120213-091540>.
 License: MIT + file LICENSE
 LazyData: TRUE
 Depends:
