@@ -11,7 +11,9 @@
 #' @param base default is exp(1), the base of log.
 #' @param checkdata whether to check data first? Default is TRUE.
 #' @param div_by_sp as FD calculated in this way will be highly correlated with taxonomic diversity,
-#' one simple way to correct this is to divide the results by the number of species. Default is FALSE.
+#' one potential simple way to correct this is to divide the results by the number of species.
+#' However, a more common way to deal with correlations is to use null models and calculate standardized effect sizes.
+#' Therefore, I set the default to be \code{FALSE}.
 #' @param ord ord in FD::gowdis.
 #' @param fdis whether to calculated FDis, default is TRUE.
 #' @param stand_dij whether to standardize distance matrix to have max value of 1? Default is FALSE.
