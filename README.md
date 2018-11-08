@@ -1,21 +1,25 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-[![Build Status](https://travis-ci.org/daijiang/hillR.svg?branch=master)](https://travis-ci.org/daijiang/hillR) [![Coverage status](https://codecov.io/gh/daijiang/hillR/branch/master/graph/badge.svg)](https://codecov.io/github/daijiang/hillR?branch=master)
 
-hillR
-=====
+[![Build
+Status](https://travis-ci.org/daijiang/hillR.svg?branch=master)](https://travis-ci.org/daijiang/hillR)
+[![Coverage
+status](https://codecov.io/gh/daijiang/hillR/branch/master/graph/badge.svg)](https://codecov.io/github/daijiang/hillR?branch=master)
 
-This package contains R functions to calculate taxonomic, functional, and phylogenetic diversity and site similarity through Hill Numbers. The underlying methods are based on Chao, Chiu and Jost 2014 and Chiu & Chao 2014.
+# hillR
 
-Installation
-============
+This package contains R functions to calculate taxonomic, functional,
+and phylogenetic diversity and site similarity through Hill Numbers. The
+underlying methods are based on Chao, Chiu and Jost 2014 and Chiu & Chao
+2014.
+
+# Installation
 
 To install this package, run the following code:
 
     devtools::install_github("daijiang/hillR")
 
-Examples
-========
+# Examples
 
 ``` r
 dummy = FD::dummy
@@ -25,8 +29,7 @@ tree = ape::rtree(n = ncol(comm), tip.label = paste0("sp", 1:ncol(comm)))
 library(hillR)
 ```
 
-Calculate taxonomic, functional, and phylogenetic diversity of each site
-------------------------------------------------------------------------
+## Calculate taxonomic, functional, and phylogenetic diversity of each site
 
 ``` r
 hill_taxa(comm, q = 0) # taxonomic alpha diversity
@@ -49,13 +52,12 @@ hill_func(comm, traits, q = 0) # functional alpha diversity
 
 hill_phylo(comm, tree, q = 0) # phylogenetic alpha diversity
 ##     com1     com2     com3     com4     com5     com6     com7     com8 
-## 4.607479 2.635823 3.372086 1.947757 3.490657 6.019674 3.539474 4.717898 
+## 5.320433 5.165530 4.209176 2.638789 4.190414 5.395492 2.885337 5.335720 
 ##     com9    com10 
-## 5.189872 4.381499
+## 4.557956 5.212277
 ```
 
-Calculate taxonomic, functional, and phylogenetic diversity across multiple sites
----------------------------------------------------------------------------------
+## Calculate taxonomic, functional, and phylogenetic diversity across multiple sites
 
 ``` r
 hill_taxa_parti(comm, q = 0) # taxonomic diversity across all sites
@@ -70,27 +72,26 @@ hill_func_parti(comm, traits, q = 0) # functional diversity across all sites
 
 hill_phylo_parti(comm, tree, q = 0) # phylogenetic diversity across all sites
 ##   q PD_gamma PD_alpha  PD_beta local_similarity region_similarity
-## 1 0 6.602742 3.990222 1.654731        0.9272522         0.5603644
+## 1 0 7.359797 4.491113 1.638747        0.9290281         0.5669137
 ```
 
-Calculate pairwise taxonomic, functional, and phylogenetic diversity
---------------------------------------------------------------------
+## Calculate pairwise taxonomic, functional, and phylogenetic diversity
 
 ``` r
 hill_taxa_parti_pairwise(comm, q = 0, show.warning = F) # pairwise taxonomic diversity
 ## # A tibble: 45 x 8
 ##        q site1 site2 TD_gamma TD_alpha TD_beta local_similarity
 ##    <dbl> <fct> <fct>    <dbl>    <dbl>   <dbl>            <dbl>
-##  1     0 com1  com2      6.00     3.50    1.71            0.286
-##  2     0 com1  com3      5.00     3.50    1.43            0.571
-##  3     0 com2  com3      5.00     3.00    1.67            0.333
-##  4     0 com1  com4      5.00     3.00    1.67            0.333
-##  5     0 com2  com4      5.00     2.50    2.00            0    
-##  6     0 com3  com4      4.00     2.50    1.60            0.400
-##  7     0 com1  com5      6.00     3.50    1.71            0.286
-##  8     0 com2  com5      4.00     3.00    1.33            0.667
-##  9     0 com3  com5      6.00     3.00    2.00            0    
-## 10     0 com4  com5      4.00     2.50    1.60            0.400
+##  1     0 com1  com2         6      3.5    1.71            0.286
+##  2     0 com1  com3         5      3.5    1.43            0.571
+##  3     0 com2  com3         5      3      1.67            0.333
+##  4     0 com1  com4         5      3      1.67            0.333
+##  5     0 com2  com4         5      2.5    2               0    
+##  6     0 com3  com4         4      2.5    1.6             0.400
+##  7     0 com1  com5         6      3.5    1.71            0.286
+##  8     0 com2  com5         4      3      1.33            0.667
+##  9     0 com3  com5         6      3      2               0    
+## 10     0 com4  com5         4      2.5    1.6             0.400
 ## # ... with 35 more rows, and 1 more variable: region_similarity <dbl>
 
 hill_func_parti_pairwise(comm, traits, q = 0, show.warning = F) # pairwise functional diversity
@@ -113,35 +114,50 @@ hill_phylo_parti_pairwise(comm, tree, q = 0, show.warning = F) # pairwise phylog
 ## # A tibble: 45 x 8
 ##        q site1 site2 PD_gamma PD_alpha PD_beta local_similarity
 ##    <dbl> <fct> <fct>    <dbl>    <dbl>   <dbl>            <dbl>
-##  1     0 com1  com2      4.95     3.62    1.37           0.633 
-##  2     0 com1  com3      4.87     3.99    1.22           0.781 
-##  3     0 com2  com3      3.97     3.00    1.32           0.677 
-##  4     0 com1  com4      5.72     3.28    1.75           0.255 
-##  5     0 com2  com4      4.44     2.29    1.94           0.0610
-##  6     0 com3  com4      4.48     2.66    1.69           0.314 
-##  7     0 com1  com5      5.81     4.05    1.43           0.566 
-##  8     0 com2  com5      3.75     3.06    1.22           0.776 
-##  9     0 com3  com5      5.09     3.43    1.48           0.518 
-## 10     0 com4  com5      4.19     2.72    1.54           0.461 
+##  1     0 com1  com2      6.61     5.24    1.26            0.740
+##  2     0 com1  com3      6.25     4.76    1.31            0.688
+##  3     0 com2  com3      6.55     4.69    1.40            0.603
+##  4     0 com1  com4      5.81     3.98    1.46            0.541
+##  5     0 com2  com4      6.77     3.90    1.74            0.264
+##  6     0 com3  com4      4.70     3.42    1.37            0.629
+##  7     0 com1  com5      6.16     4.76    1.30            0.704
+##  8     0 com2  com5      5.99     4.68    1.28            0.720
+##  9     0 com3  com5      7.03     4.20    1.67            0.325
+## 10     0 com4  com5      4.98     3.41    1.46            0.542
 ## # ... with 35 more rows, and 1 more variable: region_similarity <dbl>
 ```
 
-Licenses
-========
+# Licenses
 
-Licensed under the [MIT license](LICENSE). ([More information here](http://en.wikipedia.org/wiki/MIT_License).)
+Licensed under the [MIT license](LICENSE). ([More information
+here](http://en.wikipedia.org/wiki/MIT_License).)
 
-Citation
-========
+# Citation
 
 Please cite this package if you use it.
 
-Li Daijiang. hillR: taxonomic, functional, and phylogenetic diversity and similarity through Hill Numbers. R package version 0.3. [![DOI](https://zenodo.org/badge/31509531.svg)](https://zenodo.org/badge/latestdoi/31509531)
+Li Daijiang. hillR: taxonomic, functional, and phylogenetic diversity
+and similarity through Hill Numbers. R package version 0.3.
+[![DOI](https://zenodo.org/badge/31509531.svg)](https://zenodo.org/badge/latestdoi/31509531)
 
 (Li is my last name.)
 
-Reference
-=========
+# Reference
 
--   [Chao, Anne, Chun-Huo Chiu, and Lou Jost. “Unifying Species Diversity, Phylogenetic Diversity, Functional Diversity, and Related Similarity and Differentiation Measures Through Hill Numbers.” Annual Review of Ecology, Evolution, and Systematics 45, no. 1 (2014): 297–324. doi:10.1146/annurev-ecolsys-120213-091540.](https://doi.org/10.1146/annurev-ecolsys-120213-091540)
--   [Chiu, Chun-Huo, and Anne Chao. “Distance-Based Functional Diversity Measures and Their Decomposition: A Framework Based on Hill Numbers.” PLoS ONE 9, no. 7 (July 7, 2014): e100014. doi:10.1371/journal.pone.0100014.](https://doi.org/10.1371/journal.pone.0100014)
+  - [Chao, Anne, Chun-Huo Chiu, and Lou Jost. “Unifying Species
+    Diversity, Phylogenetic Diversity, Functional Diversity, and Related
+    Similarity and Differentiation Measures Through Hill Numbers.”
+    Annual Review of Ecology, Evolution, and Systematics 45, no. 1
+    (2014): 297–324.
+    doi:10.1146/annurev-ecolsys-120213-091540.](https://doi.org/10.1146/annurev-ecolsys-120213-091540)
+  - [Chiu, Chun-Huo, and Anne Chao. “Distance-Based Functional Diversity
+    Measures and Their Decomposition: A Framework Based on Hill
+    Numbers.” PLoS ONE 9, no. 7 (July 7, 2014): e100014.
+    doi:10.1371/journal.pone.0100014.](https://doi.org/10.1371/journal.pone.0100014)
+
+# Contributing
+
+Contributions are welcome. You can provide comments and feedback or ask
+questions by filing an issue on Github
+[here](https://github.com/daijiang/hillR/issues) or making pull
+requests.
