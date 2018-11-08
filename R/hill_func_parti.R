@@ -3,20 +3,9 @@
 #' Calculate functional gamma, alpha, and beta diversity for all communities, as
 #'  well as site similarity. These values are based on ALL communities.
 #'
-#' @param comm data frame of vegtation data. Sites as rows, species as columns.
-#' @param traits data frame of species functional traits data. Species as rows, traits as columns.
-#' It can include both continuous and categorical data.
-#' @param traits_as_is if FALSE (default) traits data frame will be transformed into a distance
-#' matrix using `FD::gowdis(traits)`. Otherwise, will use as is (i.e. traits is a symmetric distance matrix).
-#' @param q hill number, q = 0 (default) to get species richness, q = 1 to get shannon entropy, q = 2 will give inverse Simpson.#'
-#' @param checkdata whether to check data first? Default is TRUE.
-#' @param base default is exp(1), the base of log.
-#' @param rel_then_pool default is TRUE. Abundance of species are first changed to relative abundance within sites,
-#'  then pooled into one assemblage. If FALSE, sites are pooled first, then change abundance of species
-#'  to relative abundance.
-#' @param ord ord in gowdis.
-#' @param stand_dij whether to standardize distance matrix to have max value of 1? Default is FALSE.
-#' @param show.warning whether to print warning, default is TRUE
+#' @inheritParams hill_taxa
+#' @inheritParams hill_func
+#' @inheritParams hill_taxa_parti
 #' @export
 #' @references Chao, Anne, Chun-Huo Chiu, and Lou Jost. Unifying Species Diversity, Phylogenetic Diversity, Functional Diversity, and Related Similarity and Differentiation Measures Through Hill Numbers. Annual Review of Ecology, Evolution, and Systematics 45, no. 1 (2014): 297–324. <doi:10.1146/annurev-ecolsys-120213-091540>.
 #'

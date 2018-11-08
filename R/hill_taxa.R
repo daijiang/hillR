@@ -5,13 +5,13 @@ NULL
 #'
 #' Calculate taxonomic diversity for each site (alpha diversity).
 #'
-#' @param comm data frame of vegtation data. Sites as rows, species as columns.
-#' @param q hill number, q = 0 (default) to get species richness,
-#' q = 1 to get shannon entropy, q = 2 will give inverse Simpson.
-#' @param MARGIN default is 1, if sites are columns, set MARGIN to 2.
-#' @param base default is exp(1), the base of log.
+#' @param comm A data frame of vegtation data. Sites as rows, species as columns.
+#' @param q Hill number, \code{q} = 0 (default) to get species richness,
+#'   \code{q} = 1 to get shannon entropy, \code{q} = 2 will give inverse Simpson.
+#' @param MARGIN default is 1, if sites are columns, set \code{MARGIN} to 2.
+#' @param base default is \code{exp(1)}, the base of log.
 #' @export
-#' @return a named vector, diversity values for each site in the comm.
+#' @return A named vector, diversity values for each site in the comm.
 #' @rdname hill_taxa
 #' @references Chao, Anne, Chun-Huo Chiu, and Lou Jost. Unifying Species Diversity, Phylogenetic Diversity, Functional Diversity, and Related Similarity and Differentiation Measures Through Hill Numbers. Annual Review of Ecology, Evolution, and Systematics 45, no. 1 (2014): 297–324. <doi:10.1146/annurev-ecolsys-120213-091540>.
 #'

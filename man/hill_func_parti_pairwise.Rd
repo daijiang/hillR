@@ -9,23 +9,25 @@ hill_func_parti_pairwise(comm, traits, traits_as_is = FALSE, q = 0,
   pairs = c("unique", "full"), ...)
 }
 \arguments{
-\item{comm}{data frame of vegtation data. Sites as rows, species as columns.}
+\item{comm}{A data frame of vegtation data. Sites as rows, species as columns.}
 
-\item{traits}{data frame of species functional traits data. Species as rows, traits as columns.
-It can include both continuous and categorical data.}
+\item{traits}{A data frame of species functional traits data. Species as rows, traits as columns.
+It can include both continuous and categorical data. It will be transformed into a distance
+matrix using `FD::gowdis(traits)`. If all traits are numeric, then it will use Euclidean distance.}
 
-\item{traits_as_is}{if FALSE (default) traits data frame will be transformed into a distance
-matrix using `FD::gowdis(traits)`. Otherwise, will use as is (i.e. traits is a symmetric distance matrix).}
+\item{traits_as_is}{if \code{FALSE} (default) traits data frame will be transformed into a distance
+matrix. Otherwise, will use as is (i.e. traits is a symmetric distance matrix).}
 
-\item{q}{hill number, q = 0 (default) to get species richness, q = 1 to get shannon entropy, q = 2 will give inverse Simpson.}
+\item{q}{Hill number, \code{q} = 0 (default) to get species richness,
+\code{q} = 1 to get shannon entropy, \code{q} = 2 will give inverse Simpson.}
 
-\item{rel_then_pool}{default is TRUE. Abundance of species are first changed to relative abundance within sites,
-then pooled into one assemblage. If FALSE, sites are pooled first, then change abundance of species
+\item{rel_then_pool}{default is \code{TRUE.} Abundance of species are first changed to relative abundance within sites,
+then pooled into one assemblage. If \code{FALSE}, sites are pooled first, then change abundance of species
 to relative abundance.}
 
 \item{output}{output type: data.frame (default) or matrix. If matrix, then this function will return a list of matrices.}
 
-\item{pairs}{full or unique (default). Do you want to compare all possible pairs (i.e. n^2) or just unique pairs (i.e. choose(n, 2))?}
+\item{pairs}{full or unique (default). Do you want to compare all possible pairs (i.e. n^2) or just unique pairs (i.e. \code{choose(n, 2))}?}
 
 \item{...}{additional arguments for \code{hill_func_parti}.}
 }

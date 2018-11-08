@@ -2,26 +2,25 @@
 #'
 #' Calculate functional diversity for each site (alpha diversity).
 #'
-#' @param comm data frame of vegtation data. Sites as rows, species as columns.
-#' @param traits data frame of species functional traits data. Species as rows, traits as columns.
+#' @inheritParams hill_taxa
+#' @param traits A data frame of species functional traits data. Species as rows, traits as columns.
 #' It can include both continuous and categorical data. It will be transformed into a distance
 #' matrix using `FD::gowdis(traits)`. If all traits are numeric, then it will use Euclidean distance.
-#' @param traits_as_is if FALSE (default) traits data frame will be transformed into a distance matrix
-#' @param q hill number, q (default is 0) to control weights of species abundance.
-#' @param base default is exp(1), the base of log.
-#' @param checkdata whether to check data first? Default is TRUE.
+#' @param traits_as_is if \code{FALSE} (default) traits data frame will be transformed into a distance
+#' matrix. Otherwise, will use as is (i.e. traits is a symmetric distance matrix).
+#' @param checkdata whether to check data first? Default is \code{TRUE}.
 #' @param div_by_sp as FD calculated in this way will be highly correlated with taxonomic diversity,
 #' one potential simple way to correct this is to divide the results by the number of species.
 #' However, a more common way to deal with correlations is to use null models and calculate standardized effect sizes.
 #' Therefore, I set the default to be \code{FALSE}.
-#' @param ord ord in FD::gowdis.
-#' @param fdis whether to calculated FDis, default is TRUE.
-#' @param stand_dij whether to standardize distance matrix to have max value of 1? Default is FALSE.
+#' @param ord ord in \code{FD::gowdis}.
+#' @param fdis whether to calculated FDis, default is \code{TRUE}
+#' @param stand_dij whether to standardize distance matrix to have max value of 1? Default is \code{FALSE}.
 #' @export
 #' @references Chao, Anne, Chun-Huo Chiu, and Lou Jost. Unifying Species Diversity, Phylogenetic Diversity, Functional Diversity, and Related Similarity and Differentiation Measures Through Hill Numbers. Annual Review of Ecology, Evolution, and Systematics 45, no. 1 (2014): 297–324. <doi:10.1146/annurev-ecolsys-120213-091540>.
 #'
 #' Chiu, Chun-Huo, and Anne Chao. Distance-Based Functional Diversity Measures and Their Decomposition: A Framework Based on Hill Numbers. PLoS ONE 9, no. 7 (July 7, 2014): e100014. <doi:10.1371/journal.pone.0100014>.
-#' @return a matrix, with these information for each site: Q (Rao's Q); D_q (functional hill number,
+#' @return A matrix, with these information for each site: Q (Rao's Q); D_q (functional hill number,
 #'  the effective number of equally abundant and functionally equally distince species);
 #'  MD_q (mean functional diversity per species, the effective sum of pairwise distances between
 #'  a fixed species and all other species); FD_q (total functional diversity, the effective total functional
@@ -36,7 +35,7 @@
 #' hill_func(comm = dummy$abun, traits = dummy$trait, q = 3)
 #'
 hill_func <- function(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1), checkdata = TRUE,
-    div_by_sp = FALSE, ord = c("podani", "metric"), fdis = TRUE, stand_dij = FALSE) {
+                      div_by_sp = FALSE, ord = c("podani", "metric"), fdis = TRUE, stand_dij = FALSE) {
     if (checkdata) {
         if (any(comm < 0))
             stop("Negative value in comm data")
@@ -70,7 +69,7 @@ hill_func <- function(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1), 
             # only 1 trait
             if (any(is.na(traits))) {
                 warning("Warning: Species with missing trait values have been excluded.",
-                  "\n")
+                        "\n")
                 traits <- na.omit(traits)
                 comm <- comm[, colnames(comm) %in% rownames(traits)]
             }
@@ -81,23 +80,23 @@ hill_func <- function(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1), 
             if (is.factor(traits[, 1]) | is.character(traits[, 1])) {
                 # 1 categorical trait
                 if (is.ordered(traits[, 1])) {
-                  traits2 <- data.frame(rank(traits[, 1]))
-                  rownames(traits2) <- rownames(traits)
-                  names(traits2) <- names(traits)
-                  dij <- dist(traits2)
+                    traits2 <- data.frame(rank(traits[, 1]))
+                    rownames(traits2) <- rownames(traits)
+                    names(traits2) <- names(traits)
+                    dij <- dist(traits2)
                 } else {
-                  traits[, 1] <- as.factor(traits[, 1])
-                  x.f <- as.factor(traits[, 1])
-                  x.dummy <- diag(nlevels(x.f))[x.f, ]
-                  x.dummy.df <- data.frame(x.dummy, row.names = rownames(traits))
-                  dij <- ade4::dist.binary(x.dummy.df, method = 2)
+                    traits[, 1] <- as.factor(traits[, 1])
+                    x.f <- as.factor(traits[, 1])
+                    x.dummy <- diag(nlevels(x.f))[x.f, ]
+                    x.dummy.df <- data.frame(x.dummy, row.names = rownames(traits))
+                    dij <- ade4::dist.binary(x.dummy.df, method = 2)
                 }
             }
         } else {
             # more than 1 trait:
             for (i in 1:ncol(traits)) {
                 if (is.factor(traits[, i]) & nlevels(traits[, i]) == 2) {
-                  traits[, i] <- as.numeric(traits[, i]) - 1  # so to be 0, 1
+                    traits[, i] <- as.numeric(traits[, i]) - 1  # so to be 0, 1
                 }
             }
             if (all(sapply(traits, is.numeric)) & all(!is.na(traits))) {
@@ -171,11 +170,11 @@ hill_func <- function(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1), 
                 df2 <- comm[k, ][comm[k, ] > 0]
                 dis2 <- dij[names(df2), names(df2)]
                 if (Q[k] == 0) {
-                  D_q[k] <- 0
+                    D_q[k] <- 0
                 } else {
-                  D_q[k] <- exp(-0.5 * sum(dis2/Q[k] * outer(df2, df2, FUN = "*") * log(outer(df2,
-                    df2, FUN = "*"), base)))
-                  # exp(-0.5 * (dij/Q) * pi*pj * log(pi*pj)
+                    D_q[k] <- exp(-0.5 * sum(dis2/Q[k] * outer(df2, df2, FUN = "*") * log(outer(df2,
+                                                                                                df2, FUN = "*"), base)))
+                    # exp(-0.5 * (dij/Q) * pi*pj * log(pi*pj)
                 }
                 MD_q[k] <- D_q[k] * Q[k]
                 FD_q[k] <- (D_q[k])^2 * Q[k]
@@ -186,14 +185,14 @@ hill_func <- function(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1), 
                 df2 <- comm[k, ][comm[k, ] > 0]
                 dis2 <- dij[names(df2), names(df2)]
                 if (Q[k] == 0) {
-                  D_q[k] <- 0
-                } else {
-                  din <- sum(dis2/Q[k] * (outer(df2, df2, FUN = "*")^q))
-                  if (din == 0) {
                     D_q[k] <- 0
-                  } else {
-                    D_q[k] <- din^(1/(2 * (1 - q)))
-                  }
+                } else {
+                    din <- sum(dis2/Q[k] * (outer(df2, df2, FUN = "*")^q))
+                    if (din == 0) {
+                        D_q[k] <- 0
+                    } else {
+                        D_q[k] <- din^(1/(2 * (1 - q)))
+                    }
                 }
                 MD_q[k] <- D_q[k] * Q[k]
                 FD_q[k] <- (D_q[k])^2 * Q[k]

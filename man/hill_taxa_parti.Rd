@@ -8,20 +8,21 @@ hill_taxa_parti(comm, q = 0, base = exp(1), rel_then_pool = TRUE,
   show.warning = TRUE)
 }
 \arguments{
-\item{comm}{data frame of vegtation data. Sites as rows, species as columns.}
+\item{comm}{A data frame of vegtation data. Sites as rows, species as columns.}
 
-\item{q}{hill number, q = 0 (default) to get species richness, q = 1 to get shannon entropy, q = 2 will give inverse Simpson.}
+\item{q}{Hill number, \code{q} = 0 (default) to get species richness,
+\code{q} = 1 to get shannon entropy, \code{q} = 2 will give inverse Simpson.}
 
-\item{base}{default is exp(1), the base of log.}
+\item{base}{default is \code{exp(1)}, the base of log.}
 
-\item{rel_then_pool}{default is TRUE. Abundance of species are first changed to relative abundance within sites,
-then pooled into one assemblage. If FALSE, sites are pooled first, then change abundance of species
+\item{rel_then_pool}{default is \code{TRUE.} Abundance of species are first changed to relative abundance within sites,
+then pooled into one assemblage. If \code{FALSE}, sites are pooled first, then change abundance of species
 to relative abundance.}
 
-\item{show.warning}{whether to print warning, default is TRUE}
+\item{show.warning}{whether to print warning, default is \code{TRUE}.}
 }
 \value{
-a data frame with one row (across all sites), including these columns: q, gamma diversity, alpha diveristy,
+A data frame with one row (across all sites), including these columns: q, gamma diversity, alpha diveristy,
 beta diversity, MacArthur's homogeneity measure, local similarity (species overlap),
 and region similarity (species overlap).
 See Chao, Chiu and Jost 2014 Table 2 for more information.

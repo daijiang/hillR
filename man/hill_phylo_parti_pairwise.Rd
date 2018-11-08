@@ -8,20 +8,21 @@ hill_phylo_parti_pairwise(comm, tree, q = 0, output = c("data.frame",
   "matrix"), pairs = c("unique", "full"), ...)
 }
 \arguments{
-\item{comm}{data frame of vegtation data. Sites as rows, species as columns.}
+\item{comm}{A data frame of vegtation data. Sites as rows, species as columns.}
 
 \item{tree}{a phylogeny with class 'phylo'.}
 
-\item{q}{hill number, any non-negative value.}
+\item{q}{Hill number, \code{q} = 0 (default) to get species richness,
+\code{q} = 1 to get shannon entropy, \code{q} = 2 will give inverse Simpson.}
 
 \item{output}{output type: data.frame (default) or matrix. If matrix, then this function will return a list of matrices.}
 
-\item{pairs}{full or unique (default). Do you want to compare all possible pairs (i.e. n^2) or just unique pairs (i.e. choose(n, 2))?}
+\item{pairs}{full or unique (default). Do you want to compare all possible pairs (i.e. n^2) or just unique pairs (i.e. \code{choose(n, 2))}?}
 
 \item{...}{additional arguments for \code{hill_func_parti}.}
 }
 \value{
-a data frame or a matrix with results for all pairwise comparisons.
+A data frame or a matrix with results for all pairwise comparisons.
 }
 \description{
 Calculate pairwise phylogenetic diversity.

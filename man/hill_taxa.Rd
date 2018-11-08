@@ -7,17 +7,17 @@
 hill_taxa(comm, q = 0, MARGIN = 1, base = exp(1))
 }
 \arguments{
-\item{comm}{data frame of vegtation data. Sites as rows, species as columns.}
+\item{comm}{A data frame of vegtation data. Sites as rows, species as columns.}
 
-\item{q}{hill number, q = 0 (default) to get species richness,
-q = 1 to get shannon entropy, q = 2 will give inverse Simpson.}
+\item{q}{Hill number, \code{q} = 0 (default) to get species richness,
+\code{q} = 1 to get shannon entropy, \code{q} = 2 will give inverse Simpson.}
 
-\item{MARGIN}{default is 1, if sites are columns, set MARGIN to 2.}
+\item{MARGIN}{default is 1, if sites are columns, set \code{MARGIN} to 2.}
 
-\item{base}{default is exp(1), the base of log.}
+\item{base}{default is \code{exp(1)}, the base of log.}
 }
 \value{
-a named vector, diversity values for each site in the comm.
+A named vector, diversity values for each site in the comm.
 }
 \description{
 Calculate taxonomic diversity for each site (alpha diversity).

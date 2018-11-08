@@ -4,17 +4,13 @@
 #' well as site similarity. It is based on \code{\link{hill_taxa_parti}}.
 #' If comm has >2 sites, this function will give results for all pairwise comparisons.
 #'
-#' @param comm data frame of vegtation data. Sites as rows, species as columns.
-#' @param q hill number, q = 0 (default) to get species richness,
-#' q = 1 to get shannon entropy, q = 2 will give inverse Simpson.
-#' @param rel_then_pool default is TRUE. Abundance of species are first changed to relative abundance within sites,
-#' then pooled into one assemblage. If FALSE, sites are pooled first, then change abundance of species
-#' to relative abundance.
+#' @inheritParams hill_taxa
+#' @inheritParams hill_taxa_parti
 #' @param output output type: data.frame (default) or matrix. If matrix, then this function will return a list of matrices.
-#' @param pairs full or unique (default). Do you want to compare all possible pairs (i.e. n^2) or just unique pairs (i.e. choose(n, 2))?
+#' @param pairs full or unique (default). Do you want to compare all possible pairs (i.e. n^2) or just unique pairs (i.e. \code{choose(n, 2))}?
 #' @param ... other arguments in \code{hill_taxa_parti()}.
 #' @export
-#' @return a data frame with results for all pairwise comparisons.
+#' @return A data frame with results for all pairwise comparisons.
 #' @references Chao, Anne, Chun-Huo Chiu, and Lou Jost. Unifying Species Diversity, Phylogenetic Diversity, Functional Diversity, and Related Similarity and Differentiation Measures Through Hill Numbers. Annual Review of Ecology, Evolution, and Systematics 45, no. 1 (2014): 297–324. <doi:10.1146/annurev-ecolsys-120213-091540>.
 #'
 #' Jost, Lou. Entropy and diversity. Oikos 113, no. 2 (2006): 363-375. <doi:10.1111/j.2006.0030-1299.14714.x>.

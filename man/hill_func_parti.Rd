@@ -10,29 +10,31 @@ hill_func_parti(comm, traits, traits_as_is = FALSE, q = 0,
   show.warning = TRUE)
 }
 \arguments{
-\item{comm}{data frame of vegtation data. Sites as rows, species as columns.}
+\item{comm}{A data frame of vegtation data. Sites as rows, species as columns.}
 
-\item{traits}{data frame of species functional traits data. Species as rows, traits as columns.
-It can include both continuous and categorical data.}
+\item{traits}{A data frame of species functional traits data. Species as rows, traits as columns.
+It can include both continuous and categorical data. It will be transformed into a distance
+matrix using `FD::gowdis(traits)`. If all traits are numeric, then it will use Euclidean distance.}
 
-\item{traits_as_is}{if FALSE (default) traits data frame will be transformed into a distance
-matrix using `FD::gowdis(traits)`. Otherwise, will use as is (i.e. traits is a symmetric distance matrix).}
+\item{traits_as_is}{if \code{FALSE} (default) traits data frame will be transformed into a distance
+matrix. Otherwise, will use as is (i.e. traits is a symmetric distance matrix).}
 
-\item{q}{hill number, q = 0 (default) to get species richness, q = 1 to get shannon entropy, q = 2 will give inverse Simpson.#'}
+\item{q}{Hill number, \code{q} = 0 (default) to get species richness,
+\code{q} = 1 to get shannon entropy, \code{q} = 2 will give inverse Simpson.}
 
-\item{base}{default is exp(1), the base of log.}
+\item{base}{default is \code{exp(1)}, the base of log.}
 
-\item{checkdata}{whether to check data first? Default is TRUE.}
+\item{checkdata}{whether to check data first? Default is \code{TRUE}.}
 
-\item{rel_then_pool}{default is TRUE. Abundance of species are first changed to relative abundance within sites,
-then pooled into one assemblage. If FALSE, sites are pooled first, then change abundance of species
+\item{rel_then_pool}{default is \code{TRUE.} Abundance of species are first changed to relative abundance within sites,
+then pooled into one assemblage. If \code{FALSE}, sites are pooled first, then change abundance of species
 to relative abundance.}
 
-\item{ord}{ord in gowdis.}
+\item{ord}{ord in \code{FD::gowdis}.}
 
-\item{stand_dij}{whether to standardize distance matrix to have max value of 1? Default is FALSE.}
+\item{stand_dij}{whether to standardize distance matrix to have max value of 1? Default is \code{FALSE}.}
 
-\item{show.warning}{whether to print warning, default is TRUE}
+\item{show.warning}{whether to print warning, default is \code{TRUE}.}
 }
 \value{
 a data frame with one row (across all sites), including these columns: q, RaoQ of pooled assemblage,

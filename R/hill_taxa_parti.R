@@ -5,15 +5,13 @@
 #' If comm has >2 sites, gamma diversity is the diversity of the pooled assemblage,
 #' alpha is the average diversity across all site, beta is across all communities.
 #'
-#' @param comm data frame of vegtation data. Sites as rows, species as columns.
-#' @param q hill number, q = 0 (default) to get species richness, q = 1 to get shannon entropy, q = 2 will give inverse Simpson.
-#' @param base default is exp(1), the base of log.
-#' @param rel_then_pool default is TRUE. Abundance of species are first changed to relative abundance within sites,
-#' then pooled into one assemblage. If FALSE, sites are pooled first, then change abundance of species
+#' @inheritParams hill_taxa
+#' @param rel_then_pool default is \code{TRUE.} Abundance of species are first changed to relative abundance within sites,
+#' then pooled into one assemblage. If \code{FALSE}, sites are pooled first, then change abundance of species
 #' to relative abundance.
-#' @param show.warning whether to print warning, default is TRUE
+#' @param show.warning whether to print warning, default is \code{TRUE}.
 #' @export
-#' @return a data frame with one row (across all sites), including these columns: q, gamma diversity, alpha diveristy,
+#' @return A data frame with one row (across all sites), including these columns: q, gamma diversity, alpha diveristy,
 #' beta diversity, MacArthur's homogeneity measure, local similarity (species overlap),
 #' and region similarity (species overlap).
 #' See Chao, Chiu and Jost 2014 Table 2 for more information.

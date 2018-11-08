@@ -29,14 +29,11 @@ dat_prep_phylo <- function(comm, tree) {
 #'
 #' Calculate alpha phylogenetic diversity based on Hill numbers
 #'
-#' @param comm data frame of vegtation data. Sites as rows, species as columns.
+#' @inheritParams hill_taxa
 #' @param tree a phylogeny with class 'phylo'.
-#' @param q hill number, any non-negative value.
-#' @param base default is exp(1), the base of log.
-#' @param rel_then_pool default is TRUE. Abundance of species are changed to relative abundance within sites.
-#' @param show.warning whether to print warning, default is TRUE.
+#' @inheritParams hill_taxa_parti
 #' @author Chiu & Chao
-#' @return a vector of hill number based phylogenetic diversity for all sites.
+#' @return A vector of hill number based phylogenetic diversity for all sites.
 #' @export
 #' @references Chao, Anne, Chun-Huo Chiu, and Lou Jost. Unifying Species Diversity, Phylogenetic Diversity, Functional Diversity, and Related Similarity and Differentiation Measures Through Hill Numbers. Annual Review of Ecology, Evolution, and Systematics 45, no. 1 (2014): 297–324. <doi:10.1146/annurev-ecolsys-120213-091540>.
 #' @examples

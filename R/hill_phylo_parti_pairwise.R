@@ -2,13 +2,10 @@
 #'
 #' Calculate pairwise phylogenetic diversity.
 #'
-#' @param comm data frame of vegtation data. Sites as rows, species as columns.
-#' @param tree a phylogeny with class 'phylo'.
-#' @param q hill number, any non-negative value.
-#' @param output output type: data.frame (default) or matrix. If matrix, then this function will return a list of matrices.
-#' @param pairs full or unique (default). Do you want to compare all possible pairs (i.e. n^2) or just unique pairs (i.e. choose(n, 2))?
+#' @inheritParams hill_phylo
+#' @inheritParams hill_taxa_parti_pairwise
 #' @param ... additional arguments for \code{hill_func_parti}.
-#' @return a data frame or a matrix with results for all pairwise comparisons.
+#' @return A data frame or a matrix with results for all pairwise comparisons.
 #' @seealso \code{\link{hill_phylo_parti}}
 #' @references Chao, Anne, Chun-Huo Chiu, and Lou Jost. Unifying Species Diversity, Phylogenetic Diversity, Functional Diversity, and Related Similarity and Differentiation Measures Through Hill Numbers. Annual Review of Ecology, Evolution, and Systematics 45, no. 1 (2014): 297–324. <doi:10.1146/annurev-ecolsys-120213-091540>.
 #' @export

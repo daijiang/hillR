@@ -9,31 +9,35 @@ hill_func(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1),
   fdis = TRUE, stand_dij = FALSE)
 }
 \arguments{
-\item{comm}{data frame of vegtation data. Sites as rows, species as columns.}
+\item{comm}{A data frame of vegtation data. Sites as rows, species as columns.}
 
-\item{traits}{data frame of species functional traits data. Species as rows, traits as columns.
+\item{traits}{A data frame of species functional traits data. Species as rows, traits as columns.
 It can include both continuous and categorical data. It will be transformed into a distance
 matrix using `FD::gowdis(traits)`. If all traits are numeric, then it will use Euclidean distance.}
 
-\item{traits_as_is}{if FALSE (default) traits data frame will be transformed into a distance matrix}
+\item{traits_as_is}{if \code{FALSE} (default) traits data frame will be transformed into a distance
+matrix. Otherwise, will use as is (i.e. traits is a symmetric distance matrix).}
 
-\item{q}{hill number, q (default is 0) to control weights of species abundance.}
+\item{q}{Hill number, \code{q} = 0 (default) to get species richness,
+\code{q} = 1 to get shannon entropy, \code{q} = 2 will give inverse Simpson.}
 
-\item{base}{default is exp(1), the base of log.}
+\item{base}{default is \code{exp(1)}, the base of log.}
 
-\item{checkdata}{whether to check data first? Default is TRUE.}
+\item{checkdata}{whether to check data first? Default is \code{TRUE}.}
 
 \item{div_by_sp}{as FD calculated in this way will be highly correlated with taxonomic diversity,
-one simple way to correct this is to divide the results by the number of species. Default is FALSE.}
+one potential simple way to correct this is to divide the results by the number of species.
+However, a more common way to deal with correlations is to use null models and calculate standardized effect sizes.
+Therefore, I set the default to be \code{FALSE}.}
 
-\item{ord}{ord in FD::gowdis.}
+\item{ord}{ord in \code{FD::gowdis}.}
 
-\item{fdis}{whether to calculated FDis, default is TRUE.}
+\item{fdis}{whether to calculated FDis, default is \code{TRUE}}
 
-\item{stand_dij}{whether to standardize distance matrix to have max value of 1? Default is FALSE.}
+\item{stand_dij}{whether to standardize distance matrix to have max value of 1? Default is \code{FALSE}.}
 }
 \value{
-a matrix, with these information for each site: Q (Rao's Q); D_q (functional hill number,
+A matrix, with these information for each site: Q (Rao's Q); D_q (functional hill number,
  the effective number of equally abundant and functionally equally distince species);
  MD_q (mean functional diversity per species, the effective sum of pairwise distances between
  a fixed species and all other species); FD_q (total functional diversity, the effective total functional
