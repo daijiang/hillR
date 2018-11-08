@@ -16,9 +16,9 @@
 #' @param fdis whether to calculated FDis, default is TRUE.
 #' @param stand_dij whether to standardize distance matrix to have max value of 1? Default is FALSE.
 #' @export
-#' @references Chao, Anne, Chun-Huo Chiu, and Lou Jost. Unifying Species Diversity, Phylogenetic Diversity, Functional Diversity, and Related Similarity and Differentiation Measures Through Hill Numbers. Annual Review of Ecology, Evolution, and Systematics 45, no. 1 (2014): 297–324. doi:10.1146/annurev-ecolsys-120213-091540.
+#' @references Chao, Anne, Chun-Huo Chiu, and Lou Jost. Unifying Species Diversity, Phylogenetic Diversity, Functional Diversity, and Related Similarity and Differentiation Measures Through Hill Numbers. Annual Review of Ecology, Evolution, and Systematics 45, no. 1 (2014): 297–324. <doi:10.1146/annurev-ecolsys-120213-091540>.
 #'
-#' Chiu, Chun-Huo, and Anne Chao. Distance-Based Functional Diversity Measures and Their Decomposition: A Framework Based on Hill Numbers. PLoS ONE 9, no. 7 (July 7, 2014): e100014. doi:10.1371/journal.pone.0100014.
+#' Chiu, Chun-Huo, and Anne Chao. Distance-Based Functional Diversity Measures and Their Decomposition: A Framework Based on Hill Numbers. PLoS ONE 9, no. 7 (July 7, 2014): e100014. <doi:10.1371/journal.pone.0100014>.
 #' @return a matrix, with these information for each site: Q (Rao's Q); D_q (functional hill number,
 #'  the effective number of equally abundant and functionally equally distince species);
 #'  MD_q (mean functional diversity per species, the effective sum of pairwise distances between
@@ -33,10 +33,10 @@
 #' hill_func(comm = dummy$abun, traits = dummy$trait, q = 2)
 #' hill_func(comm = dummy$abun, traits = dummy$trait, q = 3)
 #'
-hill_func <- function(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1), checkdata = TRUE, 
+hill_func <- function(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1), checkdata = TRUE,
     div_by_sp = FALSE, ord = c("podani", "metric"), fdis = TRUE, stand_dij = FALSE) {
     if (checkdata) {
-        if (any(comm < 0)) 
+        if (any(comm < 0))
             stop("Negative value in comm data")
         if (is.null(rownames(traits))) {
             stop("\n Traits have no row names\n")
@@ -45,14 +45,14 @@ hill_func <- function(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1), 
             stop("\n Comm data have no col names\n")
         }
     }
-    
+
     if (any(!colnames(comm) %in% rownames(traits))) {
         warning("\n There are species from community data that are not on traits matrix\nDelete these species from comm data...\n")
         comm <- comm[, colnames(comm) %in% rownames(traits)]
     }
-    
+
     # all(rownames(traits) == names(comm))
-    
+
     if (traits_as_is) {
         # traits is already a distance matrix
         dij <- as.matrix(traits)
@@ -63,11 +63,11 @@ hill_func <- function(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1), 
         traits <- plyr::arrange(traits[traits$sp %in% colnames(comm), ], sp)
         rownames(traits) <- traits$sp
         traits$sp <- NULL
-        
+
         if (ncol(traits) == 1) {
             # only 1 trait
             if (any(is.na(traits))) {
-                warning("Warning: Species with missing trait values have been excluded.", 
+                warning("Warning: Species with missing trait values have been excluded.",
                   "\n")
                 traits <- na.omit(traits)
                 comm <- comm[, colnames(comm) %in% rownames(traits)]
@@ -106,12 +106,12 @@ hill_func <- function(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1), 
             }
             # dij = gowdis(x=traits, ...)
         }
-        
+
         if (fdis) {
             # calculate fdis
             FDis <- FD::fdisp(d = dij, a = as.matrix(comm))$FDis
         }
-        
+
         # if (!is.euclid(dij)) { if (corr == 'lingoes') { dij2 <- lingoes(dij)
         # warning('Species x species distance matrix was not Euclidean. Lingoes correction was
         # applied.','\n') } if (corr == 'cailliez') { dij2 <- cailliez(dij) warning('Species
@@ -125,17 +125,17 @@ hill_func <- function(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1), 
         # correction was applied. Only the PCoA axes with positive eigenvalues were
         # kept.','\n') } dij = dij2 }
     }
-    
+
     comm <- as.matrix(comm)
     N <- nrow(comm)
     S <- ncol(comm)
     SR <- rowSums(comm > 0)  # species richness of each site
     comm <- sweep(comm, 1, rowSums(comm, na.rm = TRUE), "/")  # relative abun
-    
+
     dij <- as.matrix(dij)
-    if (stand_dij) 
+    if (stand_dij)
         dij <- dij/max(dij)
-    
+
     # inter = comm %*% dij # \sum_i,j_S(p_i * dij) Q = rowSums(sweep(comm,1,inter,'*',
     # check.margin = F))/2 # \sum_j_S\sum_i,j_S(p_i * dij)
     Q <- vector("numeric", length = N)
@@ -144,13 +144,13 @@ hill_func <- function(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1), 
         Q[k] <- (comm[k, ]) %*% dij %*% matrix(comm[k, ], ncol = 1)  # /2
         # Q[k] = sum(dij * outer(comm[k,], comm[k,], '*'))/2
     }
-    
+
     ## D_q
     FD_q <- MD_q <- D_q <- vector("numeric", length = N)
     names(D_q) <- dimnames(comm)[[1]]
     names(MD_q) <- dimnames(comm)[[1]]
     names(FD_q) <- dimnames(comm)[[1]]
-    
+
     if (q == 0) {
         for (k in 1:N) {
             df2 <- comm[k, ][comm[k, ] > 0]
@@ -171,7 +171,7 @@ hill_func <- function(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1), 
                 if (Q[k] == 0) {
                   D_q[k] <- 0
                 } else {
-                  D_q[k] <- exp(-0.5 * sum(dis2/Q[k] * outer(df2, df2, FUN = "*") * log(outer(df2, 
+                  D_q[k] <- exp(-0.5 * sum(dis2/Q[k] * outer(df2, df2, FUN = "*") * log(outer(df2,
                     df2, FUN = "*"), base)))
                   # exp(-0.5 * (dij/Q) * pi*pj * log(pi*pj)
                 }
@@ -198,7 +198,7 @@ hill_func <- function(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1), 
             }
         }
     }
-    
+
     if (fdis) {
         if (div_by_sp == TRUE) {
             return(rbind(Q, FDis, D_q/SR, MD_q/SR, FD_q/choose(SR, 2)))

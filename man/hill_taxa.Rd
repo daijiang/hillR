@@ -34,7 +34,7 @@ hill_taxa(comm = dummy$abun, q = 0.999)
 
 }
 \references{
-Chao, Anne, Chun-Huo Chiu, and Lou Jost. Unifying Species Diversity, Phylogenetic Diversity, Functional Diversity, and Related Similarity and Differentiation Measures Through Hill Numbers. Annual Review of Ecology, Evolution, and Systematics 45, no. 1 (2014): 297–324. doi:10.1146/annurev-ecolsys-120213-091540.
+Chao, Anne, Chun-Huo Chiu, and Lou Jost. Unifying Species Diversity, Phylogenetic Diversity, Functional Diversity, and Related Similarity and Differentiation Measures Through Hill Numbers. Annual Review of Ecology, Evolution, and Systematics 45, no. 1 (2014): 297–324. <doi:10.1146/annurev-ecolsys-120213-091540>.
 
-Jost, Lou. Entropy and diversity. Oikos 113, no. 2 (2006): 363-375.
+Jost, Lou. Entropy and diversity. Oikos 113, no. 2 (2006): 363-375. <doi:10.1111/j.2006.0030-1299.14714.x>.
 }
