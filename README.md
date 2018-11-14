@@ -1,7 +1,8 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-[![DOI](http://joss.theoj.org/papers/10.21105/joss.01041/status.svg)](https://doi.org/10.21105/joss.01041) [![Build
+[![DOI](http://joss.theoj.org/papers/10.21105/joss.01041/status.svg)](https://doi.org/10.21105/joss.01041)
+[![Build
 Status](https://travis-ci.org/daijiang/hillR.svg?branch=master)](https://travis-ci.org/daijiang/hillR)
 [![Coverage
 status](https://codecov.io/gh/daijiang/hillR/branch/master/graph/badge.svg)](https://codecov.io/github/daijiang/hillR?branch=master)
@@ -52,9 +53,9 @@ hill_func(comm, traits, q = 0) # functional alpha diversity
 
 hill_phylo(comm, tree, q = 0) # phylogenetic alpha diversity
 ##     com1     com2     com3     com4     com5     com6     com7     com8 
-## 5.320433 5.165530 4.209176 2.638789 4.190414 5.395492 2.885337 5.335720 
+## 6.587145 5.025573 3.290982 4.113949 4.878235 6.188022 5.099523 5.386479 
 ##     com9    com10 
-## 4.557956 5.212277
+## 7.069928 5.751388
 ```
 
 ## Calculate taxonomic, functional, and phylogenetic diversity across multiple sites
@@ -71,8 +72,8 @@ hill_func_parti(comm, traits, q = 0) # functional diversity across all sites
 ## 1         0.4720957
 
 hill_phylo_parti(comm, tree, q = 0) # phylogenetic diversity across all sites
-##   q PD_gamma PD_alpha  PD_beta local_similarity region_similarity
-## 1 0 7.359797 4.491113 1.638747        0.9290281         0.5669137
+##   q PD_gamma PD_alpha PD_beta local_similarity region_similarity
+## 1 0 8.714781 5.339122 1.63225          0.92975         0.5696126
 ```
 
 ## Calculate pairwise taxonomic, functional, and phylogenetic diversity
@@ -114,16 +115,16 @@ hill_phylo_parti_pairwise(comm, tree, q = 0, show.warning = F) # pairwise phylog
 ## # A tibble: 45 x 8
 ##        q site1 site2 PD_gamma PD_alpha PD_beta local_similarity
 ##    <dbl> <fct> <fct>    <dbl>    <dbl>   <dbl>            <dbl>
-##  1     0 com1  com2      6.61     5.24    1.26            0.740
-##  2     0 com1  com3      6.25     4.76    1.31            0.688
-##  3     0 com2  com3      6.55     4.69    1.40            0.603
-##  4     0 com1  com4      5.81     3.98    1.46            0.541
-##  5     0 com2  com4      6.77     3.90    1.74            0.264
-##  6     0 com3  com4      4.70     3.42    1.37            0.629
-##  7     0 com1  com5      6.16     4.76    1.30            0.704
-##  8     0 com2  com5      5.99     4.68    1.28            0.720
-##  9     0 com3  com5      7.03     4.20    1.67            0.325
-## 10     0 com4  com5      4.98     3.41    1.46            0.542
+##  1     0 com1  com2      7.63     5.81    1.31            0.685
+##  2     0 com1  com3      6.84     4.94    1.39            0.615
+##  3     0 com2  com3      6.44     4.16    1.55            0.450
+##  4     0 com1  com4      7.54     5.35    1.41            0.590
+##  5     0 com2  com4      6.76     4.57    1.48            0.521
+##  6     0 com3  com4      5.85     3.70    1.58            0.419
+##  7     0 com1  com5      8.33     5.73    1.45            0.546
+##  8     0 com2  com5      5.98     4.95    1.21            0.792
+##  9     0 com3  com5      7.40     4.08    1.81            0.189
+## 10     0 com4  com5      5.66     4.50    1.26            0.742
 ## # ... with 35 more rows, and 1 more variable: region_similarity <dbl>
 ```
 
@@ -134,13 +135,25 @@ here](http://en.wikipedia.org/wiki/MIT_License).)
 
 # Citation
 
-Please cite this package if you use it.
+Please cite this package if you use it. The citation information can be
+obtained by running `citation('hillR')` in R.
 
-Li Daijiang. hillR: taxonomic, functional, and phylogenetic diversity
-and similarity through Hill Numbers. R package version 0.3.
-[![DOI](https://zenodo.org/badge/31509531.svg)](https://zenodo.org/badge/latestdoi/31509531)
+> Li, (2018). hillR: taxonomic, functional, and phylogenetic diversity
+> and similarity through Hill Numbers. Journal of Open Source Software,
+> 3(31), 1041. <https://doi.org/10.21105/joss.01041>
 
-(Li is my last name.)
+``` bibtex
+@Article{,
+    title = {hillR: taxonomic, functional, and phylogenetic diversity and similarity through Hill Numbers},
+    author = {Daijiang Li},
+    journal = {Journal of Open Source Software},
+    year = {2018},
+    volume = {3},
+    number = {31},
+    pages = {1041},
+    url = {https://doi.org/10.21105/joss.01041},
+ }
+```
 
 # Reference
 

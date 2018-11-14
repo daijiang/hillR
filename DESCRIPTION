@@ -2,11 +2,11 @@ Package: hillR
 Type: Package
 Title: Diversity Through Hill Numbers
 Version: 0.4.0
-Date: 2018-09-12
+Date: 2018-11-13
 Author: Daijiang Li
 Maintainer: Daijiang Li <daijianglee@gmail.com>
 Description: Calculate taxonomic, functional and phylogenetic diversity measures 
-    through Hill Numbers, proposing by Chao, Chiu and Jost (2014) 
+    through Hill Numbers proposed by Chao, Chiu and Jost (2014) 
     <doi:10.1146/annurev-ecolsys-120213-091540>.
 License: MIT + file LICENSE
 LazyData: TRUE

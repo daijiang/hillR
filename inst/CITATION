@@ -1,0 +1,18 @@
+citHeader("To cite hillR in publications use:")
+
+citEntry(entry = "Article",
+  title        = "hillR: taxonomic, functional, and phylogenetic diversity and similarity through Hill Numbers",
+  author       = personList(as.person("Daijiang Li")),
+  journal      = "Journal of Open Source Software",
+  year         = "2018",
+  volume       = "3",
+  number       = "31",
+  pages        = "1041",
+  url          = "https://doi.org/10.21105/joss.01041",
+
+  textVersion  =
+  paste("Li, (2018).",
+        "hillR: taxonomic, functional, and phylogenetic diversity and similarity through Hill Numbers.",
+        "Journal of Open Source Software, 3(31), 1041.",
+        "https://doi.org/10.21105/joss.01041")
+)

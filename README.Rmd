@@ -71,11 +71,23 @@ Licensed under the [MIT license](LICENSE). ([More information here](http://en.wi
 
 # Citation
 
-Please cite this package if you use it.
+Please cite this package if you use it. The citation information can be obtained by running `citation('hillR')` in R.
 
-Li Daijiang. hillR: taxonomic, functional, and phylogenetic diversity and similarity through Hill Numbers. R package version 0.3. [![DOI](https://zenodo.org/badge/31509531.svg)](https://zenodo.org/badge/latestdoi/31509531)
+> Li, (2018). hillR: taxonomic, functional, and phylogenetic diversity and similarity through Hill Numbers. Journal of Open Source Software, 3(31), 1041. https://doi.org/10.21105/joss.01041
 
-(Li is my last name.)
+```bibtex
+@Article{,
+    title = {hillR: taxonomic, functional, and phylogenetic diversity and similarity through Hill Numbers},
+    author = {Daijiang Li},
+    journal = {Journal of Open Source Software},
+    year = {2018},
+    volume = {3},
+    number = {31},
+    pages = {1041},
+    url = {https://doi.org/10.21105/joss.01041},
+ }
+```
+
 
 # Reference
 
