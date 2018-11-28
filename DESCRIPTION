@@ -22,7 +22,8 @@ RoxygenNote: 6.1.0
 Suggests: 
     testthat,
     vegetarian,
-    covr
+    covr,
+    betapart
 URL: https://github.com/daijiang/hillR
 BugReports: https://github.com/daijiang/hillR/issues
 Encoding: UTF-8

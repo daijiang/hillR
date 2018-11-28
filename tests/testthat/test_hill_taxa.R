@@ -116,3 +116,19 @@ test_that("pairwise similarity", {
   a2 = hillR::hill_taxa_parti_pairwise(comm = dummy$abun, q = 1)
   expect_equal(nrow(a2), choose(nrow(dummy$abun), 2))
 })
+
+test_that("when N = 2, hill_taxa_parti equals Sorensen", {
+  toy.comm = matrix(nrow = 2, ncol = 6)
+  rownames(toy.comm) = c("A","B")
+  colnames(toy.comm) = c("sp1","sp2","sp3","sp4","sp5","sp6")
+  toy.comm[1,] = c(1,1,1,0,0,0)
+  toy.comm[2,] = c(0,0,1,1,1,1)
+
+  toy.betamulti = betapart::beta.multi(toy.comm, index.family = "sor")
+  toy.betamulti2 = betapart::beta.multi(toy.comm, index.family = "jac")
+  toy.hill = hillR::hill_taxa_parti(toy.comm)
+  # local_similarity equals with Sorensen
+  expect_equal(1 - toy.betamulti$beta.SOR, toy.hill$local_similarity)
+  # regional_similarity equals with Jaccard
+  expect_equal(1 - toy.betamulti2$beta.JAC, toy.hill$region_similarity)
+})
