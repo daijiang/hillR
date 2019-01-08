@@ -34,7 +34,7 @@ hill_taxa_parti <- function(comm, q = 0, base = exp(1), rel_then_pool = TRUE, sh
         stop("Negative value in comm data")
     if (any(colSums(comm) == 0) & show.warning)
         warning("Some species in comm data were not observed in any site,\n delete them...")
-    comm <- comm[, colSums(comm) != 0]
+    comm <- comm[, colSums(comm) != 0, drop = FALSE]
     N <- nrow(comm)
     S <- ncol(comm)
     comm <- as.matrix(comm)
