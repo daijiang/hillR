@@ -23,7 +23,11 @@ This package contains R functions to calculate taxonomic, functional, and phylog
 
 To install this package, run the following code:
 
-    devtools::install_github("daijiang/hillR")
+```{r, eval=FALSE}
+install.packages("hillR")
+# or install from Github
+devtools::install_github("daijiang/hillR")
+```
 
 # Examples
 

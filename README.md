@@ -18,7 +18,11 @@ underlying methods are based on Chao, Chiu and Jost 2014 and Chiu & Chao
 
 To install this package, run the following code:
 
-    devtools::install_github("daijiang/hillR")
+``` r
+install.packages("hillR")
+# or install from Github
+devtools::install_github("daijiang/hillR")
+```
 
 # Examples
 
@@ -53,9 +57,9 @@ hill_func(comm, traits, q = 0) # functional alpha diversity
 
 hill_phylo(comm, tree, q = 0) # phylogenetic alpha diversity
 ##     com1     com2     com3     com4     com5     com6     com7     com8 
-## 6.587145 5.025573 3.290982 4.113949 4.878235 6.188022 5.099523 5.386479 
+## 8.080222 5.041672 6.945878 2.357757 4.892636 8.122602 5.384327 7.609754 
 ##     com9    com10 
-## 7.069928 5.751388
+## 7.072671 5.736685
 ```
 
 ## Calculate taxonomic, functional, and phylogenetic diversity across multiple sites
@@ -72,8 +76,8 @@ hill_func_parti(comm, traits, q = 0) # functional diversity across all sites
 ## 1         0.4720957
 
 hill_phylo_parti(comm, tree, q = 0) # phylogenetic diversity across all sites
-##   q PD_gamma PD_alpha PD_beta local_similarity region_similarity
-## 1 0 8.714781 5.339122 1.63225          0.92975         0.5696126
+##   q PD_gamma PD_alpha  PD_beta local_similarity region_similarity
+## 1 0 9.136295  6.12442 1.491781        0.9453577         0.6337107
 ```
 
 ## Calculate pairwise taxonomic, functional, and phylogenetic diversity
@@ -93,7 +97,7 @@ hill_taxa_parti_pairwise(comm, q = 0, show.warning = F) # pairwise taxonomic div
 ##  8     0 com2  com5         4      3      1.33            0.667
 ##  9     0 com3  com5         6      3      2               0    
 ## 10     0 com4  com5         4      2.5    1.6             0.400
-## # ... with 35 more rows, and 1 more variable: region_similarity <dbl>
+## # … with 35 more rows, and 1 more variable: region_similarity <dbl>
 
 hill_func_parti_pairwise(comm, traits, q = 0, show.warning = F) # pairwise functional diversity
 ## # A tibble: 45 x 8
@@ -109,23 +113,23 @@ hill_func_parti_pairwise(comm, traits, q = 0, show.warning = F) # pairwise funct
 ##  8     0 com2  com5      7.86     5.92    1.33            0.891
 ##  9     0 com3  com5     16.2      9.72    1.66            0.780
 ## 10     0 com4  com5      8.00     5.32    1.50            0.832
-## # ... with 35 more rows, and 1 more variable: region_similarity <dbl>
+## # … with 35 more rows, and 1 more variable: region_similarity <dbl>
 
 hill_phylo_parti_pairwise(comm, tree, q = 0, show.warning = F) # pairwise phylogenetic diversity
 ## # A tibble: 45 x 8
 ##        q site1 site2 PD_gamma PD_alpha PD_beta local_similarity
 ##    <dbl> <fct> <fct>    <dbl>    <dbl>   <dbl>            <dbl>
-##  1     0 com1  com2      7.63     5.81    1.31            0.685
-##  2     0 com1  com3      6.84     4.94    1.39            0.615
-##  3     0 com2  com3      6.44     4.16    1.55            0.450
-##  4     0 com1  com4      7.54     5.35    1.41            0.590
-##  5     0 com2  com4      6.76     4.57    1.48            0.521
-##  6     0 com3  com4      5.85     3.70    1.58            0.419
-##  7     0 com1  com5      8.33     5.73    1.45            0.546
-##  8     0 com2  com5      5.98     4.95    1.21            0.792
-##  9     0 com3  com5      7.40     4.08    1.81            0.189
-## 10     0 com4  com5      5.66     4.50    1.26            0.742
-## # ... with 35 more rows, and 1 more variable: region_similarity <dbl>
+##  1     0 com1  com2      8.33     6.56    1.27            0.731
+##  2     0 com1  com3      8.31     7.51    1.11            0.893
+##  3     0 com2  com3      7.81     5.99    1.30            0.697
+##  4     0 com1  com4      8.16     5.22    1.56            0.436
+##  5     0 com2  com4      6.04     3.70    1.63            0.367
+##  6     0 com3  com4      7.03     4.65    1.51            0.489
+##  7     0 com1  com5      8.18     6.49    1.26            0.739
+##  8     0 com2  com5      5.13     4.97    1.03            0.968
+##  9     0 com3  com5      7.90     5.92    1.33            0.666
+## 10     0 com4  com5      5.81     3.63    1.60            0.397
+## # … with 35 more rows, and 1 more variable: region_similarity <dbl>
 ```
 
 # Licenses
