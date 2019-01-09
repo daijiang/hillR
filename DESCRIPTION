@@ -11,15 +11,15 @@ Description: Calculate taxonomic, functional and phylogenetic diversity measures
 License: MIT + file LICENSE
 LazyData: TRUE
 Depends:
-    R (> 3.1) 
-Imports: 
+    R (>= 3.1)
+Imports:
     FD,
     plyr,
     ade4,
     ape,
     tibble
 RoxygenNote: 6.1.0
-Suggests: 
+Suggests:
     testthat,
     vegetarian,
     covr,
