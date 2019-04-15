@@ -59,11 +59,7 @@ hill_func <- function(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1), 
         dij <- as.matrix(traits)
     } else {
         # traits is not a distance matrix
-        traits <- as.data.frame(traits)
-        traits$sp <- sp <- rownames(traits)  # R CMD CHECK complain about no global var. sp
-        traits <- plyr::arrange(traits[traits$sp %in% colnames(comm), ], sp)
-        rownames(traits) <- traits$sp
-        traits$sp <- NULL
+        traits <- traits[colnames(comm), ]
 
         if (ncol(traits) == 1) {
             # only 1 trait
@@ -100,7 +96,7 @@ hill_func <- function(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1), 
                 }
             }
             if (all(sapply(traits, is.numeric)) & all(!is.na(traits))) {
-                dij <- dist(apply(traits, 2, scale, center = TRUE, scale = TRUE))
+                dij <- dist(scale(traits, center = TRUE, scale = TRUE))
             } else {
                 ord <- match.arg(ord)
                 dij <- FD::gowdis(x = traits, asym.bin = NULL, ord = ord)
