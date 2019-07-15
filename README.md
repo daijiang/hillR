@@ -6,6 +6,12 @@
 Status](https://travis-ci.org/daijiang/hillR.svg?branch=master)](https://travis-ci.org/daijiang/hillR)
 [![Coverage
 status](https://codecov.io/gh/daijiang/hillR/branch/master/graph/badge.svg)](https://codecov.io/github/daijiang/hillR?branch=master)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/hillR)](https://cran.r-project.org/package=hillR)
+[![CRAN RStudio mirror
+downloads](http://cranlogs.r-pkg.org/badges/hillR)](http://www.r-pkg.org/pkg/hillR)
+[![CRAN RStudio mirror
+downloads](http://cranlogs.r-pkg.org/badges/grand-total/hillR?color=green)](http://www.r-pkg.org/pkg/hillR)
 
 # hillR
 
