@@ -106,7 +106,8 @@ hill_func <- function(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1), 
 
         if (fdis) {
             # calculate fdis
-            FDis <- FD::fdisp(d = dij, a = as.matrix(comm))$FDis
+          if(!inherits(dij, "dist")) dij = as.dist(dij)
+          FDis <- FD::fdisp(d = dij, a = as.matrix(comm)[, attributes(d)$Labels])$FDis
         }
 
         # if (!is.euclid(dij)) { if (corr == 'lingoes') { dij2 <- lingoes(dij)
