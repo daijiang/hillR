@@ -57,6 +57,11 @@ hill_func <- function(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1), 
     if (traits_as_is) {
         # traits is already a distance matrix
         dij <- as.matrix(traits)
+      if (fdis) {
+            # calculate fdis
+          if(!inherits(dij, "dist")) dij = as.dist(dij)
+          FDis <- FD::fdisp(d = dij, a = as.matrix(comm)[, attributes(d)$Labels])$FDis
+        }
     } else {
         # traits is not a distance matrix
         traits <- traits[colnames(comm), ]
@@ -102,12 +107,11 @@ hill_func <- function(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1), 
                 dij <- FD::gowdis(x = traits, asym.bin = NULL, ord = ord)
             }
             # dij = gowdis(x=traits, ...)
-        }
-
-        if (fdis) {
+          
+          if (fdis) {
             # calculate fdis
-          if(!inherits(dij, "dist")) dij = as.dist(dij)
-          FDis <- FD::fdisp(d = dij, a = as.matrix(comm)[, attributes(d)$Labels])$FDis
+          FDis <- FD::fdisp(d = dij, a = as.matrix(comm))$FDis
+         }
         }
 
         # if (!is.euclid(dij)) { if (corr == 'lingoes') { dij2 <- lingoes(dij)
