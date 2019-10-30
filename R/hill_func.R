@@ -39,27 +39,34 @@ hill_func <- function(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1), 
     if (checkdata) {
         if (any(comm < 0))
             stop("Negative value in comm data")
-        if (is.null(rownames(traits))) {
-            stop("\n Traits have no row names\n")
+        if(traits_as_is){
+            if(is.null(attributes(traits)$Labels)) stop("\n Traits distance matrix has no labels\n")
+        } else {
+            if (is.null(rownames(traits))) stop("\n Traits have no row names\n")
         }
         if (is.null(colnames(comm))) {
             stop("\n Comm data have no col names\n")
         }
     }
 
-    if (any(!colnames(comm) %in% rownames(traits))) {
+    if(traits_as_is){
+        trait_sp = attributes(traits)$Labels
+    } else {
+        trait_sp = rownames(traits)
+    }
+    if (any(!colnames(comm) %in% trait_sp)) {
         warning("\n There are species from community data that are not on traits matrix\nDelete these species from comm data...\n")
-        comm <- comm[, colnames(comm) %in% rownames(traits)]
+        comm <- comm[, trait_sp]
     }
 
     # all(rownames(traits) == names(comm))
 
     if (traits_as_is) {
         # traits is already a distance matrix
-        dij <- as.matrix(traits)
+        dij <- traits
     } else {
         # traits is not a distance matrix
-        traits <- traits[colnames(comm), ]
+        traits <- traits[trait_sp, ]
 
         if (ncol(traits) == 1) {
             # only 1 trait
@@ -103,12 +110,6 @@ hill_func <- function(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1), 
             }
             # dij = gowdis(x=traits, ...)
         }
-
-        if (fdis) {
-            # calculate fdis
-            FDis <- FD::fdisp(d = dij, a = as.matrix(comm))$FDis
-        }
-
         # if (!is.euclid(dij)) { if (corr == 'lingoes') { dij2 <- lingoes(dij)
         # warning('Species x species distance matrix was not Euclidean. Lingoes correction was
         # applied.','\n') } if (corr == 'cailliez') { dij2 <- cailliez(dij) warning('Species
@@ -121,6 +122,11 @@ hill_func <- function(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1), 
         # <- quasieuclid(dij) warning('Species x species distance was not Euclidean, but no
         # correction was applied. Only the PCoA axes with positive eigenvalues were
         # kept.','\n') } dij = dij2 }
+    }
+
+    if (fdis) {
+        # calculate fdis
+        FDis <- FD::fdisp(d = dij, a = as.matrix(comm))$FDis
     }
 
     comm <- as.matrix(comm)
