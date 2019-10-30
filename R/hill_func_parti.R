@@ -59,11 +59,7 @@ hill_func_parti <- function(comm, traits, traits_as_is = FALSE, q = 0, base = ex
         dij <- as.matrix(traits)
     } else {
         # traits is not a distance matrix
-        traits$sp <- sp <- rownames(traits)
-        # sort species alphbetically
-        traits <- plyr::arrange(traits[traits$sp %in% colnames(comm), ], sp)
-        rownames(traits) <- traits$sp
-        traits$sp <- NULL
+        traits <- traits[colnames(comm), ]
 
         if (ncol(traits) == 1) {
             # only 1 trait
@@ -101,7 +97,7 @@ hill_func_parti <- function(comm, traits, traits_as_is = FALSE, q = 0, base = ex
                 }
             }
             if (all(sapply(traits, is.numeric)) & all(!is.na(traits))) {
-                dij <- dist(apply(traits, 2, scale, center = TRUE, scale = TRUE))
+                dij <- dist(scale(traits, center = TRUE, scale = TRUE))
             } else {
                 ord <- match.arg(ord)
                 dij <- FD::gowdis(x = traits, asym.bin = NULL, ord = ord)

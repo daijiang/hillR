@@ -55,7 +55,8 @@ hill_func <- function(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1), 
         trait_sp = rownames(traits)
     }
     if (any(!colnames(comm) %in% trait_sp)) {
-        warning("\n There are species from community data that are not on traits matrix\nDelete these species from comm data...\n")
+        warning("\n There are species from community data that are not on traits matrix\n
+                Delete these species from comm data...\n")
         comm <- comm[, trait_sp]
     }
 
@@ -64,6 +65,7 @@ hill_func <- function(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1), 
     if (traits_as_is) {
         # traits is already a distance matrix
         dij <- traits
+        if(!inherits(dij, "dist")) stop("`traits` is not a distance object yet `trait_as_is` is TRUE\n")
     } else {
         # traits is not a distance matrix
         traits <- traits[trait_sp, ]
@@ -110,6 +112,7 @@ hill_func <- function(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1), 
             }
             # dij = gowdis(x=traits, ...)
         }
+
         # if (!is.euclid(dij)) { if (corr == 'lingoes') { dij2 <- lingoes(dij)
         # warning('Species x species distance matrix was not Euclidean. Lingoes correction was
         # applied.','\n') } if (corr == 'cailliez') { dij2 <- cailliez(dij) warning('Species
