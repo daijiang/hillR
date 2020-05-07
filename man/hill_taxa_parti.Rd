@@ -4,8 +4,13 @@
 \alias{hill_taxa_parti}
 \title{Decompostion of Taxonomic diversity through Hill Numbers}
 \usage{
-hill_taxa_parti(comm, q = 0, base = exp(1), rel_then_pool = TRUE,
-  show.warning = TRUE)
+hill_taxa_parti(
+  comm,
+  q = 0,
+  base = exp(1),
+  rel_then_pool = TRUE,
+  show.warning = TRUE
+)
 }
 \arguments{
 \item{comm}{A data frame of vegtation data. Sites as rows, species as columns.}

@@ -4,9 +4,16 @@
 \alias{hill_func_parti_pairwise}
 \title{Pairwise comparisons for all sites.}
 \usage{
-hill_func_parti_pairwise(comm, traits, traits_as_is = FALSE, q = 0,
-  rel_then_pool = TRUE, output = c("data.frame", "matrix"),
-  pairs = c("unique", "full"), ...)
+hill_func_parti_pairwise(
+  comm,
+  traits,
+  traits_as_is = FALSE,
+  q = 0,
+  rel_then_pool = TRUE,
+  output = c("data.frame", "matrix"),
+  pairs = c("unique", "full"),
+  ...
+)
 }
 \arguments{
 \item{comm}{A data frame of vegtation data. Sites as rows, species as columns.}

@@ -1,30 +1,3 @@
-#' code for hill_phylo and hill_phylo_parti are mostly from Chiu & Chao.
-#'
-#' @param comm data frame of vegtation data. Sites as rows, species as columns.
-#' @param tree a phylogeny with class 'phylo'.
-#' @author Chiu & Chao
-#' @noRd
-dat_prep_phylo <- function(comm, tree) {
-    if (class(tree) == "phylo")
-        tree <- ape::write.tree(tree)
-    phyloData <- ade4::newick2phylog(tree)
-    comm <- as.matrix(comm[, names(phyloData$leaves)])  # resort sp
-    nodenames <- c(names(phyloData$leaves), names(phyloData$nodes))
-
-    M <- matrix(0, nrow = ncol(comm), ncol = length(nodenames), dimnames = list(names(phyloData$leaves),
-        nodenames))
-
-    for (i in 1:nrow(M)) {
-        M[i, ][unlist(phyloData$paths[i])] <- 1
-    }
-
-    phylo_comm <- comm %*% M
-    phyloLength <- c(phyloData$leaves, phyloData$nodes)
-    treeH <- sum(phyloLength * phylo_comm[1, ]/sum(comm[1, ]))
-
-    return(list(pcomm = t(phylo_comm), pLength = phyloLength, treeH = treeH))
-}
-
 #' Phylogenetic diversity through Hill Numbers
 #'
 #' Calculate alpha phylogenetic diversity based on Hill numbers
@@ -57,7 +30,7 @@ hill_phylo <- function(comm, tree, q = 0, base = exp(1), rel_then_pool = TRUE, s
     if (length(setdiff(tree$tip.label, comm_sp))) {
         if (show.warning)
             warning("Some species in the phylogeny but not in comm, \n remove them from the phylogeny...")
-        tree <- ape::drop.tip(tree, tree$tip.label[!tree$tip.label %in% comm_sp])
+        tree <- ape::keep.tip(tree, comm_sp)
     }
 
     if (length(setdiff(colnames(comm), comm_sp))) {
@@ -73,26 +46,25 @@ hill_phylo <- function(comm, tree, q = 0, base = exp(1), rel_then_pool = TRUE, s
         comm <- sweep(comm, 1, rowSums(comm, na.rm = TRUE), "/")  # relative abun
     }
 
-    dat <- dat_prep_phylo(comm, tree)
-    pabun <- dat$pcomm
-    plength <- dat$pLength
-
-    N <- ncol(pabun)
+    N <- nrow(comm)
     PD <- numeric(N)
     names(PD) <- row.names(comm)
 
-    if (q == 1) {
-        for (i in 1:N) {
-            TT <- sum(pabun[, i] * plength)
-            I <- which(pabun[, i] > 0)
-            PD[i] <- exp(-sum(plength[I] * (pabun[, i][I]/TT) * log(pabun[, i][I]/TT,
-                base)))
-        }
-    } else {
-        for (i in 1:N) {
-            TT <- sum(pabun[, i] * plength)
-            I <- which(pabun[, i] > 0)
-            PD[i] <- sum(plength[I] * (pabun[, i][I]/TT)^q)^(1/(1 - q))
+    br_L <- tree$edge.length
+    node_tips <- lapply(tree$edge[, 2], function(nd) geiger::tips(tree, nd))
+
+    for (i in 1:N) {
+        # for each node, which of its descends are in this site? how abundant in total?
+        a_i <- sapply(node_tips, function(tips_per_node) sum(comm[i, ][tips_per_node]))
+        TT <- sum(br_L * a_i) # weight by branch length
+        # remove nodes with zeros
+        I <- which(a_i > 0)
+        br_i = br_L[I]
+        a_i = a_i[I]
+        if(q == 1){
+            PD[i] <- exp(-sum(br_i * (a_i/TT) * log(a_i/TT, base)))
+        } else {
+            PD[i] <- sum(br_i * (a_i/TT)^q)^(1/(1 - q))
         }
     }
 

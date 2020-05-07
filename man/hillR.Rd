@@ -3,7 +3,6 @@
 \docType{package}
 \name{hillR}
 \alias{hillR}
-\alias{hillR-package}
 \title{hillR: Diversity Through Hill Numbers}
 \description{
 The R package `hillR` implements the framework proposed by Chao, et al. 2014 and makes it easy to calculate taxonomic, functional, and phylogenetic diversity of ecological communities as Hill numbers. For each facet of diversity, `hillR` has three functions. The first set of functions (\code{hill_taxa}, \code{hill_func}, and \code{hill_phylo}) calculates alpha diversity of each site. The second set of functions (\code{hill_taxa_parti}, \code{hill_func_parti}, and \code{hill_phylo_parti}) calculates diversity across all sites. The third set of functions (\code{hill_taxa_parti_pairwise}, \code{hill_func_parti_pairwise}, and \code{hill_phylo_parti_pairwise}) calculates all possible pairwise diversity across all sites. Users can set the argument _q_ to control the weight of species abundance.

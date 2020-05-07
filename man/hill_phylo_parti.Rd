@@ -4,8 +4,14 @@
 \alias{hill_phylo_parti}
 \title{Phylogenetic diversity of multiple sites}
 \usage{
-hill_phylo_parti(comm, tree, q = 0, base = exp(1),
-  rel_then_pool = TRUE, show.warning = TRUE)
+hill_phylo_parti(
+  comm,
+  tree,
+  q = 0,
+  base = exp(1),
+  rel_then_pool = TRUE,
+  show.warning = TRUE
+)
 }
 \arguments{
 \item{comm}{A data frame of vegtation data. Sites as rows, species as columns.}

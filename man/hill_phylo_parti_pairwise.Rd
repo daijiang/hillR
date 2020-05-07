@@ -4,8 +4,14 @@
 \alias{hill_phylo_parti_pairwise}
 \title{Pairwise phylogenetic diversity through Hill numbers}
 \usage{
-hill_phylo_parti_pairwise(comm, tree, q = 0, output = c("data.frame",
-  "matrix"), pairs = c("unique", "full"), ...)
+hill_phylo_parti_pairwise(
+  comm,
+  tree,
+  q = 0,
+  output = c("data.frame", "matrix"),
+  pairs = c("unique", "full"),
+  ...
+)
 }
 \arguments{
 \item{comm}{A data frame of vegtation data. Sites as rows, species as columns.}

@@ -4,9 +4,18 @@
 \alias{hill_func}
 \title{Functional diversity through Hill Numbers}
 \usage{
-hill_func(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1),
-  checkdata = TRUE, div_by_sp = FALSE, ord = c("podani", "metric"),
-  fdis = TRUE, stand_dij = FALSE)
+hill_func(
+  comm,
+  traits,
+  traits_as_is = FALSE,
+  q = 0,
+  base = exp(1),
+  checkdata = TRUE,
+  div_by_sp = FALSE,
+  ord = c("podani", "metric"),
+  fdis = TRUE,
+  stand_dij = FALSE
+)
 }
 \arguments{
 \item{comm}{A data frame of vegtation data. Sites as rows, species as columns.}

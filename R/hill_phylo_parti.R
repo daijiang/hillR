@@ -21,7 +21,6 @@ hill_phylo_parti <- function(comm, tree, q = 0, base = exp(1), rel_then_pool = T
         stop("Negative value in comm data")
     # if(any(colSums(comm) == 0) & show.warning) warning('Some species in comm data were
     # not observed in any site,\n delete them...') comm = comm[, colSums(comm) != 0] #
-    # when only 2 sp, ade4::newick2phylog has trouble, so keep zeros
 
     comm_sp <- intersect(colnames(comm), tree$tip.label)
 

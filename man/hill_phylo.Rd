@@ -4,8 +4,14 @@
 \alias{hill_phylo}
 \title{Phylogenetic diversity through Hill Numbers}
 \usage{
-hill_phylo(comm, tree, q = 0, base = exp(1), rel_then_pool = TRUE,
-  show.warning = TRUE)
+hill_phylo(
+  comm,
+  tree,
+  q = 0,
+  base = exp(1),
+  rel_then_pool = TRUE,
+  show.warning = TRUE
+)
 }
 \arguments{
 \item{comm}{A data frame of vegtation data. Sites as rows, species as columns.}

@@ -17,8 +17,9 @@ Imports:
     plyr,
     ade4,
     ape,
-    tibble
-RoxygenNote: 6.1.1
+    tibble,
+    geiger
+RoxygenNote: 7.1.0
 Suggests:
     testthat,
     vegetarian,
