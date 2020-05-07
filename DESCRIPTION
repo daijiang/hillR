@@ -1,7 +1,7 @@
 Package: hillR
 Type: Package
 Title: Diversity Through Hill Numbers
-Version: 0.4.0
+Version: 0.4.1
 Date: 2018-11-13
 Author: Daijiang Li
 Maintainer: Daijiang Li <daijianglee@gmail.com>

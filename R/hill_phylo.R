@@ -1,3 +1,25 @@
+#' code for hill_phylo and hill_phylo_parti are mostly from Chiu & Chao.
+#'
+#' @param comm data frame of vegtation data. Sites as rows, species as columns.
+#' @param tree a phylogeny with class 'phylo'.
+#' @noRd
+dat_prep_phylo <- function(comm, tree) {
+    if(is.null(tree$edge.length))
+        stop("tree must have branch length")
+    node_tips <- lapply(tree$edge[, 2], function(nd) geiger::tips(tree, nd))
+    n_node = ape::Nnode(tree, internal = FALSE)
+    xn = tree$edge[, 2] # put tip and node names there
+    xn[xn < min(tree$edge[,1])] = tree$tip.label
+
+    M2 <- matrix(0, nrow = ncol(comm), ncol = n_node - 1, # no root needed
+                 dimnames = list(tree$tip.label, xn))
+    for (i in 1:ncol(M2)) {
+        M2[, i][unlist(node_tips[[i]])] = 1
+    }
+
+    t(comm %*% M2)
+}
+
 #' Phylogenetic diversity through Hill Numbers
 #'
 #' Calculate alpha phylogenetic diversity based on Hill numbers
@@ -46,25 +68,18 @@ hill_phylo <- function(comm, tree, q = 0, base = exp(1), rel_then_pool = TRUE, s
         comm <- sweep(comm, 1, rowSums(comm, na.rm = TRUE), "/")  # relative abun
     }
 
-    N <- nrow(comm)
+    pabun <- dat_prep_phylo(comm, tree)
+    plength <- tree$edge.length
+    N <- ncol(pabun)
     PD <- numeric(N)
     names(PD) <- row.names(comm)
-
-    br_L <- tree$edge.length
-    node_tips <- lapply(tree$edge[, 2], function(nd) geiger::tips(tree, nd))
-
     for (i in 1:N) {
-        # for each node, which of its descends are in this site? how abundant in total?
-        a_i <- sapply(node_tips, function(tips_per_node) sum(comm[i, ][tips_per_node]))
-        TT <- sum(br_L * a_i) # weight by branch length
-        # remove nodes with zeros
-        I <- which(a_i > 0)
-        br_i = br_L[I]
-        a_i = a_i[I]
+        TT <- sum(pabun[, i] * plength)
+        I <- which(pabun[, i] > 0)
         if(q == 1){
-            PD[i] <- exp(-sum(br_i * (a_i/TT) * log(a_i/TT, base)))
+            PD[i] <- exp(-sum(plength[I] * (pabun[, i][I]/TT) * log(pabun[, i][I]/TT,                                                        base)))
         } else {
-            PD[i] <- sum(br_i * (a_i/TT)^q)^(1/(1 - q))
+            PD[i] <- sum(plength[I] * (pabun[, i][I]/TT)^q)^(1/(1 - q))
         }
     }
 

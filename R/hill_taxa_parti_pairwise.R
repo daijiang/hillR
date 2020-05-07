@@ -65,7 +65,7 @@ hill_taxa_parti_pairwise <- function(comm, q = 0, rel_then_pool = TRUE, output =
                   x[2]], local_similarity = local_simi[x[1], x[2]], region_similarity = region_simi[x[1],
                   x[2]])
             })[, -1]  # get rid of X1 column
-            out <- tibble::as.tibble(out)
+            out <- tibble::as_tibble(out)
         }
     }
 
@@ -91,7 +91,7 @@ hill_taxa_parti_pairwise <- function(comm, q = 0, rel_then_pool = TRUE, output =
             })
             out <- na.omit(out)[, -1]
             row.names(out) <- NULL
-            out <- tibble::as.tibble(out)
+            out <- tibble::as_tibble(out)
         }
     }
     out

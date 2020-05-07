@@ -1,4 +1,6 @@
-# hillR 0.4.0
+# hillR 0.4.1
+
+- `hill_phylo` set of functions are now much faster after getting rid of `ade4::newick2phylog()`.
 
 # hillR 0.3.0
 

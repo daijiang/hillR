@@ -31,7 +31,7 @@ to relative abundance.}
 }
 \value{
 A data frame with one row (across all sites) and six columns: q, gamma diversity, alpha diveristy,
-beta diversity, local similarity, and region similarity.
+beta diversity, local similarity (similar to Sorensen), and region similarity (similar to Jaccard).
 }
 \description{
 Calculate overall phylogenetic diversity and site similarity across multiple sites.

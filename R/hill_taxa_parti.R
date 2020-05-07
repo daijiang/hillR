@@ -12,8 +12,8 @@
 #' @param show.warning whether to print warning, default is \code{TRUE}.
 #' @export
 #' @return A data frame with one row (across all sites), including these columns: q, gamma diversity, alpha diveristy,
-#' beta diversity, MacArthur's homogeneity measure, local similarity (species overlap),
-#' and region similarity (species overlap).
+#' beta diversity, MacArthur's homogeneity measure, local similarity (species overlap, similar to Sorensen),
+#' and region similarity (species overlap, similar to Jaccard).
 #' See Chao, Chiu and Jost 2014 Table 2 for more information.
 #' @references Chao, Anne, Chun-Huo Chiu, and Lou Jost. Unifying Species Diversity, Phylogenetic Diversity, Functional Diversity, and Related Similarity and Differentiation Measures Through Hill Numbers. Annual Review of Ecology, Evolution, and Systematics 45, no. 1 (2014): 297–324. <doi:10.1146/annurev-ecolsys-120213-091540>.
 #'

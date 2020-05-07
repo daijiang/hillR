@@ -46,8 +46,8 @@ to relative abundance.}
 }
 \value{
 a data frame with one row (across all sites), including these columns: q, RaoQ of pooled assemblage,
-gamma diversity, alpha diveristy, beta diversity, local species overlap, and region species
-overlap. See Chiu and Chao 2014 Table 3 for more information.
+gamma diversity, alpha diveristy, beta diversity, local species overlap (similar to Sorensen), and region species
+overlap (similar to Jaccard). See Chiu and Chao 2014 Table 3 for more information.
 }
 \description{
 Calculate functional gamma, alpha, and beta diversity for all communities, as

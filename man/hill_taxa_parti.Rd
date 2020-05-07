@@ -28,8 +28,8 @@ to relative abundance.}
 }
 \value{
 A data frame with one row (across all sites), including these columns: q, gamma diversity, alpha diveristy,
-beta diversity, MacArthur's homogeneity measure, local similarity (species overlap),
-and region similarity (species overlap).
+beta diversity, MacArthur's homogeneity measure, local similarity (species overlap, similar to Sorensen),
+and region similarity (species overlap, similar to Jaccard).
 See Chao, Chiu and Jost 2014 Table 2 for more information.
 }
 \description{

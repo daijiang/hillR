@@ -7,7 +7,7 @@
 #' @author Chiu & Chao, Daijiang Li
 #' @references Chao, Anne, Chun-Huo Chiu, and Lou Jost. Unifying Species Diversity, Phylogenetic Diversity, Functional Diversity, and Related Similarity and Differentiation Measures Through Hill Numbers. Annual Review of Ecology, Evolution, and Systematics 45, no. 1 (2014): 297–324. <doi:10.1146/annurev-ecolsys-120213-091540>.
 #' @return A data frame with one row (across all sites) and six columns: q, gamma diversity, alpha diveristy,
-#' beta diversity, local similarity, and region similarity.
+#' beta diversity, local similarity (similar to Sorensen), and region similarity (similar to Jaccard).
 #' @examples
 #' comm = dummy = FD::dummy$abun
 #' tree = ape::rtree(n = ncol(comm), tip.label = paste0('sp', 1:8))
@@ -29,7 +29,7 @@ hill_phylo_parti <- function(comm, tree, q = 0, base = exp(1), rel_then_pool = T
     if (length(setdiff(tree$tip.label, comm_sp))) {
         if (show.warning)
             warning("Some species in the phylogeny but not in comm, \n remove them from the phylogeny...")
-        tree <- ape::drop.tip(tree, tree$tip.label[!tree$tip.label %in% comm_sp])
+        tree <- ape::keep.tip(tree, comm_sp)
     }
 
     if (length(setdiff(colnames(comm), comm_sp))) {
@@ -45,9 +45,8 @@ hill_phylo_parti <- function(comm, tree, q = 0, base = exp(1), rel_then_pool = T
         comm <- sweep(comm, 1, rowSums(comm, na.rm = TRUE), "/")  # relative abun
     }
 
-    dat <- dat_prep_phylo(comm, tree)
-    pabun <- dat$pcomm
-    plength <- dat$pLength
+    pabun <- dat_prep_phylo(comm, tree)
+    plength <- tree$edge.length
 
     N <- ncol(pabun)
     Tabun <- rowSums(pabun)
@@ -73,5 +72,5 @@ hill_phylo_parti <- function(comm, tree, q = 0, base = exp(1), rel_then_pool = T
     }
 
     return(data.frame(q = q, PD_gamma = gPD, PD_alpha = aPD, PD_beta = bPD, local_similarity = phyloCqN,
-        region_similarity = phyloUqN))
+                      region_similarity = phyloUqN))
 }

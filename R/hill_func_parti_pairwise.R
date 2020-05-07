@@ -65,7 +65,7 @@ hill_func_parti_pairwise <- function(comm, traits, traits_as_is = FALSE, q = 0, 
                   x[2]], local_similarity = local_simi[x[1], x[2]], region_similarity = region_simi[x[1],
                   x[2]])
             })[, -1]
-            out <- tibble::as.tibble(out)
+            out <- tibble::as_tibble(out)
         }
         out
     }
@@ -92,7 +92,7 @@ hill_func_parti_pairwise <- function(comm, traits, traits_as_is = FALSE, q = 0, 
             })
             out <- na.omit(out)[, -1]
             row.names(out) <- NULL
-            out <- tibble::as.tibble(out)
+            out <- tibble::as_tibble(out)
         }
     }
     out

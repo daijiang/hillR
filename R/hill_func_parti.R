@@ -11,8 +11,8 @@
 #'
 #' Chiu, Chun-Huo, and Anne Chao. Distance-Based Functional Diversity Measures and Their Decomposition: A Framework Based on Hill Numbers. PLoS ONE 9, no. 7 (July 7, 2014): e100014. <doi:10.1371/journal.pone.0100014>.
 #' @return  a data frame with one row (across all sites), including these columns: q, RaoQ of pooled assemblage,
-#' gamma diversity, alpha diveristy, beta diversity, local species overlap, and region species
-#' overlap. See Chiu and Chao 2014 Table 3 for more information.
+#' gamma diversity, alpha diveristy, beta diversity, local species overlap (similar to Sorensen), and region species
+#' overlap (similar to Jaccard). See Chiu and Chao 2014 Table 3 for more information.
 #' @seealso \code{\link{hill_taxa_parti}}, \code{\link{hill_func}}
 #'
 #' @examples
