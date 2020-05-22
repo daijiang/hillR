@@ -63,9 +63,9 @@ hill_func(comm, traits, q = 0) # functional alpha diversity
 
 hill_phylo(comm, tree, q = 0) # phylogenetic alpha diversity
 ##     com1     com2     com3     com4     com5     com6     com7     com8 
-## 8.080222 5.041672 6.945878 2.357757 4.892636 8.122602 5.384327 7.609754 
+## 4.709412 3.666934 3.743396 2.713211 3.675683 5.972056 3.518601 5.320472 
 ##     com9    com10 
-## 7.072671 5.736685
+## 4.952347 4.514751
 ```
 
 ## Calculate taxonomic, functional, and phylogenetic diversity across multiple sites
@@ -76,66 +76,69 @@ hill_taxa_parti(comm, q = 0) # taxonomic diversity across all sites
 ## 1 0        8      3.6 2.222222    0.45        0.8641975         0.3888889
 
 hill_func_parti(comm, traits, q = 0) # functional diversity across all sites
-##   q raoQ_gamma FD_gamma FD_alpha FD_beta local_similarity
-## 1 0  0.4529152 29.66099 14.15941 2.09479        0.9889415
-##   region_similarity
-## 1         0.4720957
+##   q raoQ_gamma FD_gamma FD_alpha FD_beta local_similarity region_similarity
+## 1 0  0.4529152 29.66099 14.15941 2.09479        0.9889415         0.4720957
 
 hill_phylo_parti(comm, tree, q = 0) # phylogenetic diversity across all sites
 ##   q PD_gamma PD_alpha  PD_beta local_similarity region_similarity
-## 1 0 9.136295  6.12442 1.491781        0.9453577         0.6337107
+## 1 0 6.641309 4.278686 1.552184        0.9386462          0.604726
 ```
 
 ## Calculate pairwise taxonomic, functional, and phylogenetic diversity
 
 ``` r
 hill_taxa_parti_pairwise(comm, q = 0, show.warning = F) # pairwise taxonomic diversity
+## Warning: `as.tibble()` is deprecated as of tibble 2.0.0.
+## Please use `as_tibble()` instead.
+## The signature and semantics have changed, see `?as_tibble`.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_warnings()` to see where this warning was generated.
 ## # A tibble: 45 x 8
-##        q site1 site2 TD_gamma TD_alpha TD_beta local_similarity
-##    <dbl> <fct> <fct>    <dbl>    <dbl>   <dbl>            <dbl>
-##  1     0 com1  com2         6      3.5    1.71            0.286
-##  2     0 com1  com3         5      3.5    1.43            0.571
-##  3     0 com2  com3         5      3      1.67            0.333
-##  4     0 com1  com4         5      3      1.67            0.333
-##  5     0 com2  com4         5      2.5    2               0    
-##  6     0 com3  com4         4      2.5    1.6             0.400
-##  7     0 com1  com5         6      3.5    1.71            0.286
-##  8     0 com2  com5         4      3      1.33            0.667
-##  9     0 com3  com5         6      3      2               0    
-## 10     0 com4  com5         4      2.5    1.6             0.400
-## # … with 35 more rows, and 1 more variable: region_similarity <dbl>
+##        q site1 site2 TD_gamma TD_alpha TD_beta local_similarity region_similari…
+##    <dbl> <chr> <chr>    <dbl>    <dbl>   <dbl>            <dbl>            <dbl>
+##  1     0 com1  com2         6      3.5    1.71            0.286            0.167
+##  2     0 com1  com3         5      3.5    1.43            0.571            0.400
+##  3     0 com2  com3         5      3      1.67            0.333            0.200
+##  4     0 com1  com4         5      3      1.67            0.333            0.200
+##  5     0 com2  com4         5      2.5    2               0                0    
+##  6     0 com3  com4         4      2.5    1.6             0.400            0.25 
+##  7     0 com1  com5         6      3.5    1.71            0.286            0.167
+##  8     0 com2  com5         4      3      1.33            0.667            0.5  
+##  9     0 com3  com5         6      3      2               0                0    
+## 10     0 com4  com5         4      2.5    1.6             0.400            0.25 
+## # … with 35 more rows
 
 hill_func_parti_pairwise(comm, traits, q = 0, show.warning = F) # pairwise functional diversity
 ## # A tibble: 45 x 8
-##        q site1 site2 FD_gamma FD_alpha FD_beta local_similarity
-##    <dbl> <fct> <fct>    <dbl>    <dbl>   <dbl>            <dbl>
-##  1     0 com1  com2     15.9     10.3     1.54            0.821
-##  2     0 com1  com3     10.7      7.96    1.35            0.883
-##  3     0 com2  com3     11.1      7.03    1.58            0.807
-##  4     0 com1  com4     11.6      7.90    1.47            0.843
-##  5     0 com2  com4     11.7      6.85    1.70            0.765
-##  6     0 com3  com4      6.60     4.45    1.48            0.839
-##  7     0 com1  com5     17.3     11.3     1.54            0.821
-##  8     0 com2  com5      7.86     5.92    1.33            0.891
-##  9     0 com3  com5     16.2      9.72    1.66            0.780
-## 10     0 com4  com5      8.00     5.32    1.50            0.832
-## # … with 35 more rows, and 1 more variable: region_similarity <dbl>
+##        q site1 site2 FD_gamma FD_alpha FD_beta local_similarity region_similari…
+##    <dbl> <chr> <chr>    <dbl>    <dbl>   <dbl>            <dbl>            <dbl>
+##  1     0 com1  com2     15.9     10.3     1.54            0.821            0.534
+##  2     0 com1  com3     10.7      7.96    1.35            0.883            0.655
+##  3     0 com2  com3     11.1      7.03    1.58            0.807            0.511
+##  4     0 com1  com4     11.6      7.90    1.47            0.843            0.573
+##  5     0 com2  com4     11.7      6.85    1.70            0.765            0.449
+##  6     0 com3  com4      6.60     4.45    1.48            0.839            0.566
+##  7     0 com1  com5     17.3     11.3     1.54            0.821            0.534
+##  8     0 com2  com5      7.86     5.92    1.33            0.891            0.671
+##  9     0 com3  com5     16.2      9.72    1.66            0.780            0.469
+## 10     0 com4  com5      8.00     5.32    1.50            0.832            0.554
+## # … with 35 more rows
 
 hill_phylo_parti_pairwise(comm, tree, q = 0, show.warning = F) # pairwise phylogenetic diversity
 ## # A tibble: 45 x 8
-##        q site1 site2 PD_gamma PD_alpha PD_beta local_similarity
-##    <dbl> <fct> <fct>    <dbl>    <dbl>   <dbl>            <dbl>
-##  1     0 com1  com2      8.33     6.56    1.27            0.731
-##  2     0 com1  com3      8.31     7.51    1.11            0.893
-##  3     0 com2  com3      7.81     5.99    1.30            0.697
-##  4     0 com1  com4      8.16     5.22    1.56            0.436
-##  5     0 com2  com4      6.04     3.70    1.63            0.367
-##  6     0 com3  com4      7.03     4.65    1.51            0.489
-##  7     0 com1  com5      8.18     6.49    1.26            0.739
-##  8     0 com2  com5      5.13     4.97    1.03            0.968
-##  9     0 com3  com5      7.90     5.92    1.33            0.666
-## 10     0 com4  com5      5.81     3.63    1.60            0.397
-## # … with 35 more rows, and 1 more variable: region_similarity <dbl>
+##        q site1 site2 PD_gamma PD_alpha PD_beta local_similarity region_similari…
+##    <dbl> <chr> <chr>    <dbl>    <dbl>   <dbl>            <dbl>            <dbl>
+##  1     0 com1  com2      5.48     4.19    1.31            0.691            0.527
+##  2     0 com1  com3      5.37     4.23    1.27            0.729            0.574
+##  3     0 com2  com3      4.83     3.71    1.30            0.696            0.533
+##  4     0 com1  com4      5.38     3.71    1.45            0.551            0.380
+##  5     0 com2  com4      4.89     3.19    1.53            0.466            0.303
+##  6     0 com3  com4      4.14     3.23    1.28            0.719            0.561
+##  7     0 com1  com5      5.49     4.19    1.31            0.690            0.527
+##  8     0 com2  com5      4.06     3.67    1.11            0.894            0.809
+##  9     0 com3  com5      5.23     3.71    1.41            0.591            0.420
+## 10     0 com4  com5      4.51     3.19    1.41            0.588            0.416
+## # … with 35 more rows
 ```
 
 # Licenses
