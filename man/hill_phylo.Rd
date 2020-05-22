@@ -30,7 +30,7 @@ to relative abundance.}
 \item{show.warning}{whether to print warning, default is \code{TRUE}.}
 }
 \value{
-A vector of hill number based phylogenetic diversity for all sites.
+A vector of hill number based phylogenetic diversity (`PD(T)`, effective total branch length) for all sites.
 }
 \description{
 Calculate alpha phylogenetic diversity based on Hill numbers
@@ -48,5 +48,5 @@ hill_phylo(comm, tree, q = 2)
 Chao, Anne, Chun-Huo Chiu, and Lou Jost. Unifying Species Diversity, Phylogenetic Diversity, Functional Diversity, and Related Similarity and Differentiation Measures Through Hill Numbers. Annual Review of Ecology, Evolution, and Systematics 45, no. 1 (2014): 297–324. <doi:10.1146/annurev-ecolsys-120213-091540>.
 }
 \author{
-Chiu & Chao
+Chiu & Chao & Daijiang Li
 }

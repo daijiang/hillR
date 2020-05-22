@@ -27,8 +27,8 @@ dat_prep_phylo <- function(comm, tree) {
 #' @inheritParams hill_taxa
 #' @param tree a phylogeny with class 'phylo'.
 #' @inheritParams hill_taxa_parti
-#' @author Chiu & Chao
-#' @return A vector of hill number based phylogenetic diversity for all sites.
+#' @author Chiu & Chao & Daijiang Li
+#' @return A vector of hill number based phylogenetic diversity (`PD(T)`, effective total branch length) for all sites.
 #' @export
 #' @references Chao, Anne, Chun-Huo Chiu, and Lou Jost. Unifying Species Diversity, Phylogenetic Diversity, Functional Diversity, and Related Similarity and Differentiation Measures Through Hill Numbers. Annual Review of Ecology, Evolution, and Systematics 45, no. 1 (2014): 297–324. <doi:10.1146/annurev-ecolsys-120213-091540>.
 #' @examples
@@ -77,7 +77,7 @@ hill_phylo <- function(comm, tree, q = 0, base = exp(1), rel_then_pool = TRUE, s
         TT <- sum(pabun[, i] * plength)
         I <- which(pabun[, i] > 0)
         if(q == 1){
-            PD[i] <- exp(-sum(plength[I] * (pabun[, i][I]/TT) * log(pabun[, i][I]/TT,                                                        base)))
+            PD[i] <- exp(-sum(plength[I] * (pabun[, i][I]/TT) * log(pabun[, i][I]/TT, base)))
         } else {
             PD[i] <- sum(plength[I] * (pabun[, i][I]/TT)^q)^(1/(1 - q))
         }
