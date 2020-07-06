@@ -26,8 +26,23 @@
 #' hill_func_parti_pairwise(comm = dummy$abun, traits = dummy$trait, q = 2)
 #' hill_func_parti_pairwise(comm = dummy$abun, traits = dummy$trait, q = 3)
 #' }
-hill_func_parti_pairwise <- function(comm, traits, traits_as_is = FALSE, q = 0, rel_then_pool = TRUE,
-    output = c("data.frame", "matrix"), pairs = c("unique", "full"), .progress = TRUE,  ...) {
+hill_func_parti_pairwise <- function(comm, traits, traits_as_is = FALSE,
+                                     q = 0, rel_then_pool = TRUE,
+                                     output = c("data.frame", "matrix"),
+                                     pairs = c("unique", "full"),
+                                     .progress = TRUE, show_warning = TRUE,
+                                     ...) {
+    if (any(comm < 0))
+        stop("Negative value in comm data")
+    if (is.null(rownames(traits))) {
+        stop("\n Traits have no row names\n")
+    }
+    if (is.null(colnames(comm))) {
+        stop("\n Comm data have no col names\n")
+    }
+    if (any(colSums(comm) == 0) & show_warning)
+        warning("Some species in comm data were not observed in any site,\n
+                                      delete them...")
     output <- match.arg(output)
     pairs <- match.arg(pairs)
     nsite <- nrow(comm)
@@ -39,8 +54,10 @@ hill_func_parti_pairwise <- function(comm, traits, traits_as_is = FALSE, q = 0, 
     for (i in 1:(nsite - 1)) {
         if(.progress) utils::setTxtProgressBar(progbar, i)
         for (j in (i + 1):nsite) {
-            o <- hill_func_parti(comm = comm[c(i, j), ], traits = traits, traits_as_is = traits_as_is,
-                q = q, rel_then_pool = rel_then_pool, ...)
+            o <- hill_func_parti(comm = comm[c(i, j), ], traits = traits,
+                                 traits_as_is = traits_as_is, q = q,
+                                 rel_then_pool = rel_then_pool, check_data = FALSE,
+                                 ...)
             gamma_pair[i, j] <- o$FD_gamma
             gamma_pair[j, i] <- o$FD_gamma
             alpha_pair[i, j] <- o$FD_alpha

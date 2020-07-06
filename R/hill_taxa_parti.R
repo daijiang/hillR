@@ -6,6 +6,7 @@
 #' alpha is the average diversity across all site, beta is across all communities.
 #'
 #' @inheritParams hill_taxa
+#' @inheritParams hill_func
 #' @param rel_then_pool default is \code{TRUE.} Abundance of species are first changed to relative abundance within sites,
 #' then pooled into one assemblage. If \code{FALSE}, sites are pooled first, then change abundance of species
 #' to relative abundance.
@@ -29,11 +30,15 @@
 #' hill_taxa_parti(comm = dummy$abun, q = 2)
 #' hill_taxa_parti(comm = dummy$abun, q = 3)
 #'
-hill_taxa_parti <- function(comm, q = 0, base = exp(1), rel_then_pool = TRUE, show_warning = TRUE) {
-    if (any(comm < 0))
-        stop("Negative value in comm data")
-    if (any(colSums(comm) == 0) & show_warning)
-        warning("Some species in comm data were not observed in any site,\n delete them...")
+hill_taxa_parti <- function(comm, q = 0, base = exp(1), rel_then_pool = TRUE,
+                            show_warning = TRUE, check_data = TRUE) {
+    if(check_data){
+        if (any(comm < 0))
+            stop("Negative value in comm data")
+        if (any(colSums(comm) == 0) & show_warning)
+            warning("Some species in comm data were not observed in any site,\n delete them...")
+    }
+
     comm <- comm[, colSums(comm) != 0, drop = FALSE]
     N <- nrow(comm)
     S <- ncol(comm)

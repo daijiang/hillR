@@ -35,11 +35,11 @@ hill_func_parti <- function(comm, traits, traits_as_is = FALSE, q = 0, base = ex
         if (is.null(colnames(comm))) {
             stop("\n Comm data have no col names\n")
         }
+        if (any(colSums(comm) == 0) & show_warning)
+            warning("Some species in comm data were not observed in any site,\n
+                                      delete them...")
     }
 
-    if (any(colSums(comm) == 0) & show_warning)
-        warning("Some species in comm data were not observed in any site,\n
-                                      delete them...")
     comm <- comm[, colSums(comm) != 0]
 
     if (any(!colnames(comm) %in% rownames(traits))) {

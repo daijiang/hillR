@@ -28,8 +28,16 @@
 #' hill_taxa_parti_pairwise(comm = dummy$abun, q = 2)
 #' hill_taxa_parti_pairwise(comm = dummy$abun, q = 3)
 #' }
-hill_taxa_parti_pairwise <- function(comm, q = 0, rel_then_pool = TRUE, output = c("data.frame",
-    "matrix"), pairs = c("unique", "full"), .progress = TRUE, ...) {
+hill_taxa_parti_pairwise <- function(comm, q = 0, rel_then_pool = TRUE,
+                                     output = c("data.frame", "matrix"),
+                                     pairs = c("unique", "full"),
+                                     .progress = TRUE,
+                                     show_warning = TRUE, ...) {
+    if (any(comm < 0))
+        stop("Negative value in comm data")
+    if (any(colSums(comm) == 0) & show_warning)
+        warning("Some species in comm data were not observed in any site,\n delete them...")
+
     output <- match.arg(output)
     pairs <- match.arg(pairs)
     nsite <- nrow(comm)
@@ -41,7 +49,7 @@ hill_taxa_parti_pairwise <- function(comm, q = 0, rel_then_pool = TRUE, output =
     for (i in 1:(nsite - 1)) {
         if(.progress) utils::setTxtProgressBar(progbar, i)
         for (j in (i + 1):nsite) {
-            o <- hill_taxa_parti(comm[c(i, j), ], q = q, ...)
+            o <- hill_taxa_parti(comm[c(i, j), ], q = q, check_data = FALSE, ...)
             gamma_pair[i, j] <- o$TD_gamma
             gamma_pair[j, i] <- o$TD_gamma
             alpha_pair[i, j] <- o$TD_alpha

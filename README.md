@@ -36,6 +36,7 @@ devtools::install_github("daijiang/hillR")
 dummy = FD::dummy
 comm = dummy$abun
 traits = dummy$trait
+set.seed(123)
 tree = ape::rtree(n = ncol(comm), tip.label = paste0("sp", 1:ncol(comm)))
 library(hillR)
 ```
@@ -63,9 +64,9 @@ hill_func(comm, traits, q = 0) # functional alpha diversity
 
 hill_phylo(comm, tree, q = 0) # phylogenetic alpha diversity
 ##     com1     com2     com3     com4     com5     com6     com7     com8 
-## 4.709412 3.666934 3.743396 2.713211 3.675683 5.972056 3.518601 5.320472 
+## 5.430079 4.684280 4.461773 2.551395 5.830078 6.088533 4.763594 6.046474 
 ##     com9    com10 
-## 4.952347 4.514751
+## 6.262164 5.080340
 ```
 
 ## Calculate taxonomic, functional, and phylogenetic diversity across multiple sites
@@ -81,18 +82,14 @@ hill_func_parti(comm, traits, q = 0) # functional diversity across all sites
 
 hill_phylo_parti(comm, tree, q = 0) # phylogenetic diversity across all sites
 ##   q PD_gamma PD_alpha  PD_beta local_similarity region_similarity
-## 1 0 6.641309 4.278686 1.552184        0.9386462          0.604726
+## 1 0 8.292885 5.119871 1.619745        0.9311395          0.574868
 ```
 
 ## Calculate pairwise taxonomic, functional, and phylogenetic diversity
 
 ``` r
-hill_taxa_parti_pairwise(comm, q = 0, show.warning = F) # pairwise taxonomic diversity
-## Warning: `as.tibble()` is deprecated as of tibble 2.0.0.
-## Please use `as_tibble()` instead.
-## The signature and semantics have changed, see `?as_tibble`.
-## This warning is displayed once every 8 hours.
-## Call `lifecycle::last_warnings()` to see where this warning was generated.
+# pairwise taxonomic diversity
+hill_taxa_parti_pairwise(comm, q = 0, show_warning = FALSE, .progress = FALSE) 
 ## # A tibble: 45 x 8
 ##        q site1 site2 TD_gamma TD_alpha TD_beta local_similarity region_similari…
 ##    <dbl> <chr> <chr>    <dbl>    <dbl>   <dbl>            <dbl>            <dbl>
@@ -107,8 +104,8 @@ hill_taxa_parti_pairwise(comm, q = 0, show.warning = F) # pairwise taxonomic div
 ##  9     0 com3  com5         6      3      2               0                0    
 ## 10     0 com4  com5         4      2.5    1.6             0.400            0.25 
 ## # … with 35 more rows
-
-hill_func_parti_pairwise(comm, traits, q = 0, show.warning = F) # pairwise functional diversity
+# pairwise functional diversity
+hill_func_parti_pairwise(comm, traits, q = 0, show_warning = FALSE, .progress = FALSE) 
 ## # A tibble: 45 x 8
 ##        q site1 site2 FD_gamma FD_alpha FD_beta local_similarity region_similari…
 ##    <dbl> <chr> <chr>    <dbl>    <dbl>   <dbl>            <dbl>            <dbl>
@@ -123,21 +120,21 @@ hill_func_parti_pairwise(comm, traits, q = 0, show.warning = F) # pairwise funct
 ##  9     0 com3  com5     16.2      9.72    1.66            0.780            0.469
 ## 10     0 com4  com5      8.00     5.32    1.50            0.832            0.554
 ## # … with 35 more rows
-
-hill_phylo_parti_pairwise(comm, tree, q = 0, show.warning = F) # pairwise phylogenetic diversity
+# pairwise phylogenetic diversity
+hill_phylo_parti_pairwise(comm, tree, q = 0, show_warning = FALSE, .progress = FALSE) 
 ## # A tibble: 45 x 8
 ##        q site1 site2 PD_gamma PD_alpha PD_beta local_similarity region_similari…
 ##    <dbl> <chr> <chr>    <dbl>    <dbl>   <dbl>            <dbl>            <dbl>
-##  1     0 com1  com2      5.48     4.19    1.31            0.691            0.527
-##  2     0 com1  com3      5.37     4.23    1.27            0.729            0.574
-##  3     0 com2  com3      4.83     3.71    1.30            0.696            0.533
-##  4     0 com1  com4      5.38     3.71    1.45            0.551            0.380
-##  5     0 com2  com4      4.89     3.19    1.53            0.466            0.303
-##  6     0 com3  com4      4.14     3.23    1.28            0.719            0.561
-##  7     0 com1  com5      5.49     4.19    1.31            0.690            0.527
-##  8     0 com2  com5      4.06     3.67    1.11            0.894            0.809
-##  9     0 com3  com5      5.23     3.71    1.41            0.591            0.420
-## 10     0 com4  com5      4.51     3.19    1.41            0.588            0.416
+##  1     0 com1  com2      6.79     5.06    1.34           0.657            0.489 
+##  2     0 com1  com3      6.14     4.95    1.24           0.759            0.611 
+##  3     0 com2  com3      6.75     4.57    1.48           0.523            0.355 
+##  4     0 com1  com4      6.38     3.99    1.60           0.400            0.250 
+##  5     0 com2  com4      7.13     3.62    1.97           0.0284           0.0144
+##  6     0 com3  com4      5.42     3.51    1.54           0.455            0.295 
+##  7     0 com1  com5      7.04     5.63    1.25           0.750            0.599 
+##  8     0 com2  com5      6.54     5.26    1.24           0.756            0.608 
+##  9     0 com3  com5      7.71     5.15    1.50           0.502            0.335 
+## 10     0 com4  com5      6.42     4.19    1.53           0.467            0.305 
 ## # … with 35 more rows
 ```
 

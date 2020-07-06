@@ -1,6 +1,9 @@
 # hillR 0.4.1
 
 - `hill_phylo` set of functions are now much faster after getting rid of `ade4::newick2phylog()`.
+- Replaced all `.` in arguments with `_` to standardize styles.
+- `hill_phylo_parti_pairwise` now calculate the node/tips by site matrix first to speed things up.
+- Added progress bar to all `hill_xxx_parti_pairwise` functions with `.progress` argument, which can be set to `FALSE` to turn it off.
 
 # hillR 0.3.0
 

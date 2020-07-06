@@ -38,6 +38,7 @@ devtools::install_github("daijiang/hillR")
 dummy = FD::dummy
 comm = dummy$abun
 traits = dummy$trait
+set.seed(123)
 tree = ape::rtree(n = ncol(comm), tip.label = paste0("sp", 1:ncol(comm)))
 library(hillR)
 ```
@@ -65,11 +66,12 @@ hill_phylo_parti(comm, tree, q = 0) # phylogenetic diversity across all sites
 ## Calculate pairwise taxonomic, functional, and phylogenetic diversity
 
 ```{r}
-hill_taxa_parti_pairwise(comm, q = 0, show.warning = F) # pairwise taxonomic diversity
-
-hill_func_parti_pairwise(comm, traits, q = 0, show.warning = F) # pairwise functional diversity
-
-hill_phylo_parti_pairwise(comm, tree, q = 0, show.warning = F) # pairwise phylogenetic diversity
+# pairwise taxonomic diversity
+hill_taxa_parti_pairwise(comm, q = 0, show_warning = FALSE, .progress = FALSE) 
+# pairwise functional diversity
+hill_func_parti_pairwise(comm, traits, q = 0, show_warning = FALSE, .progress = FALSE) 
+# pairwise phylogenetic diversity
+hill_phylo_parti_pairwise(comm, tree, q = 0, show_warning = FALSE, .progress = FALSE) 
 ```
     
 # Licenses

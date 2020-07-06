@@ -11,6 +11,7 @@ hill_taxa_parti_pairwise(
   output = c("data.frame", "matrix"),
   pairs = c("unique", "full"),
   .progress = TRUE,
+  show_warning = TRUE,
   ...
 )
 }
@@ -29,6 +30,8 @@ to relative abundance.}
 \item{pairs}{full or unique (default). Do you want to compare all possible pairs (i.e. n^2) or just unique pairs (i.e. \code{choose(n, 2))}?}
 
 \item{.progress}{Whether to show progress bar. Default is `TRUE`.}
+
+\item{show_warning}{whether to print warning, default is \code{TRUE}.}
 
 \item{...}{other arguments in \code{hill_taxa_parti()}.}
 }
