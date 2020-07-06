@@ -12,6 +12,7 @@ hill_func_parti_pairwise(
   rel_then_pool = TRUE,
   output = c("data.frame", "matrix"),
   pairs = c("unique", "full"),
+  .progress = TRUE,
   ...
 )
 }
@@ -35,6 +36,8 @@ to relative abundance.}
 \item{output}{output type: data.frame (default) or matrix. If matrix, then this function will return a list of matrices.}
 
 \item{pairs}{full or unique (default). Do you want to compare all possible pairs (i.e. n^2) or just unique pairs (i.e. \code{choose(n, 2))}?}
+
+\item{.progress}{Whether to show progress bar. Default is `TRUE`.}
 
 \item{...}{additional arguments for \code{hill_func_parti}.}
 }

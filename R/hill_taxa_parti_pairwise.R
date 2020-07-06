@@ -8,6 +8,7 @@
 #' @inheritParams hill_taxa_parti
 #' @param output output type: data.frame (default) or matrix. If matrix, then this function will return a list of matrices.
 #' @param pairs full or unique (default). Do you want to compare all possible pairs (i.e. n^2) or just unique pairs (i.e. \code{choose(n, 2))}?
+#' @param .progress Whether to show progress bar. Default is `TRUE`.
 #' @param ... other arguments in \code{hill_taxa_parti()}.
 #' @export
 #' @return A data frame with results for all pairwise comparisons.
@@ -28,14 +29,17 @@
 #' hill_taxa_parti_pairwise(comm = dummy$abun, q = 3)
 #' }
 hill_taxa_parti_pairwise <- function(comm, q = 0, rel_then_pool = TRUE, output = c("data.frame",
-    "matrix"), pairs = c("unique", "full"), ...) {
+    "matrix"), pairs = c("unique", "full"), .progress = TRUE, ...) {
     output <- match.arg(output)
     pairs <- match.arg(pairs)
     nsite <- nrow(comm)
     temp <- matrix(1, nsite, nsite)
     dimnames(temp) <- list(row.names(comm), row.names(comm))
     gamma_pair <- alpha_pair <- beta_pair <- local_simi <- region_simi <- temp
+    if(.progress)
+        progbar = utils::txtProgressBar(min = 0, max = nsite, initial = 0, style = 3)
     for (i in 1:nsite) {
+        if(.progress) utils::setTxtProgressBar(progbar, i)
         for (j in i:nsite) {
             o <- hill_taxa_parti(comm[c(i, j), ], q = q, ...)
             gamma_pair[i, j] <- o$TD_gamma
@@ -50,6 +54,7 @@ hill_taxa_parti_pairwise <- function(comm, q = 0, rel_then_pool = TRUE, output =
             region_simi[j, i] <- o$region_similarity
         }
     }
+    if(.progress) close(progbar)
 
     if (pairs == "full") {
         if (output == "matrix") {

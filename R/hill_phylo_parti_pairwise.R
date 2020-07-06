@@ -19,14 +19,17 @@
 #' hill_phylo_parti_pairwise(comm, tree, q = 2, show.warning = FALSE)
 #' }
 hill_phylo_parti_pairwise <- function(comm, tree, q = 0, output = c("data.frame", "matrix"),
-    pairs = c("unique", "full"), ...) {
+    pairs = c("unique", "full"), .progress = TRUE, ...) {
     output <- match.arg(output)
     pairs <- match.arg(pairs)
     nsite <- nrow(comm)
     temp <- matrix(1, nsite, nsite)
     dimnames(temp) <- list(row.names(comm), row.names(comm))
     gamma_pair <- alpha_pair <- beta_pair <- local_simi <- region_simi <- temp
+    if(.progress)
+        progbar = utils::txtProgressBar(min = 0, max = nsite, initial = 0, style = 3)
     for (i in 1:nsite) {
+        if(.progress) utils::setTxtProgressBar(progbar, i)
         for (j in i:nsite) {
             o <- hill_phylo_parti(comm[c(i, j), ], tree, q = q)
             gamma_pair[i, j] <- o$PD_gamma
@@ -41,6 +44,7 @@ hill_phylo_parti_pairwise <- function(comm, tree, q = 0, output = c("data.frame"
             region_simi[j, i] <- o$region_similarity
         }
     }
+    if(.progress) close(progbar)
 
     if (pairs == "full") {
         if (output == "matrix") {

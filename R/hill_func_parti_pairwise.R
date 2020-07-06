@@ -27,14 +27,17 @@
 #' hill_func_parti_pairwise(comm = dummy$abun, traits = dummy$trait, q = 3)
 #' }
 hill_func_parti_pairwise <- function(comm, traits, traits_as_is = FALSE, q = 0, rel_then_pool = TRUE,
-    output = c("data.frame", "matrix"), pairs = c("unique", "full"), ...) {
+    output = c("data.frame", "matrix"), pairs = c("unique", "full"), .progress = TRUE,  ...) {
     output <- match.arg(output)
     pairs <- match.arg(pairs)
     nsite <- nrow(comm)
     temp <- matrix(1, nsite, nsite)
     dimnames(temp) <- list(row.names(comm), row.names(comm))
     gamma_pair <- alpha_pair <- beta_pair <- local_simi <- region_simi <- temp
+    if(.progress)
+        progbar = utils::txtProgressBar(min = 0, max = nsite, initial = 0, style = 3)
     for (i in 1:nsite) {
+        if(.progress) utils::setTxtProgressBar(progbar, i)
         for (j in i:nsite) {
             o <- hill_func_parti(comm = comm[c(i, j), ], traits = traits, traits_as_is = traits_as_is,
                 q = q, rel_then_pool = rel_then_pool, ...)
@@ -50,6 +53,7 @@ hill_func_parti_pairwise <- function(comm, traits, traits_as_is = FALSE, q = 0, 
             region_simi[j, i] <- o$region_similarity
         }
     }
+    if(.progress) close(progbar)
 
     if (pairs == "full") {
         if (output == "matrix") {
