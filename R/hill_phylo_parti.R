@@ -3,6 +3,10 @@
 #' Calculate overall phylogenetic diversity and site similarity across multiple sites.
 #'
 #' @inheritParams hill_phylo
+#' @param phy.abund A matrix of phylogeny node and tips by community matrix derived
+#' from `dat_prep_phylo()`. Can be specified to speed up `hill_phylo_parti_pairwise()`.
+#' @param check.data Whether to check the community data and phylogeny. Default is `TRUE`.
+#' Can be set to `FALSE` to speed up `hill_phylo_parti_pairwise()`.
 #' @export
 #' @author Chiu & Chao, Daijiang Li
 #' @references Chao, Anne, Chun-Huo Chiu, and Lou Jost. Unifying Species Diversity, Phylogenetic Diversity, Functional Diversity, and Related Similarity and Differentiation Measures Through Hill Numbers. Annual Review of Ecology, Evolution, and Systematics 45, no. 1 (2014): 297–324. <doi:10.1146/annurev-ecolsys-120213-091540>.
@@ -16,40 +20,49 @@
 #' hill_phylo_parti(comm, tree, q = 1)
 #' hill_phylo_parti(comm, tree, q = 2)
 #'
-hill_phylo_parti <- function(comm, tree, q = 0, base = exp(1), rel_then_pool = TRUE, show.warning = TRUE) {
-    if (any(comm < 0))
-        stop("Negative value in comm data")
-    # if(any(colSums(comm) == 0) & show.warning) warning('Some species in comm data were
-    # not observed in any site,\n delete them...') comm = comm[, colSums(comm) != 0] #
+hill_phylo_parti <- function(comm, tree, q = 0, base = exp(1), rel_then_pool = TRUE,
+                             show.warning = TRUE, phy.abund = NULL, check.data = TRUE) {
+    if(check.data){
+        if (any(comm < 0))
+            stop("Negative value in comm data")
+        # if(any(colSums(comm) == 0) & show.warning) warning('Some species in comm data were
+        # not observed in any site,\n delete them...') comm = comm[, colSums(comm) != 0] #
 
-    comm_sp <- intersect(colnames(comm), tree$tip.label)
+        comm_sp <- intersect(colnames(comm), tree$tip.label)
 
-    if (class(tree) != "phylo")
-        stop("tree must be an object with phylo as class")
-    if (length(setdiff(tree$tip.label, comm_sp))) {
-        if (show.warning)
-            warning("Some species in the phylogeny but not in comm, \n remove them from the phylogeny...")
-        tree <- ape::keep.tip(tree, comm_sp)
+        if (class(tree) != "phylo")
+            stop("tree must be an object with phylo as class")
+        if (length(setdiff(tree$tip.label, comm_sp))) {
+            if (show.warning)
+                warning("Some species in the phylogeny but not in comm, \n remove them from the phylogeny...")
+            tree <- ape::keep.tip(tree, comm_sp)
+        }
+
+        if (length(setdiff(colnames(comm), comm_sp))) {
+            if (show.warning)
+                warning("Some species in the comm but not in the phylogeny, \n remove them from the comm")
+            comm <- comm[, comm_sp]
+        }
+
+        comm <- comm[, tree$tip.label]  # resort sp
+        comm <- as.matrix(comm)
+
+        if (rel_then_pool) {
+            comm <- sweep(comm, 1, rowSums(comm, na.rm = TRUE), "/")  # relative abun
+        }
     }
 
-    if (length(setdiff(colnames(comm), comm_sp))) {
-        if (show.warning)
-            warning("Some species in the comm but not in the phylogeny, \n remove them from the comm")
-        comm <- comm[, comm_sp]
+    if(is.null(phy.abund)){
+        pabun <- dat_prep_phylo(comm, tree)
+    } else{ # already calculated
+        pabun <- phy.abund[, rownames(comm)]
     }
 
-    comm <- comm[, tree$tip.label]  # resort sp
-    comm <- as.matrix(comm)
-
-    if (rel_then_pool) {
-        comm <- sweep(comm, 1, rowSums(comm, na.rm = TRUE), "/")  # relative abun
-    }
-
-    pabun <- dat_prep_phylo(comm, tree)
     plength <- tree$edge.length
 
     N <- ncol(pabun)
     Tabun <- rowSums(pabun)
+    stopifnot(length(Tabun) == length(plength))
     gT <- sum(Tabun * plength)
     gI <- which(Tabun > 0)
 

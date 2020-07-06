@@ -10,7 +10,9 @@ hill_phylo_parti(
   q = 0,
   base = exp(1),
   rel_then_pool = TRUE,
-  show.warning = TRUE
+  show.warning = TRUE,
+  phy.abund = NULL,
+  check.data = TRUE
 )
 }
 \arguments{
@@ -28,6 +30,12 @@ then pooled into one assemblage. If \code{FALSE}, sites are pooled first, then c
 to relative abundance.}
 
 \item{show.warning}{whether to print warning, default is \code{TRUE}.}
+
+\item{phy.abund}{A matrix of phylogeny node and tips by community matrix derived
+from `dat_prep_phylo()`. Can be specified to speed up `hill_phylo_parti_pairwise()`.}
+
+\item{check.data}{Whether to check the community data and phylogeny. Default is `TRUE`.
+Can be set to `FALSE` to speed up `hill_phylo_parti_pairwise()`.}
 }
 \value{
 A data frame with one row (across all sites) and six columns: q, gamma diversity, alpha diveristy,

@@ -10,7 +10,9 @@ hill_phylo_parti_pairwise(
   q = 0,
   output = c("data.frame", "matrix"),
   pairs = c("unique", "full"),
+  rel_then_pool = TRUE,
   .progress = TRUE,
+  show.warning = TRUE,
   ...
 )
 }
@@ -26,7 +28,13 @@ hill_phylo_parti_pairwise(
 
 \item{pairs}{full or unique (default). Do you want to compare all possible pairs (i.e. n^2) or just unique pairs (i.e. \code{choose(n, 2))}?}
 
+\item{rel_then_pool}{default is \code{TRUE.} Abundance of species are first changed to relative abundance within sites,
+then pooled into one assemblage. If \code{FALSE}, sites are pooled first, then change abundance of species
+to relative abundance.}
+
 \item{.progress}{Whether to show progress bar. Default is `TRUE`.}
+
+\item{show.warning}{whether to print warning, default is \code{TRUE}.}
 
 \item{...}{additional arguments for \code{hill_func_parti}.}
 }
