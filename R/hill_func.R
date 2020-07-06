@@ -8,7 +8,7 @@
 #' matrix using `FD::gowdis(traits)`. If all traits are numeric, then it will use Euclidean distance.
 #' @param traits_as_is if \code{FALSE} (default) traits data frame will be transformed into a distance
 #' matrix. Otherwise, will use as is (i.e. traits is a symmetric distance matrix).
-#' @param checkdata whether to check data first? Default is \code{TRUE}.
+#' @param check_data whether to check data first? Default is \code{TRUE}.
 #' @param div_by_sp as FD calculated in this way will be highly correlated with taxonomic diversity,
 #' one potential simple way to correct this is to divide the results by the number of species.
 #' However, a more common way to deal with correlations is to use null models and calculate standardized effect sizes.
@@ -34,9 +34,9 @@
 #' hill_func(comm = dummy$abun, traits = dummy$trait, q = 2)
 #' hill_func(comm = dummy$abun, traits = dummy$trait, q = 3)
 #'
-hill_func <- function(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1), checkdata = TRUE,
+hill_func <- function(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1), check_data = TRUE,
                       div_by_sp = FALSE, ord = c("podani", "metric"), fdis = TRUE, stand_dij = FALSE) {
-    if (checkdata) {
+    if (check_data) {
         if (any(comm < 0))
             stop("Negative value in comm data")
         if(traits_as_is){

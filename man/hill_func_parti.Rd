@@ -10,11 +10,11 @@ hill_func_parti(
   traits_as_is = FALSE,
   q = 0,
   base = exp(1),
-  checkdata = TRUE,
+  check_data = TRUE,
   rel_then_pool = TRUE,
   ord = c("podani", "metric"),
   stand_dij = FALSE,
-  show.warning = TRUE
+  show_warning = TRUE
 )
 }
 \arguments{
@@ -32,7 +32,7 @@ matrix. Otherwise, will use as is (i.e. traits is a symmetric distance matrix).}
 
 \item{base}{default is \code{exp(1)}, the base of log.}
 
-\item{checkdata}{whether to check data first? Default is \code{TRUE}.}
+\item{check_data}{whether to check data first? Default is \code{TRUE}.}
 
 \item{rel_then_pool}{default is \code{TRUE.} Abundance of species are first changed to relative abundance within sites,
 then pooled into one assemblage. If \code{FALSE}, sites are pooled first, then change abundance of species
@@ -42,7 +42,7 @@ to relative abundance.}
 
 \item{stand_dij}{whether to standardize distance matrix to have max value of 1? Default is \code{FALSE}.}
 
-\item{show.warning}{whether to print warning, default is \code{TRUE}.}
+\item{show_warning}{whether to print warning, default is \code{TRUE}.}
 }
 \value{
 a data frame with one row (across all sites), including these columns: q, RaoQ of pooled assemblage,

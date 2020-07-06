@@ -13,27 +13,27 @@
 #' \dontrun{
 #' comm = dummy = FD::dummy$abun
 #' tree = ape::rtree(n = ncol(comm), tip.label = paste0('sp', 1:8))
-#' hill_phylo_parti_pairwise(comm, tree, q = 0, show.warning = FALSE)
-#' hill_phylo_parti_pairwise(comm, tree, q = 0.999, show.warning = FALSE)
-#' hill_phylo_parti_pairwise(comm, tree, q = 1, show.warning = FALSE)
-#' hill_phylo_parti_pairwise(comm, tree, q = 2, show.warning = FALSE)
+#' hill_phylo_parti_pairwise(comm, tree, q = 0, show_warning = FALSE)
+#' hill_phylo_parti_pairwise(comm, tree, q = 0.999, show_warning = FALSE)
+#' hill_phylo_parti_pairwise(comm, tree, q = 1, show_warning = FALSE)
+#' hill_phylo_parti_pairwise(comm, tree, q = 2, show_warning = FALSE)
 #' }
 hill_phylo_parti_pairwise <- function(comm, tree, q = 0, output = c("data.frame", "matrix"),
     pairs = c("unique", "full"), rel_then_pool = TRUE, .progress = TRUE,
-    show.warning = TRUE, ...) {
+    show_warning = TRUE, ...) {
     if (any(comm < 0)) stop("Negative value in comm data")
     if (class(tree) != "phylo")
         stop("tree must be an object with phylo as class")
     # clean phylogeny and community data
     sp_drop <- setdiff(tree$tip.label, colnames(comm))
     if (length(sp_drop)) {
-        if (show.warning)
+        if (show_warning)
             warning("Some species in the phylogeny but not in comm, \n remove them from the phylogeny...",
                     immediate. = TRUE)
         tree <- ape::drop.tip(tree, sp_drop)
     }
     if (length(setdiff(colnames(comm), tree$tip.label))) {
-        if (show.warning)
+        if (show_warning)
             warning("Some species in the comm but not in the phylogeny, \n remove them from the comm",
                     immediate. = TRUE)
     }
@@ -57,7 +57,7 @@ hill_phylo_parti_pairwise <- function(comm, tree, q = 0, output = c("data.frame"
         if(.progress) utils::setTxtProgressBar(progbar, i)
         for (j in (i + 1):nsite) {
             o <- hill_phylo_parti(comm = comm[c(i, j), ], tree, q = q,
-                                  phy.abund = pabund, check.data = FALSE)
+                                  phy_abund = pabund, check_data = FALSE)
             gamma_pair[i, j] <- o$PD_gamma
             gamma_pair[j, i] <- o$PD_gamma
             alpha_pair[i, j] <- o$PD_alpha

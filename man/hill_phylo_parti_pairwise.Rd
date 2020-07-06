@@ -12,7 +12,7 @@ hill_phylo_parti_pairwise(
   pairs = c("unique", "full"),
   rel_then_pool = TRUE,
   .progress = TRUE,
-  show.warning = TRUE,
+  show_warning = TRUE,
   ...
 )
 }
@@ -34,7 +34,7 @@ to relative abundance.}
 
 \item{.progress}{Whether to show progress bar. Default is `TRUE`.}
 
-\item{show.warning}{whether to print warning, default is \code{TRUE}.}
+\item{show_warning}{whether to print warning, default is \code{TRUE}.}
 
 \item{...}{additional arguments for \code{hill_func_parti}.}
 }
@@ -48,10 +48,10 @@ Calculate pairwise phylogenetic diversity.
 \dontrun{
 comm = dummy = FD::dummy$abun
 tree = ape::rtree(n = ncol(comm), tip.label = paste0('sp', 1:8))
-hill_phylo_parti_pairwise(comm, tree, q = 0, show.warning = FALSE)
-hill_phylo_parti_pairwise(comm, tree, q = 0.999, show.warning = FALSE)
-hill_phylo_parti_pairwise(comm, tree, q = 1, show.warning = FALSE)
-hill_phylo_parti_pairwise(comm, tree, q = 2, show.warning = FALSE)
+hill_phylo_parti_pairwise(comm, tree, q = 0, show_warning = FALSE)
+hill_phylo_parti_pairwise(comm, tree, q = 0.999, show_warning = FALSE)
+hill_phylo_parti_pairwise(comm, tree, q = 1, show_warning = FALSE)
+hill_phylo_parti_pairwise(comm, tree, q = 2, show_warning = FALSE)
 }
 }
 \references{

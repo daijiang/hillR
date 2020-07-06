@@ -10,7 +10,7 @@ hill_func(
   traits_as_is = FALSE,
   q = 0,
   base = exp(1),
-  checkdata = TRUE,
+  check_data = TRUE,
   div_by_sp = FALSE,
   ord = c("podani", "metric"),
   fdis = TRUE,
@@ -32,7 +32,7 @@ matrix. Otherwise, will use as is (i.e. traits is a symmetric distance matrix).}
 
 \item{base}{default is \code{exp(1)}, the base of log.}
 
-\item{checkdata}{whether to check data first? Default is \code{TRUE}.}
+\item{check_data}{whether to check data first? Default is \code{TRUE}.}
 
 \item{div_by_sp}{as FD calculated in this way will be highly correlated with taxonomic diversity,
 one potential simple way to correct this is to divide the results by the number of species.

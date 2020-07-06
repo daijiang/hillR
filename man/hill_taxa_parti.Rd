@@ -9,7 +9,7 @@ hill_taxa_parti(
   q = 0,
   base = exp(1),
   rel_then_pool = TRUE,
-  show.warning = TRUE
+  show_warning = TRUE
 )
 }
 \arguments{
@@ -24,7 +24,7 @@ hill_taxa_parti(
 then pooled into one assemblage. If \code{FALSE}, sites are pooled first, then change abundance of species
 to relative abundance.}
 
-\item{show.warning}{whether to print warning, default is \code{TRUE}.}
+\item{show_warning}{whether to print warning, default is \code{TRUE}.}
 }
 \value{
 A data frame with one row (across all sites), including these columns: q, gamma diversity, alpha diveristy,

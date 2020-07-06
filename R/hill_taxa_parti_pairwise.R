@@ -37,10 +37,10 @@ hill_taxa_parti_pairwise <- function(comm, q = 0, rel_then_pool = TRUE, output =
     dimnames(temp) <- list(row.names(comm), row.names(comm))
     gamma_pair <- alpha_pair <- beta_pair <- local_simi <- region_simi <- temp
     if(.progress)
-        progbar = utils::txtProgressBar(min = 0, max = nsite, initial = 0, style = 3)
-    for (i in 1:nsite) {
+        progbar = utils::txtProgressBar(min = 0, max = nsite - 1, initial = 0, style = 3)
+    for (i in 1:(nsite - 1)) {
         if(.progress) utils::setTxtProgressBar(progbar, i)
-        for (j in i:nsite) {
+        for (j in (i + 1):nsite) {
             o <- hill_taxa_parti(comm[c(i, j), ], q = q, ...)
             gamma_pair[i, j] <- o$TD_gamma
             gamma_pair[j, i] <- o$TD_gamma
@@ -65,10 +65,12 @@ hill_taxa_parti_pairwise <- function(comm, q = 0, rel_then_pool = TRUE, output =
         if (output == "data.frame") {
             site.comp <- as.matrix(expand.grid(row.names(comm), row.names(comm)))
             out <- plyr::adply(site.comp, 1, function(x) {
-                data.frame(q = q, site1 = x[1], site2 = x[2], TD_gamma = gamma_pair[x[1],
-                  x[2]], TD_alpha = alpha_pair[x[1], x[2]], TD_beta = beta_pair[x[1],
-                  x[2]], local_similarity = local_simi[x[1], x[2]], region_similarity = region_simi[x[1],
-                  x[2]])
+                data.frame(q = q, site1 = x[1], site2 = x[2],
+                           TD_gamma = gamma_pair[x[1], x[2]],
+                           TD_alpha = alpha_pair[x[1], x[2]],
+                           TD_beta = beta_pair[x[1], x[2]],
+                           local_similarity = local_simi[x[1], x[2]],
+                           region_similarity = region_simi[x[1], x[2]])
             })[, -1]  # get rid of X1 column
             out <- tibble::as_tibble(out)
         }
@@ -89,10 +91,12 @@ hill_taxa_parti_pairwise <- function(comm, q = 0, rel_then_pool = TRUE, output =
         if (output == "data.frame") {
             site.comp <- as.matrix(expand.grid(row.names(comm), row.names(comm)))
             out <- plyr::adply(site.comp, 1, function(x) {
-                data.frame(q = q, site1 = x[1], site2 = x[2], TD_gamma = gamma_pair[x[1],
-                  x[2]], TD_alpha = alpha_pair[x[1], x[2]], TD_beta = beta_pair[x[1],
-                  x[2]], local_similarity = local_simi[x[1], x[2]], region_similarity = region_simi[x[1],
-                  x[2]])
+                data.frame(q = q, site1 = x[1], site2 = x[2],
+                           TD_gamma = gamma_pair[x[1], x[2]],
+                           TD_alpha = alpha_pair[x[1], x[2]],
+                           TD_beta = beta_pair[x[1], x[2]],
+                           local_similarity = local_simi[x[1], x[2]],
+                           region_similarity = region_simi[x[1], x[2]])
             })
             out <- na.omit(out)[, -1]
             row.names(out) <- NULL

@@ -9,7 +9,7 @@
 #' @param rel_then_pool default is \code{TRUE.} Abundance of species are first changed to relative abundance within sites,
 #' then pooled into one assemblage. If \code{FALSE}, sites are pooled first, then change abundance of species
 #' to relative abundance.
-#' @param show.warning whether to print warning, default is \code{TRUE}.
+#' @param show_warning whether to print warning, default is \code{TRUE}.
 #' @export
 #' @return A data frame with one row (across all sites), including these columns: q, gamma diversity, alpha diveristy,
 #' beta diversity, MacArthur's homogeneity measure, local similarity (species overlap, similar to Sorensen),
@@ -29,10 +29,10 @@
 #' hill_taxa_parti(comm = dummy$abun, q = 2)
 #' hill_taxa_parti(comm = dummy$abun, q = 3)
 #'
-hill_taxa_parti <- function(comm, q = 0, base = exp(1), rel_then_pool = TRUE, show.warning = TRUE) {
+hill_taxa_parti <- function(comm, q = 0, base = exp(1), rel_then_pool = TRUE, show_warning = TRUE) {
     if (any(comm < 0))
         stop("Negative value in comm data")
-    if (any(colSums(comm) == 0) & show.warning)
+    if (any(colSums(comm) == 0) & show_warning)
         warning("Some species in comm data were not observed in any site,\n delete them...")
     comm <- comm[, colSums(comm) != 0, drop = FALSE]
     N <- nrow(comm)

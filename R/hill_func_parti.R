@@ -24,9 +24,9 @@
 #' hill_func_parti(comm = dummy$abun, traits = dummy$trait, q = 3)
 #'
 hill_func_parti <- function(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1),
-    checkdata = TRUE, rel_then_pool = TRUE, ord = c("podani", "metric"), stand_dij = FALSE,
-    show.warning = TRUE) {
-    if (checkdata) {
+    check_data = TRUE, rel_then_pool = TRUE, ord = c("podani", "metric"), stand_dij = FALSE,
+    show_warning = TRUE) {
+    if (check_data) {
         if (any(comm < 0))
             stop("Negative value in comm data")
         if (is.null(rownames(traits))) {
@@ -37,7 +37,7 @@ hill_func_parti <- function(comm, traits, traits_as_is = FALSE, q = 0, base = ex
         }
     }
 
-    if (any(colSums(comm) == 0) & show.warning)
+    if (any(colSums(comm) == 0) & show_warning)
         warning("Some species in comm data were not observed in any site,\n
                                       delete them...")
     comm <- comm[, colSums(comm) != 0]
@@ -50,7 +50,7 @@ hill_func_parti <- function(comm, traits, traits_as_is = FALSE, q = 0, base = ex
 
     if (traits_as_is) {
         if (any(!rownames(traits) %in% colnames(comm))) {
-            if (show.warning)
+            if (show_warning)
                 warning("\n There are species from trait data that are not in comm matrix\n
               Delete these species from trait data...\n")
             traits <- traits[rownames(traits) %in% colnames(comm), colnames(traits) %in%
@@ -64,7 +64,7 @@ hill_func_parti <- function(comm, traits, traits_as_is = FALSE, q = 0, base = ex
         if (ncol(traits) == 1) {
             # only 1 trait
             if (any(is.na(traits))) {
-                if (show.warning)
+                if (show_warning)
                   warning("Warning: Species with missing trait values have been excluded.",
                     "\n")
                 traits <- na.omit(traits)

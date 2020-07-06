@@ -39,10 +39,10 @@ dat_prep_phylo <- function(comm, tree) {
 #' hill_phylo(comm, tree, q = 1)
 #' hill_phylo(comm, tree, q = 2)
 #'
-hill_phylo <- function(comm, tree, q = 0, base = exp(1), rel_then_pool = TRUE, show.warning = TRUE) {
+hill_phylo <- function(comm, tree, q = 0, base = exp(1), rel_then_pool = TRUE, show_warning = TRUE) {
     if (any(comm < 0))
         stop("Negative value in comm data")
-    # if(any(colSums(comm) == 0) & show.warning) warning('Some species in comm data were
+    # if(any(colSums(comm) == 0) & show_warning) warning('Some species in comm data were
     # not observed in any site,\n delete them...') comm = comm[, colSums(comm) != 0]
 
     comm_sp <- intersect(colnames(comm), tree$tip.label)
@@ -50,13 +50,13 @@ hill_phylo <- function(comm, tree, q = 0, base = exp(1), rel_then_pool = TRUE, s
     if (class(tree) != "phylo")
         stop("tree must be an object with phylo as class")
     if (length(setdiff(tree$tip.label, comm_sp))) {
-        if (show.warning)
+        if (show_warning)
             warning("Some species in the phylogeny but not in comm, \n remove them from the phylogeny...")
         tree <- ape::keep.tip(tree, comm_sp)
     }
 
     if (length(setdiff(colnames(comm), comm_sp))) {
-        if (show.warning)
+        if (show_warning)
             warning("Some species in the comm but not in the phylogeny, \n remove them from the comm")
         comm <- comm[, comm_sp]
     }

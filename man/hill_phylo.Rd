@@ -10,7 +10,7 @@ hill_phylo(
   q = 0,
   base = exp(1),
   rel_then_pool = TRUE,
-  show.warning = TRUE
+  show_warning = TRUE
 )
 }
 \arguments{
@@ -27,7 +27,7 @@ hill_phylo(
 then pooled into one assemblage. If \code{FALSE}, sites are pooled first, then change abundance of species
 to relative abundance.}
 
-\item{show.warning}{whether to print warning, default is \code{TRUE}.}
+\item{show_warning}{whether to print warning, default is \code{TRUE}.}
 }
 \value{
 A vector of hill number based phylogenetic diversity (`PD(T)`, effective total branch length) for all sites.

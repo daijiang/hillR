@@ -3,9 +3,9 @@
 #' Calculate overall phylogenetic diversity and site similarity across multiple sites.
 #'
 #' @inheritParams hill_phylo
-#' @param phy.abund A matrix of phylogeny node and tips by community matrix derived
+#' @param phy_abund A matrix of phylogeny node and tips by community matrix derived
 #' from `dat_prep_phylo()`. Can be specified to speed up `hill_phylo_parti_pairwise()`.
-#' @param check.data Whether to check the community data and phylogeny. Default is `TRUE`.
+#' @param check_data Whether to check the community data and phylogeny. Default is `TRUE`.
 #' Can be set to `FALSE` to speed up `hill_phylo_parti_pairwise()`.
 #' @export
 #' @author Chiu & Chao, Daijiang Li
@@ -21,11 +21,11 @@
 #' hill_phylo_parti(comm, tree, q = 2)
 #'
 hill_phylo_parti <- function(comm, tree, q = 0, base = exp(1), rel_then_pool = TRUE,
-                             show.warning = TRUE, phy.abund = NULL, check.data = TRUE) {
-    if(check.data){
+                             show_warning = TRUE, phy_abund = NULL, check_data = TRUE) {
+    if(check_data){
         if (any(comm < 0))
             stop("Negative value in comm data")
-        # if(any(colSums(comm) == 0) & show.warning) warning('Some species in comm data were
+        # if(any(colSums(comm) == 0) & show_warning) warning('Some species in comm data were
         # not observed in any site,\n delete them...') comm = comm[, colSums(comm) != 0] #
 
         comm_sp <- intersect(colnames(comm), tree$tip.label)
@@ -33,13 +33,13 @@ hill_phylo_parti <- function(comm, tree, q = 0, base = exp(1), rel_then_pool = T
         if (class(tree) != "phylo")
             stop("tree must be an object with phylo as class")
         if (length(setdiff(tree$tip.label, comm_sp))) {
-            if (show.warning)
+            if (show_warning)
                 warning("Some species in the phylogeny but not in comm, \n remove them from the phylogeny...")
             tree <- ape::keep.tip(tree, comm_sp)
         }
 
         if (length(setdiff(colnames(comm), comm_sp))) {
-            if (show.warning)
+            if (show_warning)
                 warning("Some species in the comm but not in the phylogeny, \n remove them from the comm")
             comm <- comm[, comm_sp]
         }
@@ -52,10 +52,10 @@ hill_phylo_parti <- function(comm, tree, q = 0, base = exp(1), rel_then_pool = T
         }
     }
 
-    if(is.null(phy.abund)){
+    if(is.null(phy_abund)){
         pabun <- dat_prep_phylo(comm, tree)
     } else{ # already calculated
-        pabun <- phy.abund[, rownames(comm)]
+        pabun <- phy_abund[, rownames(comm)]
     }
 
     plength <- tree$edge.length
