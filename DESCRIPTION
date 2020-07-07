@@ -1,8 +1,8 @@
 Package: hillR
 Type: Package
 Title: Diversity Through Hill Numbers
-Version: 0.4.1
-Date: 2018-11-13
+Version: 0.5.0
+Date: 2020-07-07
 Author: Daijiang Li
 Maintainer: Daijiang Li <daijianglee@gmail.com>
 Description: Calculate taxonomic, functional and phylogenetic diversity measures 
