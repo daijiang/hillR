@@ -1,4 +1,4 @@
-context("testing phylogenetic diveristy")
+context("testing phylogenetic diversity")
 dummy = FD::dummy
 n = ncol(dummy$abun)
 tree = ape::rtree(n, tip.label = paste0("sp", 1:n))

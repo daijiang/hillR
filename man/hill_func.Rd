@@ -18,7 +18,7 @@ hill_func(
 )
 }
 \arguments{
-\item{comm}{A data frame of vegtation data. Sites as rows, species as columns.}
+\item{comm}{A data frame of vegetation data. Sites as rows, species as columns.}
 
 \item{traits}{A data frame of species functional traits data. Species as rows, traits as columns.
 It can include both continuous and categorical data. It will be transformed into a distance
@@ -47,7 +47,7 @@ Therefore, I set the default to be \code{FALSE}.}
 }
 \value{
 A matrix, with these information for each site: Q (Rao's Q); D_q (functional hill number,
- the effective number of equally abundant and functionally equally distince species);
+ the effective number of equally abundant and functionally equally distinct species);
  MD_q (mean functional diversity per species, the effective sum of pairwise distances between
  a fixed species and all other species); FD_q (total functional diversity, the effective total functional
  distance between species of the assemblage). See Chiu and Chao 2014 page 4 for more information.

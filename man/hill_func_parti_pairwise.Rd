@@ -18,7 +18,7 @@ hill_func_parti_pairwise(
 )
 }
 \arguments{
-\item{comm}{A data frame of vegtation data. Sites as rows, species as columns.}
+\item{comm}{A data frame of vegetation data. Sites as rows, species as columns.}
 
 \item{traits}{A data frame of species functional traits data. Species as rows, traits as columns.
 It can include both continuous and categorical data. It will be transformed into a distance

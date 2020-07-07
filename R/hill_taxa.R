@@ -5,7 +5,7 @@ NULL
 #'
 #' Calculate taxonomic diversity for each site (alpha diversity).
 #'
-#' @param comm A data frame of vegtation data. Sites as rows, species as columns.
+#' @param comm A data frame of vegetation data. Sites as rows, species as columns.
 #' @param q Hill number, \code{q} = 0 (default) to get species richness,
 #'   \code{q} = 1 to get shannon entropy, \code{q} = 2 will give inverse Simpson.
 #' @param MARGIN default is 1, if sites are columns, set \code{MARGIN} to 2.

@@ -1,4 +1,4 @@
-context("comparing taxa diveristy")
+context("comparing taxa diversity")
 dummy = FD::dummy
 
 test_that("vegetariam package vs hillR, taxa alpha diversity, q = 0", {

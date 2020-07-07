@@ -16,7 +16,7 @@ hill_taxa_parti_pairwise(
 )
 }
 \arguments{
-\item{comm}{A data frame of vegtation data. Sites as rows, species as columns.}
+\item{comm}{A data frame of vegetation data. Sites as rows, species as columns.}
 
 \item{q}{Hill number, \code{q} = 0 (default) to get species richness,
 \code{q} = 1 to get shannon entropy, \code{q} = 2 will give inverse Simpson.}

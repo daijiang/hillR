@@ -14,7 +14,7 @@ hill_taxa_parti(
 )
 }
 \arguments{
-\item{comm}{A data frame of vegtation data. Sites as rows, species as columns.}
+\item{comm}{A data frame of vegetation data. Sites as rows, species as columns.}
 
 \item{q}{Hill number, \code{q} = 0 (default) to get species richness,
 \code{q} = 1 to get shannon entropy, \code{q} = 2 will give inverse Simpson.}
@@ -30,7 +30,7 @@ to relative abundance.}
 \item{check_data}{whether to check data first? Default is \code{TRUE}.}
 }
 \value{
-A data frame with one row (across all sites), including these columns: q, gamma diversity, alpha diveristy,
+A data frame with one row (across all sites), including these columns: q, gamma diversity, alpha diverisity,
 beta diversity, MacArthur's homogeneity measure, local similarity (species overlap, similar to Sorensen),
 and region similarity (species overlap, similar to Jaccard).
 See Chao, Chiu and Jost 2014 Table 2 for more information.

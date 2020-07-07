@@ -1,4 +1,4 @@
-context("testing functional diveristy")
+context("testing functional diversity")
 dummy = FD::dummy
 
 test_that("FDis, FD vs hillR", {

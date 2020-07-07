@@ -17,7 +17,7 @@ hill_phylo_parti_pairwise(
 )
 }
 \arguments{
-\item{comm}{A data frame of vegtation data. Sites as rows, species as columns.}
+\item{comm}{A data frame of vegetation data. Sites as rows, species as columns.}
 
 \item{tree}{a phylogeny with class 'phylo'.}
 

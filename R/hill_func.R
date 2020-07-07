@@ -21,7 +21,7 @@
 #'
 #' Chiu, Chun-Huo, and Anne Chao. Distance-Based Functional Diversity Measures and Their Decomposition: A Framework Based on Hill Numbers. PLoS ONE 9, no. 7 (July 7, 2014): e100014. <doi:10.1371/journal.pone.0100014>.
 #' @return A matrix, with these information for each site: Q (Rao's Q); D_q (functional hill number,
-#'  the effective number of equally abundant and functionally equally distince species);
+#'  the effective number of equally abundant and functionally equally distinct species);
 #'  MD_q (mean functional diversity per species, the effective sum of pairwise distances between
 #'  a fixed species and all other species); FD_q (total functional diversity, the effective total functional
 #'  distance between species of the assemblage). See Chiu and Chao 2014 page 4 for more information.

@@ -10,7 +10,7 @@
 #' @export
 #' @author Chiu & Chao, Daijiang Li
 #' @references Chao, Anne, Chun-Huo Chiu, and Lou Jost. Unifying Species Diversity, Phylogenetic Diversity, Functional Diversity, and Related Similarity and Differentiation Measures Through Hill Numbers. Annual Review of Ecology, Evolution, and Systematics 45, no. 1 (2014): 297–324. <doi:10.1146/annurev-ecolsys-120213-091540>.
-#' @return A data frame with one row (across all sites) and six columns: q, gamma diversity, alpha diveristy,
+#' @return A data frame with one row (across all sites) and six columns: q, gamma diversity, alpha diversity,
 #' beta diversity, local similarity (similar to Sorensen), and region similarity (similar to Jaccard).
 #' @examples
 #' comm = dummy = FD::dummy$abun

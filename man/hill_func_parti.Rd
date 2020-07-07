@@ -18,7 +18,7 @@ hill_func_parti(
 )
 }
 \arguments{
-\item{comm}{A data frame of vegtation data. Sites as rows, species as columns.}
+\item{comm}{A data frame of vegetation data. Sites as rows, species as columns.}
 
 \item{traits}{A data frame of species functional traits data. Species as rows, traits as columns.
 It can include both continuous and categorical data. It will be transformed into a distance
@@ -46,7 +46,7 @@ to relative abundance.}
 }
 \value{
 a data frame with one row (across all sites), including these columns: q, RaoQ of pooled assemblage,
-gamma diversity, alpha diveristy, beta diversity, local species overlap (similar to Sorensen), and region species
+gamma diversity, alpha diverisity, beta diversity, local species overlap (similar to Sorensen), and region species
 overlap (similar to Jaccard). See Chiu and Chao 2014 Table 3 for more information.
 }
 \description{

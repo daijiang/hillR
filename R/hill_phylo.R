@@ -1,6 +1,6 @@
 #' code for hill_phylo and hill_phylo_parti are mostly from Chiu & Chao.
 #'
-#' @param comm data frame of vegtation data. Sites as rows, species as columns.
+#' @param comm data frame of vegetation data. Sites as rows, species as columns.
 #' @param tree a phylogeny with class 'phylo'.
 #' @noRd
 dat_prep_phylo <- function(comm, tree) {

@@ -16,7 +16,7 @@ hill_phylo_parti(
 )
 }
 \arguments{
-\item{comm}{A data frame of vegtation data. Sites as rows, species as columns.}
+\item{comm}{A data frame of vegetation data. Sites as rows, species as columns.}
 
 \item{tree}{a phylogeny with class 'phylo'.}
 
@@ -38,7 +38,7 @@ from `dat_prep_phylo()`. Can be specified to speed up `hill_phylo_parti_pairwise
 Can be set to `FALSE` to speed up `hill_phylo_parti_pairwise()`.}
 }
 \value{
-A data frame with one row (across all sites) and six columns: q, gamma diversity, alpha diveristy,
+A data frame with one row (across all sites) and six columns: q, gamma diversity, alpha diversity,
 beta diversity, local similarity (similar to Sorensen), and region similarity (similar to Jaccard).
 }
 \description{

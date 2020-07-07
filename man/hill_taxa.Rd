@@ -7,7 +7,7 @@
 hill_taxa(comm, q = 0, MARGIN = 1, base = exp(1))
 }
 \arguments{
-\item{comm}{A data frame of vegtation data. Sites as rows, species as columns.}
+\item{comm}{A data frame of vegetation data. Sites as rows, species as columns.}
 
 \item{q}{Hill number, \code{q} = 0 (default) to get species richness,
 \code{q} = 1 to get shannon entropy, \code{q} = 2 will give inverse Simpson.}
