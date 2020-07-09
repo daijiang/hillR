@@ -74,6 +74,8 @@ hill_phylo_parti <- function(comm, tree, q = 0, base = exp(1), rel_then_pool = T
         bPD <- gPD/aPD
         phyloCqN <- 1 - log(bPD, base)/log(N, base)
         phyloUqN <- phyloCqN
+        phyloSqN <- (N - bPD) / (bPD * (N - 1))
+        phyloVqN <- (N - bPD) / (N - 1)
     } else {
         gPD <- sum(plength[gI] * (Tabun[gI]/gT)^q)^(1/(1 - q))
         L <- matrix(rep(plength, N), ncol = N)
@@ -82,8 +84,13 @@ hill_phylo_parti <- function(comm, tree, q = 0, base = exp(1), rel_then_pool = T
         bPD <- gPD/aPD
         phyloCqN <- 1 - (bPD^(1 - q) - 1)/(N^(1 - q) - 1)
         phyloUqN <- 1 - (bPD^(q - 1) - 1)/(N^(q - 1) - 1)
+        phyloSqN <- (N - bPD) / (bPD * (N - 1))
+        phyloVqN <- (N - bPD) / (N - 1)
     }
 
-    return(data.frame(q = q, PD_gamma = gPD, PD_alpha = aPD, PD_beta = bPD, local_similarity = phyloCqN,
-                      region_similarity = phyloUqN))
+    return(data.frame(q = q, PD_gamma = gPD, PD_alpha = aPD, PD_beta = bPD,
+                      local_similarity = phyloCqN,
+                      region_similarity = phyloUqN,
+                      local_similarity_turnover = phyloVqN,
+                      region_similarity_turnover = phyloSqN))
 }

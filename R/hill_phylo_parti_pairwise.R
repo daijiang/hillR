@@ -49,7 +49,8 @@ hill_phylo_parti_pairwise <- function(comm, tree, q = 0, output = c("data.frame"
     nsite <- nrow(comm)
     temp <- matrix(1, nsite, nsite)
     dimnames(temp) <- list(row.names(comm), row.names(comm))
-    gamma_pair <- alpha_pair <- beta_pair <- local_simi <- region_simi <- temp
+    gamma_pair <- alpha_pair <- beta_pair <- local_simi <-
+        region_simi <- local_simi_turnover <- region_simi_turnover <- temp
 
     if(.progress)
         progbar = utils::txtProgressBar(min = 0, max = nsite - 1, initial = 0, style = 3)
@@ -68,6 +69,10 @@ hill_phylo_parti_pairwise <- function(comm, tree, q = 0, output = c("data.frame"
             local_simi[j, i] <- o$local_similarity
             region_simi[i, j] <- o$region_similarity
             region_simi[j, i] <- o$region_similarity
+            local_simi_turnover[i, j] <- o$local_similarity_turnover
+            local_simi_turnover[j, i] <- o$local_similarity_turnover
+            region_simi_turnover[i, j] <- o$region_similarity_turnover
+            region_simi_turnover[j, i] <- o$region_similarity_turnover
         }
     }
     if(.progress) close(progbar)
@@ -75,7 +80,9 @@ hill_phylo_parti_pairwise <- function(comm, tree, q = 0, output = c("data.frame"
     if (pairs == "full") {
         if (output == "matrix") {
             out <- list(q = q, PD_gamma = gamma_pair, PD_alpha = alpha_pair, PD_beta = beta_pair,
-                local_similarity = local_simi, region_similarity = region_simi)
+                local_similarity = local_simi, region_similarity = region_simi,
+                local_similarity_turnover = local_simi_turnover,
+                region_similarity_turnover = region_simi_turnover)
         }
 
         if (output == "data.frame") {
@@ -86,7 +93,9 @@ hill_phylo_parti_pairwise <- function(comm, tree, q = 0, output = c("data.frame"
                            PD_alpha = alpha_pair[x[1], x[2]],
                            PD_beta = beta_pair[x[1], x[2]],
                            local_similarity = local_simi[x[1], x[2]],
-                           region_similarity = region_simi[x[1], x[2]])
+                           region_similarity = region_simi[x[1], x[2]],
+                           local_similarity_turnover = local_simi_turnover[x[1], x[2]],
+                           region_similarity_turnover = region_simi_turnover[x[1], x[2]])
             })[, -1]  # get rid of X1 column
             out <- tibble::as_tibble(out)
         }
@@ -101,7 +110,9 @@ hill_phylo_parti_pairwise <- function(comm, tree, q = 0, output = c("data.frame"
 
         if (output == "matrix") {
             out <- list(q = q, PD_gamma = gamma_pair, PD_alpha = alpha_pair, PD_beta = beta_pair,
-                local_similarity = local_simi, region_similarity = region_simi)
+                        local_similarity = local_simi, region_similarity = region_simi,
+                        local_similarity_turnover = local_simi_turnover,
+                        region_similarity_turnover = region_simi_turnover)
         }
 
         if (output == "data.frame") {
@@ -112,7 +123,9 @@ hill_phylo_parti_pairwise <- function(comm, tree, q = 0, output = c("data.frame"
                            PD_alpha = alpha_pair[x[1], x[2]],
                            PD_beta = beta_pair[x[1], x[2]],
                            local_similarity = local_simi[x[1], x[2]],
-                           region_similarity = region_simi[x[1], x[2]])
+                           region_similarity = region_simi[x[1], x[2]],
+                           local_similarity_turnover = local_simi_turnover[x[1], x[2]],
+                           region_similarity_turnover = region_simi_turnover[x[1], x[2]])
             })
             out <- na.omit(out)[, -1]
             row.names(out) <- NULL
