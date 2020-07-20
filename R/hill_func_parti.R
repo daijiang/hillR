@@ -63,7 +63,7 @@ hill_func_parti <- function(comm, traits, traits_as_is = FALSE, q = 0, base = ex
 
         if (ncol(traits) == 1) {
             # only 1 trait
-            if (any(is.na(traits))) {
+            if (any(is.na(traits)) & show_warning) {
                 if (show_warning)
                   warning("Warning: Species with missing trait values have been excluded.",
                     "\n")
@@ -111,6 +111,11 @@ hill_func_parti <- function(comm, traits, traits_as_is = FALSE, q = 0, base = ex
     S <- ncol(comm)
 
     dij <- as.matrix(dij)
+    if(any(!is.finite(dij))){
+        warning("Some species pairs have distance of NA or NaN, set it to zero (this may be incorrect!)")
+        dij[!is.finite(dij)] <- 0
+    }
+
     if (stand_dij)
         dij <- dij/max(dij)
 
