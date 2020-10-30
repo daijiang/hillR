@@ -139,6 +139,8 @@ hill_func <- function(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1), 
     comm <- sweep(comm, 1, rowSums(comm, na.rm = TRUE), "/")  # relative abun
 
     dij <- as.matrix(dij)
+    if(all(is.na(dij[upper.tri(dij)])))
+        stop("All pairwise distance is NA, do all species have the same trait values?")
     if (stand_dij)
         dij <- dij/max(dij)
 
