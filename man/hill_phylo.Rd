@@ -10,13 +10,14 @@ hill_phylo(
   q = 0,
   base = exp(1),
   rel_then_pool = TRUE,
-  show_warning = TRUE
+  show_warning = TRUE,
+  return_dt = FALSE
 )
 }
 \arguments{
 \item{comm}{A data frame of vegetation data. Sites as rows, species as columns.}
 
-\item{tree}{a phylogeny with class 'phylo'.}
+\item{tree}{A phylogeny with class 'phylo'.}
 
 \item{q}{Hill number, \code{q} = 0 (default) to get species richness,
 \code{q} = 1 to get shannon entropy, \code{q} = 2 will give inverse Simpson.}
@@ -28,6 +29,8 @@ then pooled into one assemblage. If \code{FALSE}, sites are pooled first, then c
 to relative abundance.}
 
 \item{show_warning}{whether to print warning, default is \code{TRUE}.}
+
+\item{return_dt}{Whether to return the Phylogenetic Hill numbers Dt, default is `FALSE`.}
 }
 \value{
 A vector of hill number based phylogenetic diversity (`PD(T)`, effective total branch length) for all sites.

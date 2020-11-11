@@ -25,7 +25,8 @@ dat_prep_phylo <- function(comm, tree) {
 #' Calculate alpha phylogenetic diversity based on Hill numbers
 #'
 #' @inheritParams hill_taxa
-#' @param tree a phylogeny with class 'phylo'.
+#' @param tree A phylogeny with class 'phylo'.
+#' @param return_dt Whether to return the Phylogenetic Hill numbers Dt, default is `FALSE`.
 #' @inheritParams hill_taxa_parti
 #' @author Chiu & Chao & Daijiang Li
 #' @return A vector of hill number based phylogenetic diversity (`PD(T)`, effective total branch length) for all sites.
@@ -39,7 +40,8 @@ dat_prep_phylo <- function(comm, tree) {
 #' hill_phylo(comm, tree, q = 1)
 #' hill_phylo(comm, tree, q = 2)
 #'
-hill_phylo <- function(comm, tree, q = 0, base = exp(1), rel_then_pool = TRUE, show_warning = TRUE) {
+hill_phylo <- function(comm, tree, q = 0, base = exp(1), rel_then_pool = TRUE,
+                       show_warning = TRUE, return_dt = FALSE) {
     if (any(comm < 0))
         stop("Negative value in comm data")
     # if(any(colSums(comm) == 0) & show_warning) warning('Some species in comm data were
@@ -71,10 +73,12 @@ hill_phylo <- function(comm, tree, q = 0, base = exp(1), rel_then_pool = TRUE, s
     pabun <- dat_prep_phylo(comm, tree)
     plength <- tree$edge.length
     N <- ncol(pabun)
-    PD <- numeric(N)
+    PD <- D_t <- numeric(N)
     names(PD) <- row.names(comm)
+    names(D_t) <- row.names(comm)
     for (i in 1:N) {
         TT <- sum(pabun[, i] * plength)
+        D_t[i] <- TT
         I <- which(pabun[, i] > 0)
         if(q == 1){
             PD[i] <- exp(-sum(plength[I] * (pabun[, i][I]/TT) * log(pabun[, i][I]/TT, base)))
@@ -83,5 +87,10 @@ hill_phylo <- function(comm, tree, q = 0, base = exp(1), rel_then_pool = TRUE, s
         }
     }
 
-    PD
+    if(return_dt){
+        D_t = PD/D_t
+        return(rbind(D_t, PD))
+    } else {
+        return(PD)
+    }
 }

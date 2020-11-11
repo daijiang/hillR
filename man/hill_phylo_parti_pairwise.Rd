@@ -19,7 +19,7 @@ hill_phylo_parti_pairwise(
 \arguments{
 \item{comm}{A data frame of vegetation data. Sites as rows, species as columns.}
 
-\item{tree}{a phylogeny with class 'phylo'.}
+\item{tree}{A phylogeny with class 'phylo'.}
 
 \item{q}{Hill number, \code{q} = 0 (default) to get species richness,
 \code{q} = 1 to get shannon entropy, \code{q} = 2 will give inverse Simpson.}
