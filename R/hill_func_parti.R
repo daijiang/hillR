@@ -59,7 +59,7 @@ hill_func_parti <- function(comm, traits, traits_as_is = FALSE, q = 0, base = ex
         dij <- as.matrix(traits)
     } else {
         # traits is not a distance matrix
-        traits <- traits[colnames(comm), ]
+        traits <- traits[colnames(comm), , drop = FALSE]
 
         if (ncol(traits) == 1) {
             # only 1 trait

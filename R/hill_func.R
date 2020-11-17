@@ -68,7 +68,7 @@ hill_func <- function(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1), 
         if(!inherits(dij, "dist")) stop("`traits` is not a distance object yet `trait_as_is` is TRUE\n")
     } else {
         # traits is not a distance matrix
-        traits <- traits[trait_sp, ]
+        traits <- traits[trait_sp, , drop = FALSE]
 
         if (ncol(traits) == 1) {
             # only 1 trait
