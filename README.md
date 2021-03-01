@@ -9,9 +9,9 @@ status](https://codecov.io/gh/daijiang/hillR/branch/master/graph/badge.svg)](htt
 [![CRAN
 status](https://www.r-pkg.org/badges/version/hillR)](https://cran.r-project.org/package=hillR)
 [![CRAN RStudio mirror
-downloads](http://cranlogs.r-pkg.org/badges/hillR)](http://www.r-pkg.org/pkg/hillR)
+downloads](http://cranlogs.r-pkg.org/badges/hillR)](https://www.r-pkg.org/pkg/hillR)
 [![CRAN RStudio mirror
-downloads](http://cranlogs.r-pkg.org/badges/grand-total/hillR?color=green)](http://www.r-pkg.org/pkg/hillR)
+downloads](http://cranlogs.r-pkg.org/badges/grand-total/hillR?color=green)](https://www.r-pkg.org/pkg/hillR)
 
 # hillR
 
@@ -141,7 +141,7 @@ hill_phylo_parti_pairwise(comm, tree, q = 0, show_warning = FALSE, .progress = F
 # Licenses
 
 Licensed under the [MIT license](LICENSE). ([More information
-here](http://en.wikipedia.org/wiki/MIT_License).)
+here](https://en.wikipedia.org/wiki/MIT_License).)
 
 # Citation
 
@@ -167,13 +167,13 @@ obtained by running `citation('hillR')` in R.
 
 # Reference
 
-  - [Chao, Anne, Chun-Huo Chiu, and Lou Jost. “Unifying Species
+-   [Chao, Anne, Chun-Huo Chiu, and Lou Jost. “Unifying Species
     Diversity, Phylogenetic Diversity, Functional Diversity, and Related
     Similarity and Differentiation Measures Through Hill Numbers.”
     Annual Review of Ecology, Evolution, and Systematics 45, no. 1
     (2014): 297–324.
     doi:10.1146/annurev-ecolsys-120213-091540.](https://doi.org/10.1146/annurev-ecolsys-120213-091540)
-  - [Chiu, Chun-Huo, and Anne Chao. “Distance-Based Functional Diversity
+-   [Chiu, Chun-Huo, and Anne Chao. “Distance-Based Functional Diversity
     Measures and Their Decomposition: A Framework Based on Hill
     Numbers.” PLoS ONE 9, no. 7 (July 7, 2014): e100014.
     doi:10.1371/journal.pone.0100014.](https://doi.org/10.1371/journal.pone.0100014)
