@@ -137,10 +137,10 @@ test_that("taxanomic similarity should be between 0 and 1; q = 2", {
 })
 
 test_that("pairwise similarity", {
-  a = hillR::hill_taxa_parti_pairwise(comm = dummy$abun, q = 0)
+  a = hillR::hill_taxa_parti_pairwise(comm = dummy$abun, q = 0, .progress = FALSE)
   expect_equal(nrow(a), choose(nrow(dummy$abun), 2))
 
-  a2 = hillR::hill_taxa_parti_pairwise(comm = dummy$abun, q = 1)
+  a2 = hillR::hill_taxa_parti_pairwise(comm = dummy$abun, q = 1, .progress = FALSE)
   expect_equal(nrow(a2), choose(nrow(dummy$abun), 2))
 })
 
