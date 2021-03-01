@@ -1,7 +1,7 @@
 context("comparing taxa diversity")
 dummy = FD::dummy
 
-test_that("vegetariam package vs hillR, taxa alpha diversity, q = 0", {
+test_that("vegetarian package vs hillR, taxa alpha diversity, q = 0", {
 
   skip_if_not_installed("vegetarian")
 
@@ -10,7 +10,7 @@ test_that("vegetariam package vs hillR, taxa alpha diversity, q = 0", {
   expect_equal(a, b)
 })
 
-test_that("vegetariam package vs hillR, taxa alpha diversity, q = 0.9999", {
+test_that("vegetarian package vs hillR, taxa alpha diversity, q = 0.9999", {
 
   skip_if_not_installed("vegetarian")
 
@@ -19,7 +19,7 @@ test_that("vegetariam package vs hillR, taxa alpha diversity, q = 0.9999", {
   expect_equal(a, b)
 })
 
-test_that("vegetariam package vs hillR, taxa alpha diversity, q = 1", {
+test_that("vegetarian package vs hillR, taxa alpha diversity, q = 1", {
 
   skip_if_not_installed("vegetarian")
 
@@ -28,7 +28,7 @@ test_that("vegetariam package vs hillR, taxa alpha diversity, q = 1", {
   expect_equal(a, b)
 })
 
-test_that("vegetariam package vs hillR, taxa alpha diversity, q = 2", {
+test_that("vegetarian package vs hillR, taxa alpha diversity, q = 2", {
 
   skip_if_not_installed("vegetarian")
 
@@ -37,7 +37,7 @@ test_that("vegetariam package vs hillR, taxa alpha diversity, q = 2", {
   expect_equal(a, b)
 })
 
-test_that("vegetariam package vs hillR, taxa beta diversity, q = 0", {
+test_that("vegetarian package vs hillR, taxa beta diversity, q = 0", {
 
   skip_if_not_installed("vegetarian")
 
@@ -52,7 +52,7 @@ test_that("vegetariam package vs hillR, taxa beta diversity, q = 0", {
   expect_equal(a3, b$local_similarity)
 })
 
-test_that("vegetariam package vs hillR, taxa beta diversity, q = 0.9999", {
+test_that("vegetarian package vs hillR, taxa beta diversity, q = 0.9999", {
 
   skip_if_not_installed("vegetarian")
 
@@ -67,7 +67,7 @@ test_that("vegetariam package vs hillR, taxa beta diversity, q = 0.9999", {
   expect_equal(a3, b$local_similarity)
 })
 
-test_that("vegetariam package vs hillR, taxa beta diversity, q = 1", {
+test_that("vegetarian package vs hillR, taxa beta diversity, q = 1", {
 
   skip_if_not_installed("vegetarian")
 
@@ -82,7 +82,7 @@ test_that("vegetariam package vs hillR, taxa beta diversity, q = 1", {
   expect_equal(a3, b$local_similarity)
 })
 
-test_that("vegetariam package vs hillR, taxa beta diversity, q = 2", {
+test_that("vegetarian package vs hillR, taxa beta diversity, q = 2", {
 
   skip_if_not_installed("vegetarian")
 
@@ -97,7 +97,7 @@ test_that("vegetariam package vs hillR, taxa beta diversity, q = 2", {
   expect_equal(a3, b$local_similarity)
 })
 
-test_that("vegetariam package vs hillR, taxa beta diversity, q = 2, two sites", {
+test_that("vegetarian package vs hillR, taxa beta diversity, q = 2, two sites", {
 
   skip_if_not_installed("vegetarian")
 
