@@ -1,31 +1,46 @@
 context("comparing taxa diversity")
 dummy = FD::dummy
 
-test_that("vegetariam package vs hillR, taxa alpha diversity, q = 0", {
+test_that("vegetarian package vs hillR, taxa alpha diversity, q = 0", {
+
+  skip_if_not_installed("vegetarian")
+
   a = apply(dummy$abun, 1, vegetarian::d, lev = "alpha", q = 0)
   b = hillR::hill_taxa(dummy$abun, q = 0)
   expect_equal(a, b)
 })
 
-test_that("vegetariam package vs hillR, taxa alpha diversity, q = 0.9999", {
+test_that("vegetarian package vs hillR, taxa alpha diversity, q = 0.9999", {
+
+  skip_if_not_installed("vegetarian")
+
   a = apply(dummy$abun, 1, vegetarian::d, lev = "alpha", q = 0.9999)
   b = hillR::hill_taxa(dummy$abun, q = 0.9999)
   expect_equal(a, b)
 })
 
-test_that("vegetariam package vs hillR, taxa alpha diversity, q = 1", {
+test_that("vegetarian package vs hillR, taxa alpha diversity, q = 1", {
+
+  skip_if_not_installed("vegetarian")
+
   a = apply(dummy$abun, 1, vegetarian::d, lev = "alpha", q = 1)
   b = hillR::hill_taxa(dummy$abun, q = 1)
   expect_equal(a, b)
 })
 
-test_that("vegetariam package vs hillR, taxa alpha diversity, q = 2", {
+test_that("vegetarian package vs hillR, taxa alpha diversity, q = 2", {
+
+  skip_if_not_installed("vegetarian")
+
   a = apply(dummy$abun, 1, vegetarian::d, lev = "alpha", q = 2)
   b = hillR::hill_taxa(dummy$abun, q = 2)
   expect_equal(a, b)
 })
 
-test_that("vegetariam package vs hillR, taxa beta diversity, q = 0", {
+test_that("vegetarian package vs hillR, taxa beta diversity, q = 0", {
+
+  skip_if_not_installed("vegetarian")
+
   a = vegetarian::d(dummy$abun, lev = "beta", q = 0)
   b = hillR::hill_taxa_parti(dummy$abun, q = 0)
   expect_equal(a, b$TD_beta)
@@ -37,7 +52,10 @@ test_that("vegetariam package vs hillR, taxa beta diversity, q = 0", {
   expect_equal(a3, b$local_similarity)
 })
 
-test_that("vegetariam package vs hillR, taxa beta diversity, q = 0.9999", {
+test_that("vegetarian package vs hillR, taxa beta diversity, q = 0.9999", {
+
+  skip_if_not_installed("vegetarian")
+
   a = vegetarian::d(dummy$abun, lev = "beta", q = 0.9999)
   b = hillR::hill_taxa_parti(dummy$abun, q = 0.9999)
   expect_equal(a, b$TD_beta)
@@ -49,7 +67,10 @@ test_that("vegetariam package vs hillR, taxa beta diversity, q = 0.9999", {
   expect_equal(a3, b$local_similarity)
 })
 
-test_that("vegetariam package vs hillR, taxa beta diversity, q = 1", {
+test_that("vegetarian package vs hillR, taxa beta diversity, q = 1", {
+
+  skip_if_not_installed("vegetarian")
+
   a = vegetarian::d(dummy$abun, lev = "beta", q = 1)
   b = hillR::hill_taxa_parti(dummy$abun, q = 1)
   expect_equal(a, b$TD_beta)
@@ -61,7 +82,10 @@ test_that("vegetariam package vs hillR, taxa beta diversity, q = 1", {
   expect_equal(a3, b$local_similarity)
 })
 
-test_that("vegetariam package vs hillR, taxa beta diversity, q = 2", {
+test_that("vegetarian package vs hillR, taxa beta diversity, q = 2", {
+
+  skip_if_not_installed("vegetarian")
+
   a = vegetarian::d(dummy$abun, lev = "beta", q = 2)
   b = hillR::hill_taxa_parti(dummy$abun, q = 2)
   expect_equal(a, b$TD_beta)
@@ -73,7 +97,10 @@ test_that("vegetariam package vs hillR, taxa beta diversity, q = 2", {
   expect_equal(a3, b$local_similarity)
 })
 
-test_that("vegetariam package vs hillR, taxa beta diversity, q = 2, two sites", {
+test_that("vegetarian package vs hillR, taxa beta diversity, q = 2, two sites", {
+
+  skip_if_not_installed("vegetarian")
+
   a = vegetarian::d(dummy$abun[1:2,], lev = "beta", q = 2)
   b = hillR::hill_taxa_parti(dummy$abun[1:2,], q = 2)
   expect_equal(a, b$TD_beta)
@@ -118,6 +145,9 @@ test_that("pairwise similarity", {
 })
 
 test_that("when N = 2, hill_taxa_parti equals Sorensen", {
+
+  skip_if_not_installed("betapart")
+
   toy.comm = matrix(nrow = 2, ncol = 6)
   rownames(toy.comm) = c("A","B")
   colnames(toy.comm) = c("sp1","sp2","sp3","sp4","sp5","sp6")
