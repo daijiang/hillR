@@ -1,5 +1,10 @@
 # hillR 0.5.0
 
+- Skip tests that used `vegetarian` package, which was off CRAN.
+- `hill_phylo` has an argument `return_dt` now, so that users can decide whether to return the Phylogenetic Hill numbers Dt, default is `FALSE`.
+
+# hillR 0.5.0
+
 - `hill_phylo` set of functions are now much faster after getting rid of `ade4::newick2phylog()`.
 - Replaced all `.` in arguments with `_` to standardize styles.
 - `hill_phylo_parti_pairwise` now calculate the node/tips by site matrix first to speed things up.
