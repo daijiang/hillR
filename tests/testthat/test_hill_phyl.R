@@ -48,6 +48,8 @@ test_that("when N = 2, hill_phylo_parti equals Sorensen", {
 
   toy.tree = ape::read.tree(text="(((sp1:1,sp2:1):5,(sp3:3,sp4:3):3):2,(sp5:7,sp6:7):1);")
 
+  skip_if_not_installed("betapart")
+
   toy.phylobetamulti = betapart::phylo.beta.multi(toy.comm, toy.tree, index.family = "sor")
   toy.phylobetamulti2 = betapart::phylo.beta.multi(toy.comm, toy.tree, index.family = "jac")
   toy.hill = hillR::hill_phylo_parti(toy.comm, toy.tree)
