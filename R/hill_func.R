@@ -57,6 +57,11 @@ hill_func <- function(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1), 
     if (any(!colnames(comm) %in% trait_sp)) {
         warning("\n There are species from community data that are not on traits matrix\n
                 Delete these species from comm data...\n")
+        if(any(!trait_sp %in% colnames(comm))){
+            warning("\n There are species in the traits data not in the communit data\n
+                    Delete these species from trait data...\n")
+            trait_sp = trait_sp[trait_sp %in% colnames(comm)]
+        }
         comm <- comm[, trait_sp]
     }
 
