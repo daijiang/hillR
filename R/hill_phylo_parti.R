@@ -25,8 +25,11 @@ hill_phylo_parti <- function(comm, tree, q = 0, base = exp(1), rel_then_pool = T
     if(check_data){
         if (any(comm < 0))
             stop("Negative value in comm data")
-        # if(any(colSums(comm) == 0) & show_warning) warning('Some species in comm data were
-        # not observed in any site,\n delete them...') comm = comm[, colSums(comm) != 0] #
+        if(any(colSums(comm) == 0) & show_warning){
+          warning('Some species in comm data were not observed in any site,\n delete them...')
+          comm = comm[, colSums(comm) != 0]
+         }
+       
 
         comm_sp <- intersect(colnames(comm), tree$tip.label)
 
