@@ -57,7 +57,8 @@ hill_phylo_parti_pairwise <- function(comm, tree, q = 0, output = c("data.frame"
         if(.progress) utils::setTxtProgressBar(progbar, i)
         for (j in (i + 1):nsite) {
             o <- hill_phylo_parti(comm = comm[c(i, j), ], tree, q = q,
-                                  phy_abund = pabund, check_data = FALSE)
+                                  phy_abund = pabund, show_warning = FALSE, 
+                                  check_data = TRUE)
             gamma_pair[i, j] <- o$PD_gamma
             gamma_pair[j, i] <- o$PD_gamma
             alpha_pair[i, j] <- o$PD_alpha
