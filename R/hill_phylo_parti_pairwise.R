@@ -22,6 +22,7 @@ hill_phylo_parti_pairwise <- function(comm, tree, q = 0, output = c("data.frame"
     pairs = c("unique", "full"), rel_then_pool = TRUE, .progress = TRUE,
     show_warning = TRUE, ...) {
     if (any(comm < 0)) stop("Negative value in comm data")
+    comm <- comm[, colSums(comm) > 0] # remove species have no occurrence
     if (class(tree) != "phylo")
         stop("tree must be an object with phylo as class")
     # clean phylogeny and community data
@@ -57,7 +58,7 @@ hill_phylo_parti_pairwise <- function(comm, tree, q = 0, output = c("data.frame"
         if(.progress) utils::setTxtProgressBar(progbar, i)
         for (j in (i + 1):nsite) {
             o <- hill_phylo_parti(comm = comm[c(i, j), ], tree, q = q,
-                                  phy_abund = pabund, show_warning = FALSE, 
+                                  phy_abund = pabund, show_warning = FALSE,
                                   check_data = TRUE)
             gamma_pair[i, j] <- o$PD_gamma
             gamma_pair[j, i] <- o$PD_gamma
