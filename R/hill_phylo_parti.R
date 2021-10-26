@@ -21,16 +21,16 @@
 #' hill_phylo_parti(comm, tree, q = 2)
 #'
 hill_phylo_parti <- function(comm, tree, q = 0, base = exp(1), rel_then_pool = TRUE,
-                             show_warning = TRUE, phy_abund = NULL, check_data = TRUE) {
+                             show_warning = TRUE, check_data = TRUE) {
     if(check_data){
         if (any(comm < 0))
             stop("Negative value in comm data")
         if(any(colSums(comm) == 0)){
-          if(show_warning) 
+          if(show_warning)
             warning('Some species in comm data were not observed in any site,\n delete them...')
           comm = comm[, colSums(comm) != 0]
          }
-       
+
 
         comm_sp <- intersect(colnames(comm), tree$tip.label)
 
@@ -56,11 +56,7 @@ hill_phylo_parti <- function(comm, tree, q = 0, base = exp(1), rel_then_pool = T
         }
     }
 
-    if(is.null(phy_abund)){
-        pabun <- dat_prep_phylo(comm, tree)
-    } else{ # already calculated
-        pabun <- phy_abund[, rownames(comm)]
-    }
+    pabun <- dat_prep_phylo(comm, tree)
 
     plength <- tree$edge.length
 
