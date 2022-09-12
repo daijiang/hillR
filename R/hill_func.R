@@ -141,6 +141,7 @@ hill_func <- function(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1), 
     N <- nrow(comm)
     S <- ncol(comm)
     SR <- rowSums(comm > 0)  # species richness of each site
+    if(q == 0) comm[comm > 0] = 1 # so that quadratic entropy Q does not use pi pj
     comm <- sweep(comm, 1, rowSums(comm, na.rm = TRUE), "/")  # relative abun
 
     dij <- as.matrix(dij)
