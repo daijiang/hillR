@@ -66,6 +66,8 @@ hill_phylo <- function(comm, tree, q = 0, base = exp(1), rel_then_pool = TRUE,
     comm <- comm[, tree$tip.label]  # resort sp
     comm <- as.matrix(comm)
 
+    if(q == 0) comm[comm > 0] = 1
+
     if (rel_then_pool) {
         comm <- sweep(comm, 1, rowSums(comm, na.rm = TRUE), "/")  # relative abun
     }
