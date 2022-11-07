@@ -32,7 +32,7 @@ hill_phylo_parti <- function(comm, tree, q = 0, base = exp(1), rel_then_pool = T
 
         comm_sp <- intersect(colnames(comm), tree$tip.label)
 
-        if (class(tree) != "phylo")
+        if (!inherits(tree, "phylo"))
             stop("tree must be an object with phylo as class")
         if (length(setdiff(tree$tip.label, comm_sp))) {
             if (show_warning)

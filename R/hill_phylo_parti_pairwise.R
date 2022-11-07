@@ -23,7 +23,7 @@ hill_phylo_parti_pairwise <- function(comm, tree, q = 0, output = c("data.frame"
     show_warning = TRUE, ...) {
     if (any(comm < 0)) stop("Negative value in comm data")
     comm <- comm[, colSums(comm) > 0] # remove species have no occurrence
-    if (class(tree) != "phylo")
+    if (!inherits(tree, "phylo"))
         stop("tree must be an object with phylo as class")
     # clean phylogeny and community data
     sp_drop <- setdiff(tree$tip.label, colnames(comm))
