@@ -11,7 +11,6 @@ hill_phylo_parti(
   base = exp(1),
   rel_then_pool = TRUE,
   show_warning = TRUE,
-  phy_abund = NULL,
   check_data = TRUE
 )
 }
@@ -30,9 +29,6 @@ then pooled into one assemblage. If \code{FALSE}, sites are pooled first, then c
 to relative abundance.}
 
 \item{show_warning}{whether to print warning, default is \code{TRUE}.}
-
-\item{phy_abund}{A matrix of phylogeny node and tips by community matrix derived
-from `dat_prep_phylo()`. Can be specified to speed up `hill_phylo_parti_pairwise()`.}
 
 \item{check_data}{Whether to check the community data and phylogeny. Default is `TRUE`.
 Can be set to `FALSE` to speed up `hill_phylo_parti_pairwise()`.}

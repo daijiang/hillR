@@ -41,7 +41,7 @@ Therefore, I set the default to be \code{FALSE}.}
 
 \item{ord}{ord in \code{FD::gowdis}.}
 
-\item{fdis}{whether to calculated FDis, default is \code{TRUE}}
+\item{fdis}{whether to calculate FDis, default is \code{TRUE}}
 
 \item{stand_dij}{whether to standardize distance matrix to have max value of 1? Default is \code{FALSE}.}
 }

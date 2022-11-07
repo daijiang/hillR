@@ -3,8 +3,6 @@
 #' Calculate overall phylogenetic diversity and site similarity across multiple sites.
 #'
 #' @inheritParams hill_phylo
-#' @param phy_abund A matrix of phylogeny node and tips by community matrix derived
-#' from `dat_prep_phylo()`. Can be specified to speed up `hill_phylo_parti_pairwise()`.
 #' @param check_data Whether to check the community data and phylogeny. Default is `TRUE`.
 #' Can be set to `FALSE` to speed up `hill_phylo_parti_pairwise()`.
 #' @export
