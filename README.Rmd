@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-[![DOI](http://joss.theoj.org/papers/10.21105/joss.01041/status.svg)](https://doi.org/10.21105/joss.01041) [![Build Status](https://travis-ci.org/daijiang/hillR.svg?branch=master)](https://travis-ci.org/daijiang/hillR) [![Coverage status](https://codecov.io/gh/daijiang/hillR/branch/master/graph/badge.svg)](https://codecov.io/github/daijiang/hillR?branch=master)
+[![DOI](http://joss.theoj.org/papers/10.21105/joss.01041/status.svg)](https://doi.org/10.21105/joss.01041) [![Build Status](https://travis-ci.org/daijiang/hillR.svg?branch=master)](https://app.travis-ci.com/github/daijiang/hillR) [![Coverage status](https://codecov.io/gh/daijiang/hillR/branch/master/graph/badge.svg)](https://app.codecov.io/github/daijiang/hillR?branch=master)
 [![CRAN status](https://www.r-pkg.org/badges/version/hillR)](https://cran.r-project.org/package=hillR)
 [![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/hillR)](https://www.r-pkg.org/pkg/hillR)
 [![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/grand-total/hillR?color=green)](https://www.r-pkg.org/pkg/hillR)
@@ -29,7 +29,7 @@ To install this package, run the following code:
 ```{r, eval=FALSE}
 install.packages("hillR")
 # or install from Github
-devtools::install_github("daijiang/hillR")
+install.packages("hillR", repos = c('https://daijiang.r-universe.dev', 'https://cloud.r-project.org'))
 ```
 
 # Examples

@@ -9,7 +9,6 @@ Description: Calculate taxonomic, functional and phylogenetic diversity measures
     through Hill Numbers proposed by Chao, Chiu and Jost (2014) 
     <doi:10.1146/annurev-ecolsys-120213-091540>.
 License: MIT + file LICENSE
-LazyData: TRUE
 Depends:
     R (>= 3.1)
 Imports:
