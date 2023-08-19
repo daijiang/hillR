@@ -30,7 +30,7 @@ to relative abundance.}
 \item{check_data}{whether to check data first? Default is \code{TRUE}.}
 }
 \value{
-A data frame with one row (across all sites), including these columns: q, gamma diversity, alpha diverisity,
+A data frame with one row (across all sites), including these columns: q, gamma diversity, alpha diversity,
 beta diversity, MacArthur's homogeneity measure, local similarity (species overlap, similar to Sorensen),
 and region similarity (species overlap, similar to Jaccard).
 See Chao, Chiu and Jost 2014 Table 2 for more information.

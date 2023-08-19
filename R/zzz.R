@@ -18,4 +18,5 @@
 #'
 #' @docType package
 #' @name hillR
+#' @aliases hillR-package
 NULL
