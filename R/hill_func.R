@@ -39,6 +39,10 @@ hill_func <- function(comm, traits, traits_as_is = FALSE, q = 0, base = exp(1), 
     if (check_data) {
         if (any(comm < 0))
             stop("Negative value in comm data")
+
+      if(any(colSums(comm) == 0))
+        comm <- comm[, colSums(comm) != 0, drop = FALSE]
+
         if(traits_as_is){
             if(is.null(attributes(traits)$Labels)) stop("\n Traits distance matrix has no labels\n")
         } else {

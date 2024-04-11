@@ -47,6 +47,13 @@ hill_phylo <- function(comm, tree, q = 0, base = exp(1), rel_then_pool = TRUE,
     # if(any(colSums(comm) == 0) & show_warning) warning('Some species in comm data were
     # not observed in any site,\n delete them...') comm = comm[, colSums(comm) != 0]
 
+  # remove species with no observations
+  if(any(colSums(comm) == 0)){
+    if(show_warning)
+      warning('Some species in comm data were not observed in any site,\n delete them...')
+    comm <- comm[, colSums(comm) != 0, drop = FALSE]
+  }
+
     comm_sp <- intersect(colnames(comm), tree$tip.label)
 
     if (!inherits(tree, "phylo"))
@@ -79,6 +86,16 @@ hill_phylo <- function(comm, tree, q = 0, base = exp(1), rel_then_pool = TRUE,
     names(PD) <- row.names(comm)
     names(D_t) <- row.names(comm)
     for (i in 1:N) {
+      # in cases that a community does not have species from the old clades,
+      # when analyze that community separately, the old clades would be trimmed from the tree,
+      # leading to the internal node to be the root of that sub-tree. In this case,
+      # the root of that sub-tree, which is an internal node here, will not be calculated.
+      # However, in the case of analyzing all communities together, this internal node will
+      # be included, with an accumulative relative abundance of 1. To make sure we get the same results
+      # whether analyzing all communities together, or analyzing them individually, we set this
+      # internal node's accumulative abundance to be 0, i.e., not included in the calculation.
+      pabun[, i][which(abs(pabun[, i] - 1) < 0.000001)] = 0
+
         TT <- sum(pabun[, i] * plength)
         D_t[i] <- TT
         I <- which(pabun[, i] > 0)
@@ -96,3 +113,4 @@ hill_phylo <- function(comm, tree, q = 0, base = exp(1), rel_then_pool = TRUE,
         return(PD)
     }
 }
+
