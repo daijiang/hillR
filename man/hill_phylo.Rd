@@ -33,7 +33,7 @@ to relative abundance.}
 \item{return_dt}{Whether to return the Phylogenetic Hill numbers Dt, default is `FALSE`.}
 }
 \value{
-A vector of hill number based phylogenetic diversity (`PD(T)`, effective total branch length) for all sites.
+A vector of hill number based phylogenetic diversity (`PD(T)`, effective total branch length) for all sites. If a site has less than 2 species in the final dataset, NA will be returned.
 }
 \description{
 Calculate alpha phylogenetic diversity based on Hill numbers

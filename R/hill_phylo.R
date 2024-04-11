@@ -29,7 +29,7 @@ dat_prep_phylo <- function(comm, tree) {
 #' @param return_dt Whether to return the Phylogenetic Hill numbers Dt, default is `FALSE`.
 #' @inheritParams hill_taxa_parti
 #' @author Chiu & Chao & Daijiang Li
-#' @return A vector of hill number based phylogenetic diversity (`PD(T)`, effective total branch length) for all sites.
+#' @return A vector of hill number based phylogenetic diversity (`PD(T)`, effective total branch length) for all sites. If a site has less than 2 species in the final dataset, NA will be returned.
 #' @export
 #' @references Chao, Anne, Chun-Huo Chiu, and Lou Jost. Unifying Species Diversity, Phylogenetic Diversity, Functional Diversity, and Related Similarity and Differentiation Measures Through Hill Numbers. Annual Review of Ecology, Evolution, and Systematics 45, no. 1 (2014): 297–324. <doi:10.1146/annurev-ecolsys-120213-091540>.
 #' @examples
@@ -73,6 +73,8 @@ hill_phylo <- function(comm, tree, q = 0, base = exp(1), rel_then_pool = TRUE,
     comm <- comm[, tree$tip.label]  # resort sp
     comm <- as.matrix(comm)
 
+    if(ncol(comm) < 2) stop("The final community data have less than 2 species, which does not make much sense for phylogenetic diversity calculation")
+
     if(q == 0) comm[comm > 0] = 1
 
     if (rel_then_pool) {
@@ -86,19 +88,25 @@ hill_phylo <- function(comm, tree, q = 0, base = exp(1), rel_then_pool = TRUE,
     names(PD) <- row.names(comm)
     names(D_t) <- row.names(comm)
     for (i in 1:N) {
-      # in cases that a community does not have species from the old clades,
+      # In cases that a community does not have species from the old clades,
       # when analyze that community separately, the old clades would be trimmed from the tree,
-      # leading to the internal node to be the root of that sub-tree. In this case,
+      # leading to an internal node to be the root of that sub-tree. When analyzed separately,
       # the root of that sub-tree, which is an internal node here, will not be calculated.
       # However, in the case of analyzing all communities together, this internal node will
-      # be included, with an accumulative relative abundance of 1. To make sure we get the same results
-      # whether analyzing all communities together, or analyzing them individually, we set this
-      # internal node's accumulative abundance to be 0, i.e., not included in the calculation.
-      pabun[, i][which(abs(pabun[, i] - 1) < 0.000001)] = 0
+      # be included, with an accumulative relative abundance of 1.
+      # To make sure we get the same results whether analyzing all communities together,
+      # or analyzing them individually, we set this internal node's accumulative abundance to 0,
+      # i.e., not included it in the calculation.
+        pabun[, i][which(abs(pabun[, i] - 1) < 0.000001)] = 0
 
         TT <- sum(pabun[, i] * plength)
-        D_t[i] <- TT
         I <- which(pabun[, i] > 0)
+        if(length(I) == 0) {
+          PD[i] <- NA # only one species
+          D_t[i] <- NA
+          next()
+        }
+        D_t[i] <- TT
         if(q == 1){
             PD[i] <- exp(-sum(plength[I] * (pabun[, i][I]/TT) * log(pabun[, i][I]/TT, base)))
         } else {
