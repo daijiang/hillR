@@ -27,40 +27,54 @@ NULL
 #' # same as: vegan::diversity(x = dummy$abun, index = 'invsimpson')
 #'
 hill_taxa <- function(comm, q = 0, MARGIN = 1, base = exp(1)) {
-    comm <- drop(as.matrix(comm))
-    if (length(dim(comm)) > 1) {
-        # get relative abundance
-        total <- apply(comm, MARGIN, sum)
-        comm <- sweep(comm, MARGIN, total, "/")
+  comm <- drop(as.matrix(comm))
+  if (length(dim(comm)) > 1) {
+    # get relative abundance
+    if(any(rowSums(comm) == 0) & q != 0){
+      warning("Some sites do not have any species, return NA for them")
+      which_site_no_sp = rownames(comm)[which(rowSums(comm) == 0)]
+      any_site_no_sp = TRUE
+      # comm = comm[rowSums(comm) != 0, , drop = FALSE]
     } else {
-        comm <- comm/sum(comm)
+      any_site_no_sp = FALSE
     }
+    if(any(colSums(comm) == 0)){
+      warning("Some species were not observed in any site, delete them")
+      comm = comm[, colSums(comm) != 0, drop = FALSE]
+    }
+    total <- apply(comm, MARGIN, sum)
+    comm <- sweep(comm, MARGIN, total, "/")
+  } else {
+    comm <- comm/sum(comm)
+  }
 
-    if (q == 0) {
-        # richness
-        if (length(dim(comm)) > 1) {
-            hill <- apply(comm > 0, MARGIN, sum, na.rm = TRUE)
-        } else {
-            hill <- sum(comm > 0, na.rm = TRUE)
-        }
+  if (q == 0) {
+    # richness
+    if (length(dim(comm)) > 1) {
+      hill <- apply(comm > 0, MARGIN, sum, na.rm = TRUE)
     } else {
-        if (q == 1) {
-            # shannon
-            comm <- -comm * log(comm, base)
-            if (length(dim(comm)) > 1) {
-                hill <- exp(apply(comm, MARGIN, sum, na.rm = TRUE))
-            } else {
-                hill <- exp(sum(comm, na.rm = TRUE))
-            }
-        } else {
-            # q != 0,1, simpson, etc.
-            comm <- comm^q  # p_i^q
-            if (length(dim(comm)) > 1) {
-                hill <- (apply(comm, MARGIN, sum, na.rm = TRUE))^(1/(1 - q))
-            } else {
-                hill <- (sum(comm, na.rm = TRUE))^(1/(1 - q))
-            }
-        }
+      hill <- sum(comm > 0, na.rm = TRUE)
     }
-    hill
+  } else {
+    if (q == 1) {
+      # shannon
+      comm <- -comm * log(comm, base)
+      if (length(dim(comm)) > 1) {
+        hill <- exp(apply(comm, MARGIN, sum, na.rm = TRUE))
+        if(any_site_no_sp) hill[which_site_no_sp] <- NA
+      } else {
+        hill <- exp(sum(comm, na.rm = TRUE))
+      }
+    } else {
+      # q != 0,1, simpson, etc.
+      comm <- comm^q  # p_i^q
+      if (length(dim(comm)) > 1) {
+        hill <- (apply(comm, MARGIN, sum, na.rm = TRUE))^(1/(1 - q))
+        if(any_site_no_sp) hill[which_site_no_sp] <- NA
+      } else {
+        hill <- (sum(comm, na.rm = TRUE))^(1/(1 - q))
+      }
+    }
+  }
+  hill
 }

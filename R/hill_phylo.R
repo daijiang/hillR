@@ -48,11 +48,12 @@ hill_phylo <- function(comm, tree, q = 0, base = exp(1), rel_then_pool = TRUE,
     # not observed in any site,\n delete them...') comm = comm[, colSums(comm) != 0]
 
   # remove species with no observations
-  if(any(colSums(comm) == 0)){
-    if(show_warning)
-      warning('Some species in comm data were not observed in any site,\n delete them...')
-    comm <- comm[, colSums(comm) != 0, drop = FALSE]
-  }
+   if (any(colSums(comm) == 0) & show_warning)
+     warning("Some species in comm data were not observed in any site,\n delete them...")
+   if (any(rowSums(comm) == 0) & show_warning)
+     warning("Some sites in comm data do not have any species,\n delete them...")
+
+   comm <- comm[rowSums(comm) != 0, colSums(comm) != 0, drop = FALSE]
 
     comm_sp <- intersect(colnames(comm), tree$tip.label)
 

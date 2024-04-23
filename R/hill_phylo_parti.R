@@ -20,68 +20,69 @@
 #'
 hill_phylo_parti <- function(comm, tree, q = 0, base = exp(1), rel_then_pool = TRUE,
                              show_warning = TRUE, check_data = TRUE) {
-    if(check_data){
-        if (any(comm < 0))
-            stop("Negative value in comm data")
-        if(any(colSums(comm) == 0)){
-          if(show_warning)
-            warning('Some species in comm data were not observed in any site,\n delete them...')
-          comm = comm[, colSums(comm) != 0]
-         }
+  if(check_data){
+    if (any(comm < 0))
+      stop("Negative value in comm data")
 
+    if (any(colSums(comm) == 0) & show_warning)
+      warning("Some species in comm data were not observed in any site,\n delete them...")
+    if (any(rowSums(comm) == 0) & show_warning)
+      warning("Some sites in comm data do not have any species,\n delete them...")
 
-        comm_sp <- intersect(colnames(comm), tree$tip.label)
+    comm = comm[rowSums(comm) != 0, colSums(comm) != 0, drop = FALSE]
 
-        if (!inherits(tree, "phylo"))
-            stop("tree must be an object with phylo as class")
-        if (length(setdiff(tree$tip.label, comm_sp))) {
-            if (show_warning)
-                warning("Some species in the phylogeny but not in comm, \n remove them from the phylogeny...")
-            tree <- ape::keep.tip(tree, comm_sp)
-        }
+    comm_sp <- intersect(colnames(comm), tree$tip.label)
 
-        if (length(setdiff(colnames(comm), comm_sp))) {
-            if (show_warning)
-                warning("Some species in the comm but not in the phylogeny, \n remove them from the comm")
-            comm <- comm[, comm_sp]
-        }
-
-        comm <- comm[, tree$tip.label]  # resort sp
-        comm <- as.matrix(comm)
-
-        if (rel_then_pool) {
-            comm <- sweep(comm, 1, rowSums(comm, na.rm = TRUE), "/")  # relative abun
-        }
+    if (!inherits(tree, "phylo"))
+      stop("tree must be an object with phylo as class")
+    if (length(setdiff(tree$tip.label, comm_sp))) {
+      if (show_warning)
+        warning("Some species in the phylogeny but not in comm, \n remove them from the phylogeny...")
+      tree <- ape::keep.tip(tree, comm_sp)
     }
 
-    pabun <- dat_prep_phylo(comm, tree)
-
-    plength <- tree$edge.length
-
-    N <- ncol(pabun)
-    Tabun <- rowSums(pabun)
-    stopifnot(length(Tabun) == length(plength))
-    gT <- sum(Tabun * plength)
-    gI <- which(Tabun > 0)
-
-    if (q == 1) {
-        gPD <- exp(-sum(plength[gI] * (Tabun[gI]/gT) * log(Tabun[gI]/gT, base)))
-        L <- matrix(rep(plength, N), ncol = N)
-        aI <- which(pabun > 0)
-        aPD <- exp(-sum(L[aI] * (pabun[aI]/gT) * log(pabun[aI]/gT, base)))/N
-        bPD <- gPD/aPD
-        phyloCqN <- 1 - log(bPD, base)/log(N, base)
-        phyloUqN <- phyloCqN
-    } else {
-        gPD <- sum(plength[gI] * (Tabun[gI]/gT)^q)^(1/(1 - q))
-        L <- matrix(rep(plength, N), ncol = N)
-        aI <- which(pabun > 0)
-        aPD <- sum(L[aI] * (pabun[aI]/gT)^q)^(1/(1 - q))/N
-        bPD <- gPD/aPD
-        phyloCqN <- 1 - (bPD^(1 - q) - 1)/(N^(1 - q) - 1)
-        phyloUqN <- 1 - (bPD^(q - 1) - 1)/(N^(q - 1) - 1)
+    if (length(setdiff(colnames(comm), comm_sp))) {
+      if (show_warning)
+        warning("Some species in the comm but not in the phylogeny, \n remove them from the comm")
+      comm <- comm[, comm_sp]
     }
 
-    return(data.frame(q = q, PD_gamma = gPD, PD_alpha = aPD, PD_beta = bPD, local_similarity = phyloCqN,
-                      region_similarity = phyloUqN))
+    comm <- comm[, tree$tip.label]  # resort sp
+    comm <- as.matrix(comm)
+
+    if (rel_then_pool) {
+      comm <- sweep(comm, 1, rowSums(comm, na.rm = TRUE), "/")  # relative abun
+    }
+  }
+
+  pabun <- dat_prep_phylo(comm, tree)
+
+  plength <- tree$edge.length
+
+  N <- ncol(pabun)
+  Tabun <- rowSums(pabun)
+  stopifnot(length(Tabun) == length(plength))
+  gT <- sum(Tabun * plength)
+  gI <- which(Tabun > 0)
+
+  if (q == 1) {
+    gPD <- exp(-sum(plength[gI] * (Tabun[gI]/gT) * log(Tabun[gI]/gT, base)))
+    L <- matrix(rep(plength, N), ncol = N)
+    aI <- which(pabun > 0)
+    aPD <- exp(-sum(L[aI] * (pabun[aI]/gT) * log(pabun[aI]/gT, base)))/N
+    bPD <- gPD/aPD
+    phyloCqN <- 1 - log(bPD, base)/log(N, base)
+    phyloUqN <- phyloCqN
+  } else {
+    gPD <- sum(plength[gI] * (Tabun[gI]/gT)^q)^(1/(1 - q))
+    L <- matrix(rep(plength, N), ncol = N)
+    aI <- which(pabun > 0)
+    aPD <- sum(L[aI] * (pabun[aI]/gT)^q)^(1/(1 - q))/N
+    bPD <- gPD/aPD
+    phyloCqN <- 1 - (bPD^(1 - q) - 1)/(N^(1 - q) - 1)
+    phyloUqN <- 1 - (bPD^(q - 1) - 1)/(N^(q - 1) - 1)
+  }
+
+  return(data.frame(q = q, PD_gamma = gPD, PD_alpha = aPD, PD_beta = bPD, local_similarity = phyloCqN,
+                    region_similarity = phyloUqN))
 }

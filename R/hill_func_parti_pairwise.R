@@ -32,93 +32,99 @@ hill_func_parti_pairwise <- function(comm, traits, traits_as_is = FALSE,
                                      pairs = c("unique", "full"),
                                      .progress = TRUE, show_warning = TRUE,
                                      ...) {
-    if (any(comm < 0))
-        stop("Negative value in comm data")
-    if (is.null(rownames(traits))) {
-        stop("\n Traits have no row names\n")
-    }
-    if (is.null(colnames(comm))) {
-        stop("\n Comm data have no col names\n")
-    }
-    if (any(colSums(comm) == 0) & show_warning)
-        warning("Some species in comm data were not observed in any site,\n
-                                      delete them...")
-    output <- match.arg(output)
-    pairs <- match.arg(pairs)
-    nsite <- nrow(comm)
-    temp <- matrix(1, nsite, nsite)
-    dimnames(temp) <- list(row.names(comm), row.names(comm))
-    gamma_pair <- alpha_pair <- beta_pair <- local_simi <- region_simi <- temp
-    if(.progress)
-        progbar = utils::txtProgressBar(min = 0, max = nsite - 1, initial = 0, style = 3)
-    for (i in 1:(nsite - 1)) {
-        if(.progress) utils::setTxtProgressBar(progbar, i)
-        for (j in (i + 1):nsite) {
-            o <- hill_func_parti(comm = comm[c(i, j), ], traits = traits,
-                                 traits_as_is = traits_as_is, q = q,
-                                 rel_then_pool = rel_then_pool, check_data = FALSE,
-                                 ...)
-            gamma_pair[i, j] <- o$FD_gamma
-            gamma_pair[j, i] <- o$FD_gamma
-            alpha_pair[i, j] <- o$FD_alpha
-            alpha_pair[j, i] <- o$FD_alpha
-            beta_pair[i, j] <- o$FD_beta
-            beta_pair[j, i] <- o$FD_beta
-            local_simi[i, j] <- o$local_similarity
-            local_simi[j, i] <- o$local_similarity
-            region_simi[i, j] <- o$region_similarity
-            region_simi[j, i] <- o$region_similarity
-        }
-    }
-    if(.progress) close(progbar)
+  if (any(comm < 0))
+    stop("Negative value in comm data")
+  if (is.null(rownames(traits))) {
+    stop("\n Traits have no row names\n")
+  }
+  if (is.null(colnames(comm))) {
+    stop("\n Comm data have no col names\n")
+  }
 
-    if (pairs == "full") {
-        if (output == "matrix") {
-            out <- list(q = q, FD_gamma = gamma_pair, FD_alpha = alpha_pair, FD_beta = beta_pair,
-                local_similarity = local_simi, region_similarity = region_simi)
-        }
+  if (any(colSums(comm) == 0) & show_warning)
+    warning("Some species in comm data were not observed in any site,\n delete them...")
 
-        if (output == "data.frame") {
-            site.comp <- as.matrix(expand.grid(row.names(comm), row.names(comm)))
-            out <- plyr::adply(site.comp, 1, function(x) {
-                data.frame(q = q, site1 = x[1], site2 = x[2],
-                           FD_gamma = gamma_pair[x[1], x[2]],
-                           FD_alpha = alpha_pair[x[1], x[2]],
-                           FD_beta = beta_pair[x[1], x[2]],
-                           local_similarity = local_simi[x[1], x[2]],
-                           region_similarity = region_simi[x[1], x[2]])
-            })[, -1]
-            out <- tibble::as_tibble(out)
-        }
-        out
+  if (any(rowSums(comm) == 0) & show_warning)
+    warning("Some sites in comm data do not have any species,\n delete them...")
+
+  comm <- comm[rowSums(comm) != 0, colSums(comm) != 0, drop = FALSE]
+
+  output <- match.arg(output)
+  pairs <- match.arg(pairs)
+  nsite <- nrow(comm)
+  temp <- matrix(1, nsite, nsite)
+  dimnames(temp) <- list(row.names(comm), row.names(comm))
+  gamma_pair <- alpha_pair <- beta_pair <- local_simi <- region_simi <- temp
+  if(.progress)
+    progbar = utils::txtProgressBar(min = 0, max = nsite - 1, initial = 0, style = 3)
+  for (i in 1:(nsite - 1)) {
+    if(.progress) utils::setTxtProgressBar(progbar, i)
+    for (j in (i + 1):nsite) {
+      o <- hill_func_parti(comm = comm[c(i, j), ], traits = traits,
+                           traits_as_is = traits_as_is, q = q,
+                           rel_then_pool = rel_then_pool, check_data = FALSE,
+                           ...)
+      gamma_pair[i, j] <- o$FD_gamma
+      gamma_pair[j, i] <- o$FD_gamma
+      alpha_pair[i, j] <- o$FD_alpha
+      alpha_pair[j, i] <- o$FD_alpha
+      beta_pair[i, j] <- o$FD_beta
+      beta_pair[j, i] <- o$FD_beta
+      local_simi[i, j] <- o$local_similarity
+      local_simi[j, i] <- o$local_similarity
+      region_simi[i, j] <- o$region_similarity
+      region_simi[j, i] <- o$region_similarity
+    }
+  }
+  if(.progress) close(progbar)
+
+  if (pairs == "full") {
+    if (output == "matrix") {
+      out <- list(q = q, FD_gamma = gamma_pair, FD_alpha = alpha_pair, FD_beta = beta_pair,
+                  local_similarity = local_simi, region_similarity = region_simi)
     }
 
-    if (pairs == "unique") {
-        gamma_pair[lower.tri(gamma_pair, diag = TRUE)] <- NA
-        alpha_pair[lower.tri(alpha_pair, diag = TRUE)] <- NA
-        beta_pair[lower.tri(beta_pair, diag = TRUE)] <- NA
-        local_simi[lower.tri(local_simi, diag = TRUE)] <- NA
-        region_simi[lower.tri(region_simi, diag = TRUE)] <- NA
-
-        if (output == "matrix") {
-            out <- list(q = q, FD_gamma = gamma_pair, FD_alpha = alpha_pair, FD_beta = beta_pair,
-                local_similarity = local_simi, region_similarity = region_simi)
-        }
-
-        if (output == "data.frame") {
-            site.comp <- as.matrix(expand.grid(row.names(comm), row.names(comm)))
-            out <- plyr::adply(site.comp, 1, function(x) {
-                data.frame(q = q, site1 = x[1], site2 = x[2],
-                           FD_gamma = gamma_pair[x[1], x[2]],
-                           FD_alpha = alpha_pair[x[1], x[2]],
-                           FD_beta = beta_pair[x[1], x[2]],
-                           local_similarity = local_simi[x[1], x[2]],
-                           region_similarity = region_simi[x[1], x[2]])
-            })
-            out <- na.omit(out)[, -1]
-            row.names(out) <- NULL
-            out <- tibble::as_tibble(out)
-        }
+    if (output == "data.frame") {
+      site.comp <- as.matrix(expand.grid(row.names(comm), row.names(comm)))
+      out <- plyr::adply(site.comp, 1, function(x) {
+        data.frame(q = q, site1 = x[1], site2 = x[2],
+                   FD_gamma = gamma_pair[x[1], x[2]],
+                   FD_alpha = alpha_pair[x[1], x[2]],
+                   FD_beta = beta_pair[x[1], x[2]],
+                   local_similarity = local_simi[x[1], x[2]],
+                   region_similarity = region_simi[x[1], x[2]])
+      })[, -1]
+      out <- tibble::as_tibble(out)
     }
     out
+  }
+
+  if (pairs == "unique") {
+    gamma_pair[lower.tri(gamma_pair, diag = TRUE)] <- NA
+    alpha_pair[lower.tri(alpha_pair, diag = TRUE)] <- NA
+    beta_pair[lower.tri(beta_pair, diag = TRUE)] <- NA
+    local_simi[lower.tri(local_simi, diag = TRUE)] <- NA
+    region_simi[lower.tri(region_simi, diag = TRUE)] <- NA
+
+    if (output == "matrix") {
+      out <- list(q = q, FD_gamma = gamma_pair, FD_alpha = alpha_pair, FD_beta = beta_pair,
+                  local_similarity = local_simi, region_similarity = region_simi)
+    }
+
+    if (output == "data.frame") {
+      site.comp <- as.matrix(expand.grid(row.names(comm), row.names(comm)))
+      out <- plyr::adply(site.comp, 1, function(x) {
+        data.frame(q = q, site1 = x[1], site2 = x[2],
+                   FD_gamma = gamma_pair[x[1], x[2]],
+                   FD_alpha = alpha_pair[x[1], x[2]],
+                   FD_beta = beta_pair[x[1], x[2]],
+                   local_similarity = local_simi[x[1], x[2]],
+                   region_similarity = region_simi[x[1], x[2]])
+      })
+      out <- na.omit(out)[, -1]
+      row.names(out) <- NULL
+      out <- tibble::as_tibble(out)
+    }
+  }
+  out
 }

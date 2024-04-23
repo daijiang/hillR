@@ -22,7 +22,14 @@ hill_phylo_parti_pairwise <- function(comm, tree, q = 0, output = c("data.frame"
     pairs = c("unique", "full"), rel_then_pool = TRUE, .progress = TRUE,
     show_warning = TRUE, ...) {
     if (any(comm < 0)) stop("Negative value in comm data")
-    comm <- comm[, colSums(comm) > 0] # remove species have no occurrence
+
+  if (any(colSums(comm) == 0))
+    warning("Some species in comm data were not observed in any site,\n delete them...")
+  if (any(rowSums(comm) == 0))
+    warning("Some sites in comm data do not have any species,\n delete them...")
+
+  comm = comm[rowSums(comm) != 0, colSums(comm) != 0, drop = FALSE]
+
     if (!inherits(tree, "phylo"))
         stop("tree must be an object with phylo as class")
     # clean phylogeny and community data
