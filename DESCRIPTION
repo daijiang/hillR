@@ -7,7 +7,6 @@ Authors@R: person(given = "Daijiang",
                   family = "Li",
                   role = c("aut", "cre"),
                   email = "daijianglee@gmail.com")
-Author: Daijiang Li
 Maintainer: Daijiang Li <daijianglee@gmail.com>
 Description: Calculate taxonomic, functional and phylogenetic diversity measures 
     through Hill Numbers proposed by Chao, Chiu and Jost (2014) 
