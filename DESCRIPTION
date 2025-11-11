@@ -3,6 +3,10 @@ Type: Package
 Title: Diversity Through Hill Numbers
 Version: 0.6.0
 Date: 2025-11-10
+Authors@R: person(given = "Daijiang",
+                  family = "Li",
+                  role = c("aut", "cre"),
+                  email = "daijianglee@gmail.com")
 Author: Daijiang Li
 Maintainer: Daijiang Li <daijianglee@gmail.com>
 Description: Calculate taxonomic, functional and phylogenetic diversity measures 
